@@ -133,9 +133,9 @@
 \item Ordinary differential equations
 \item Prominent examples of differential equations in macro
 \item Partial differential equations
+\item Solow growth model
 \item Continuous-time Markov chains
 \item Brownian motion and stochastic differential equations
-\item Solow growth model
 \end{enumerate}
 \end{frame}
 
@@ -417,23 +417,26 @@ $\implies$ increasingly used in economics
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{5. Solow Growth Model}
+\begin{frame}{4. Solow Growth Model}
 \begin{itemize}
-\item Time is discrete and the horizon infinite, $t = 0, 1, 2, \ldots$
+\item As before, $Y_t = C_t + I_t$ and 
+\begin{equation*}
+	\dot K_t = Y_t - C_t - \delta K_t
+\end{equation*}
 
-\item There is a \textit{representative household}: large number of small but identical households
-
-\item Assume households have a constant savings rate $s \in (0, 1)$ (out of disposable income)
-
-\item A representative firm operates the technology / production function
+\item Representative firms operates neoclassical production function
 \begin{equation*}
 	Y_t = F(K_t, L_t, A_t)
 \end{equation*}
-where $K_t$ is capital, $L_t$ is labor, $A_t$ is total factor productivity (TFP)
 
-\item Capital accumulation: $K_{t+1} = (1-\delta) K_t + I_t$
+\item Normalize labor to $L_t = 1$ and hold TFP constant $A_t = A$
 
-\item Goods market clearing (\textit{national income accounting identity}): $Y_t = C_t + I_t$
+\item We again assume constant savings rate: $Y_t - C_t = I_t = s Y_t$
+
+\item Assume Cobb-Douglas $Y_t = A K_t^\alpha$ so equilibrium allocation
+\begin{equation*}
+	\dot K_t = s A K_t^\alpha - \delta K_t
+\end{equation*}
 \end{itemize}
 \end{frame}
 
@@ -441,122 +444,214 @@ where $K_t$ is capital, $L_t$ is labor, $A_t$ is total factor productivity (TFP)
 %%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{}
 \begin{itemize}
-\item Feasible allocations in this economy are characterized by
+\item Steady state is given by
 \begin{equation*}
-	K_{t+1} \leq F(K_t, L_t, A_t) + (1-\delta)K_t - C_t 
+	K^* = \bigg( \frac{sA}{\delta} \bigg)^\frac{1}{1-\alpha}
 \end{equation*}
 
-\item How do we determine the equilibrium allocation among all those allocations that are feasible? $\implies$ assume constant savings rate
+\item Key equilibrium condition in $\dot K_t$ is \textit{non-linear} --- how to proceed?
+
+\item Let $X_t = K_t^{1-\alpha}$, then 
 \begin{align*}
-	s Y_t &= S_t \\
-	&= I_t = Y_t - C_t
+	\dot X_t &= (1-\alpha) K_t^{-\alpha} \dot K_t  \\
+	&= (1-\alpha) K_t^{-\alpha} ( s A K_t^\alpha - \delta K_t )  \\
+	&= (1-\alpha) s A - (1-\alpha) K_t^{1-\alpha} \delta \\
+	&= (1-\alpha) s A - (1-\alpha) \delta X_t
 \end{align*}
-or $C_t = (1-s) Y_t$
 
-\item Equilibrium characterized by (non-linear) first-order difference equation:
-\begin{equation}\label{eq:solow}
-	K_{t+1} = s F(K_t, L_t, A_t) + (1-\delta) K_t
-\end{equation}
+\item Solution with initial condition $X_0$ (work this out):
+\begin{equation*}
+	X_t = X^* + e^{-(1-\alpha) \delta t} \bigg[ X_0 - X^* \bigg], \;\;\; \text{ where } X^* = \frac{sA}{\delta}
+\end{equation*}
+
+\item Transition dynamics (rate of convergence) governed by $-(1-\alpha) \delta)$
+
 \end{itemize}
-
-\textbf{Definition.} (Equilibrium) Given sequences $\{L_t, A_t\}_{t=0}^\infty$ and an initial condition for capital $K_0$, the equilibrium path of the Solow growth model comprises paths for capital, output, consumption and investment $\{K_t, Y_t, C_t, I_t\}_{t=0}^\infty$ that satisfy \eqref{eq:solow}, goods market clearing, firm production, and $C_t = sY_t$.
 \end{frame}
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Steady state}
+\begin{frame}{5. Continuous-time Markov chains}
+
+{\small
 \begin{itemize}
-\item Suppose Cobb-Douglas technology:
+\item Definition: Let $X = \{X_t\}_{t \geq 0}$ be a sequence of random variables taking values in a finite or countable state space $\mathcal X$. Then $X$ is a \textit{continuous-time Markov chain} if it satisfies the \textit{Markov property}: For any sequence $0 \leq t_1 < t_2 < \ldots < t_n$ of times 
 \begin{equation*}
-	Y_t = A K_t^\alpha L_t^{1-\alpha}
-\end{equation*}
-and no productivity or population growth; also normalize $L_t = 1$
-
-\item A steady state is a level of capital $K$ such that 
-\begin{equation*}
-	K = s A K^\alpha + (1-\delta) K
+	\mathbb P(X_{t_n} = x \mid X_{t_1}, \ldots, X_{t_{n-1}} ) = \mathbb P(X_{t_n} = x \mid X_{t_{n-1}} )
 \end{equation*}
 
-\item Solving this, we find:
+
+\item Process $X$ is \textit{time-homogeneous} if the conditional probability does not depend on the current time, i.e., for $x, y \in \mathcal X$:
 \begin{equation*}
-	K = \bigg(\frac{sA}{\delta}\bigg)^\frac{1}{1-\alpha}
+	\mathbb P(X_{t+s} = x \mid X_s = y) = \mathbb P(X_t = x \mid X_0 = y)
 \end{equation*}
+
+\item The \textit{transition density} of process $X$ is denoted $p(t, x \mid s, y)$ and is defined as 
+\begin{equation*}
+	\mathbb P(X_t \in A \mid Y_s = y) = \int_A p(t, x \mid s, y) dx 
+\end{equation*}
+for any (Borel) set $A \subset \mathcal X$. In words: $p(t, x \mid s, y)$ is the probability (density) that process $X_t$ ends up at $X_t = x$ at time $t$ if it started at $X_s = y$ at time $s$
+
+\item \textit{Condition expectation} can be written as: $\mathbb E[ f(X_t) \mid X_0 = y] = \int p(t, x \mid 0, y) f(x) dx$
 \end{itemize}
-
+}
 \end{frame}
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Transition dynamics}
+\begin{frame}{}
+
+\textbf{Example}: 
 
 \vspace{5mm}
+{\small
 \begin{itemize}
-\item The key \textit{degree of freedom} in this economy is the \textit{initial condition} for the (forward) difference equation for capital accumulation: $K_0$
+\item Consider the two-state employment process $z_t \in \{z^L, z^H\}$ with transition rates $\lambda^{LH}$ (from L to H) and $\lambda^{HL}$ (from H to L)
 
-\item Suppose $K_0 < K$ and $K_0 > K$, what happens?
+\item The associated transition matrix (\textit{generator}) is 
+\begin{equation*}
+	\mathcal A^z = \begin{pmatrix} - \lambda^{LH} & \lambda^{LH} \\ \lambda^{HL} & -\lambda^{HL} \end{pmatrix}
+\end{equation*}
 
-\item Read discussion and proofs in Acemoglu, but intuitively:
+\item Interpretation: households transition \textit{out of} state $i$ at rate $\lambda^{ij}$
+
+\item Notice: In discrete time, Markov transition matrix rows sum to $1$. Here, rows sum to $0$ (\textit{mass preservation})
 \end{itemize}
-
-\begin{figure}
-	\centering
-	\includegraphics[scale=0.5]{./solow_transition_acemoglu.pdf}
-\end{figure}
+}
 \end{frame}
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{6. Stochastic Difference Equations}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{6. Brownian motion and SDEs}
+
+{\small
+\textbf{Definition.} Brownian motion $\{B_t\}_{t\geq 0}$ is a stochastic process with properties:
 \begin{itemize}
-\item Consider the process $\{X_t\}$ with 
-\begin{equation}\label{eq:stochastic_difference}
-	X_{t+1} = A X_t + Cw_{t+1}
-\end{equation}
-where $w_{t+1}$ is an iid. process with $w_{t+1} \sim \mathcal N(0, 1)$
+	\item [(i)] $B_0 = 0$
+	
+	\item [(ii)] (\textit{Independent increments}) For non-overlapping $0 \leq t_1 < t_2 < t_3 < t_4$, we have $B_{t_2} - B_{t_1}$ independent from $B_{t_4} - B_{t_3}$
+	
+	\item [(iii)] (\textit{Normal, stationary increments}) $B_t - B_s \sim \mathcal N(0, t-s)$ for any $0 \leq s < t$
+	
+	\item [(iv)]  (\textit{Continuity of paths}) The sample paths of $B_t$ are continuous
+\end{itemize}
 
-\item Equation \eqref{eq:stochastic_difference} is a \textit{first-order, linear stochastic difference equation}
+\vspace{6mm}
+\begin{itemize}
+\item Brownian motion is the only stochastic process with stationary and independent increments that's also continuous
 
-\item Let $\mathbb E_t$ the \textit{conditional expectation} operator (conditional on time $t$ information)
+\vspace{-3mm}
+\item Einstein (1905) uses Brownian motion to model motion of particles
 
-\item For example:
+\vspace{-3mm}
+\item Brownian motion is a Markov process
+
+\vspace{-3mm}
+\item $B_t \sim \mathcal N(0, t)$
+
+\vspace{-3mm}
+\item Brownian motion is nowhere differentiable
+\end{itemize}
+}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+{\small
+\begin{itemize}
+\item Stochastic differential equations (SDEs) add noise / uncertainty to ordinary differential equations (ODEs)
+
+\item Start with $\dot X_t = \mu X_t$ with solution $X_t = X_0 e^{\mu t}$
+
+\item Rewrite as $d X_t = \mu X_t dt$ and ``add noise'' (using Brownian motion):
+\begin{equation*}
+	dX_t = \mu X_t dt + \sigma X_t dB_t
+\end{equation*}
+
+\item Important: $dB_t \sim \mathcal N(0, dt)$ because 
+\begin{equation*}
+	dB_t \approx B_{t + \Delta} - B_t \sim \mathcal N(0, t +\Delta - t = \mathcal N(0, \Delta)
+\end{equation*}
+and now take $\Delta \to dt$ (continuous-time limit)
+
+\item Alternatively: $B_{t + \Delta} - B_t \sim \mathcal N(0, \Delta) \sim \epsilon_t \sqrt{\Delta}$ where $\epsilon_t \sim \mathcal N(0, 1)$. So as $\Delta \to dt$,
 \begin{align*}
-	\mathbb E_t(X_{t+1}) &= \mathbb E(X_{t+1} \mid X_t) = \mathbb E(A X_t + Cw_{t+1} \mid X_t) \\
-	&= A X_t + C \mathbb E(w_{t+1} \mid X_t) = A X_t + C \mathbb E(w_{t+1}) = A X_t
+	\mathbb E(dB_t) &= \mathbb E(\epsilon_t \sqrt{dt}) = 0 \\
+	\mathbb E[(dB_t)^2] &= \mathbb E[(\epsilon_t \sqrt{dt})^2] = dt
 \end{align*}
 \end{itemize}
+}
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
-\begin{itemize}
-\item Rational expectations: agents' beliefs about stochastic processes are consistent with the true distribution of the process
 
-\item Consumption Euler equation with uncertainty (e.g., stochastic income):
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+{\small
+\begin{itemize}
+\item Suppose we have a function of Brownian motion, $X_t = f(t, B_t)$
+
+\item We know how Brownian motion $dB_t$ evolves, what about $dX_t$? (That's like $\dot X_t$)
+
+\item Answer: \textbf{Ito's lemma} (core building block of stochastic calculus)
+\begin{align*}
+	dX_t = d f(t, B_t)  = \partial_t f(t, B_t) dt + \frac{1}{2} \partial_{xx} f(t, B_t) dt + \partial_x f(t, B_t) dB_t
+\end{align*}
+
+\item Will not prove this, but heuristically: $(dt)^2 \to 0$ and $(dB_t)^2 \to dt$
+
+\item For example from previous slide, $dX_t = \mu X_t dt + \sigma X_t dB_t$:
 \begin{equation*}
-	u'(C_t) = \beta R \mathbb E_t \Big[ u'(C_{t+1}) \Big]
+	X_t = X_0 e^{\mu t - \frac{\sigma^2}{2} t + \sigma B_t}
 \end{equation*}
 
-\item New Keynesian Phillips curve with uncertainty (e.g., demand shocks):
+\item This is called \textit{geometric Brownian motion} (used to model stock prices)
+
+\item \textit{Ornstein-Uhlenbeck (OU) process} is a popular model for earnings risk and income fluctuations (think: continuous-time AR(1) process):
 \begin{equation*}
-	\pi_t = \beta \mathbb E_t \Big[ \pi_{t+1} \Big] + \kappa x_t
+	dz_t = \theta(\bar z - z_t) dt + \sigma dB_t
 \end{equation*}
 \end{itemize}
+}
 \end{frame}
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+	
+	{\small
+		\begin{itemize}
+			\item Very important class is the \textbf{diffusion process}
+			
+			\item They take the form (not the formal definition)
+			\begin{equation*}
+				dX_t = \mu(t, X_t) dt + \sigma(t, X_t) dB_t
+			\end{equation*}
+			where $\mu(\cdot)$ is the \textit{drift} and $\sigma(t, X_t)$ the \textit{diffusion} (volatility) parameter of the process 
+			
+			\item This is a shorthand for the (stochastic) integral equation 
+			\begin{equation*}
+				X_t = X_0 + \int_0^t \mu(s, X_s) ds + \int_0^t \sigma(s, X_s) dB_s
+			\end{equation*}
+			
+		\end{itemize}
+	}
+\end{frame}
 
 
 
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \appendix
 
