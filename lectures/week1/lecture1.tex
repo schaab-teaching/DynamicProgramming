@@ -193,6 +193,31 @@ $\implies$ \textit{focus on tools, but with tons of applications }
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Acknowledgements}
+\begin{itemize}
+\item Course builds on excellent teaching material developed by others
+
+\item Huge thanks to David Laibson for making available his incredible course on dynamic programming 
+
+\url{https://projects.iq.harvard.edu/econ2010c/lecturesDLaibson}
+
+\item Benjamin Moll's teaching material and code tutorials are among the best / most pedagogical I know
+
+\url{https://benjaminmoll.com/}
+
+\item Pablo Kurlat has fantastic teaching material online
+
+\url{https://sites.google.com/view/pkurlat/teaching}
+
+\item Many others ... (this slide will evolve)
+
+\item Closest textbooks: Stokey-Lucas, Ljungqvist-Sargent, Acemoglu, Romer
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{GitHub}
 \begin{itemize}
 \item One super useful \textit{hard skill} for research / code development: \\
@@ -238,6 +263,10 @@ $\implies$ \textit{You are responsible from now on}
 	\item Acemoglu
 	\vspace{-3mm}
 	\item Oksendal
+	\vspace{-3mm}
+	\item LeVeque
+	\vspace{-3mm}
+	\item Kamien and Schwartz
 	\vspace{-3mm}
 	\item Stachurski / Miao / ...
 \end{itemize}
@@ -554,6 +583,12 @@ where $w_{t+1}$ is an iid. process with $w_{t+1} \sim \mathcal N(0, 1)$
 \begin{frame}{}
 \begin{itemize}
 \item Rational expectations: agents' beliefs about stochastic processes are consistent with the true distribution of the process
+
+\item Key equation: wealth dynamics with income fluctuations:
+\begin{equation*}
+	a_{t+1} = R_t a_t + y_t - c_t,
+\end{equation*}
+where $y_t$ is a stochastic process
 
 \item Consumption Euler equation with uncertainty (e.g., stochastic income):
 \begin{equation*}
