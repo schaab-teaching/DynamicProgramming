@@ -327,21 +327,14 @@ after using change of variables $Y(t) = X(t) + \frac{b}{a}$
 \begin{frame}{}
 	\textbf{Consumption Euler equation}:
 	\begin{equation*}
-		\frac{1}{C_t} = \beta R_t\frac{1}{C_{t+1}}
+		\frac{\dot C_t}{C_t} = r_t - \rho
 	\end{equation*}
 	\begin{itemize}
-		\item $\frac{1}{C_t} = u'(C_t)$ is marginal utility with log preferences
+		\item The Euler equation typically takes the form of a \textit{backward equation} and comes with a terminal condition ($C_T$) or transversality condition ($\lim_{T\to\infty} C_T$)
 		
-		\item This is a \textit{backward equation} and requires a terminal condition or transversality condition, i.e., $c_T$ must converge to something
+		\item Stationary point only if $r_t = \rho$
 		
-		\item Suppose there exists time $T$ s.t. for all $t \geq T$, $C_t = C$
-		
-		\item Then solve \textit{backwards} from: $\frac{1}{C_{T-1}} = \beta R_{T-1} \frac{1}{C_T}$ or expressed as \textit{time-homogeneous first-order linear difference equation}
-		\begin{equation*}
-			C_{T-1} = \frac{1}{\beta R_{T-1}} C_T
-		\end{equation*}
-		
-		\item Difference between \textit{forward} and \textit{backward} equations is critical! This is closely related to the idea of \textit{boundary conditions} (much more to come)
+		\item Suppose we are at $r_t = r = \rho$ and a shock is realized. $r_0 > r$ what happens? $r_0 < r$ what happens? 
 	\end{itemize}
 \end{frame}
 
