@@ -1,0 +1,378 @@
+\documentclass[11pt]{extarticle}
+\usepackage{fullpage,amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm}
+\usepackage[left=1in, bottom=1in, top=1in, right = 1in]{geometry}
+\usepackage{textcomp}
+\usepackage{mathpazo}
+\usepackage{mathrsfs}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+
+\usepackage{microtype}
+
+\usepackage{bm}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{ragged2e}
+
+\setlength{\parindent}{24pt}
+\setlength{\jot}{8pt}
+
+
+\usepackage[shortlabels]{enumitem}
+
+
+%% FOOTNOTES
+\usepackage[bottom]{footmisc}
+\usepackage{footnotebackref}
+
+
+%% FIGURE ENVIRONMENT
+%\graphicspath{{}}
+\usepackage[margin=15pt, font=small, labelfont={bf}, labelsep=period]{caption}
+\usepackage{subcaption}
+\captionsetup[figure]{name={Figure}, position=above}
+\usepackage{float}
+\usepackage{epstopdf}
+
+
+%% NEW COMMANDS
+\renewcommand{\baselinestretch}{1.25} 
+\renewcommand{\qedsymbol}{$\blacksquare$}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\indep}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\renewcommand{\b}{\begin}
+\newcommand{\e}{\end}
+
+%% NEWTHEOREM
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{cor}[thm]{Corollary}
+
+%% LINKS and COLORS
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\definecolor{myred}{RGB}{163, 32, 45}
+\hypersetup{
+	%backref=true,
+	%pagebackref=true,
+	colorlinks=true,
+	urlcolor=myred,
+	citecolor=myred, 
+	linktoc=all,     
+	linkcolor=myred,
+}
+
+%% TABLE OF CONTENTS
+\addto\captionsenglish{
+	\renewcommand{\contentsname}
+	{}% This removes the heading over the table of contents.
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%            END PREAMBLE           %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Dynamic Optimization: Problem Set \#1}
+
+\author{Andreas Schaab}
+
+\date{Fall, 2022}
+
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\setcounter{page}{0}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 1}
+
+\textbf{Credit:} QuantEcon \url{https://python.quantecon.org/finite_markov.html#exercises}
+ 
+\vspace{5mm}
+\noindent
+Let $y_t$ denote the employment / earnings state of an individual. Consider the state space $y_t \in Y = \{ y^U, y^E \}$, where $y^U$ corresponds to unemployment and $y^E$ corresponds to employment. Let $\bm y$ denote the column vector $(y^U, y^E)'$ representing this state space (this is the grid you would construct on a computer). Suppose the employment dynamics of the individual are characterized by the invariant transition matrix 
+\begin{equation*}
+	P = \begin{pmatrix} \alpha & 1 - \alpha \\ 1 - \beta & \beta \end{pmatrix}.
+\end{equation*}
+We interpret a time period as a quarter. 
+
+\begin{enumerate}[(a)]
+\item Give economic interpretations of $\alpha = P_{11}$ and $\beta = P_{22}$
+
+\item Why do the rows of $P$ sum to $1$?
+
+\item Is there an absorbing state in this model?
+
+\item Compute the probability of being unemployed two quarters after being employed. 
+
+\item Denote the \textit{marginal (probability) distribution} of $y_t$ at time $t$ by $\psi_t$. $\psi_t(y^L)$ is the probability that process $y_t$ is in state $y^L$ at time $t$. It is easiest to think of $\psi_t$ as a time-varying row vector. Use the law of total probability to decompose $y_{t+1} = y^L$, accounting for all the possible ways in which state $y^L$ can be reached at time $t+1$. 
+
+\item Show that the resulting equation can be written as the vector-matrix product
+\begin{equation*}
+	\psi_{t+1} = \psi_t P.
+\end{equation*}
+Therefore: The evolution of the marginal distribution of a Markov chain is obtained by post-multiplying by the transition matrix. 
+
+\item Show that
+\begin{equation*}
+	X_0 \sim \psi_0 \implies X_t \sim \psi_0 P^t,
+\end{equation*}
+where $\sim$ reads ``is distributed according to''. 
+
+\item We call $\psi^*$ a \textit{stationary distribution} of the Markov chain if it satisfies 
+\begin{equation*}
+	\psi^* = \psi^* P.
+\end{equation*}
+Compute the probability of being unemployed $n$ quarters after being employed. Take $n \to \infty$ and find the stationary distribution of this Markov chain. Find the stationary distribution by alternatively plugging into the above equation for $\psi^*$. 
+
+\item Suppose $y_0 = y^H$. Solve for $\mathbb E_0 (y_t)$. Use the law of total / iterated expectation to relate expectation to probabilities. Then use the formulas for marginal (probability) distributions derived above. 
+\end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 2}
+
+Consider the first-order linear \textit{homogeneous} difference equation 
+\begin{equation*}
+	x_{t+1} = \rho x_t.
+\end{equation*}
+We parameterize the initial condition by $x_0 = c$. 
+
+\begin{enumerate}[(a)]
+\item Prove by induction that the \textit{general solution} (for arbitrary $c$) is given by
+\begin{equation*}
+	x_t = \rho^t c.
+\end{equation*}
+
+\item Show that the \textit{particular solution} for initial value $x_0 = x$ is given by $x_t = \rho^t x$. 
+
+\item Show that this also implies 
+\begin{equation*}
+	x_t = \rho^{t-s} x_s
+\end{equation*}
+for $t > s$.
+
+\item Prove that this difference equation satisfies the Markov property.
+
+\end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 3}
+
+\textbf{Credit:} Klaus Neusser \url{http://www2.econ.iastate.edu/classes/econ600/rksingh/fall16/TA/DifferenceEquations.pdf} on p. 19 (of the PDF)
+
+\vspace{5mm}
+\noindent
+We study the dynamics of loan amortization. Denote by $D_t$ the amount of debt owed at time $t$. The debt contract is serviced by paying an amount $Z_t$ each period. $Z_t$ is given exogenously for this problem (you could imagine some agent optimizing in the background).
+
+\begin{enumerate}[(a)]
+\item Explain why debt dynamics are characterized by the equation
+\begin{equation*}
+	D_{t+1} = RD_t - Z_t
+\end{equation*}
+where $R$ is the constant gross interest rate associated with the loan. What kind of difference equation is this? Is this a forward or a backward equation? 
+
+\item Suppose we start with an initial loan $D_0$. Solve iteratively (by induction) for $D_t$. You should get two terms --- explain the economics for both terms.
+
+\item Suppose the loan needs to be repaid at time $T$. Solve for the constant repayment schedule $Z_t = Z$ such that the loan is repaid in period $T$.
+
+\item What is the condition on constant repayment rate $Z$ relative to $D_0$ such that the loan is repaid in finite time? 
+\end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 4}
+
+\textbf{Credit:} Klaus Neusser \url{http://www2.econ.iastate.edu/classes/econ600/rksingh/fall16/TA/DifferenceEquations.pdf} on p. 38 (of the PDF)
+
+\vspace{5mm}
+\noindent
+We study Cagan (1956)'s model for hyperinflation. The model is summarized by the three equations
+\begin{align*}
+	m_t^d - p_t &= \alpha (p_{t+1}^e - p_t) \\
+	m_t^s &= m_t^d \\
+	p_{t+1}^e - p_t &= \gamma(p_t - p_{t_1})
+\end{align*}
+where (all in logs) $m_t^d$ is money demand, $m_t^s$ is money supply, $p_t$ is the price level and $p_{t+1}^e$ is private agents' expectations for the price level in period $t+1$. The first equation of the above system characterizes money demand and the third equation characterizes \textit{adaptive} inflation expectations. Assume that $\alpha < 0$ and $\gamma > 0$.
+
+\begin{enumerate}[(a)]
+\item Characterize a first-order difference equation that solves for $p_t$ as a function of $p_{t-1}$ and $m_{t-1}$. What kind of difference equation is this? 
+
+\item Using the tools already developed, solve for $p_t$ in terms of some initial conditions on the system.
+
+\item Characterize the stability condition such that if $m_t \to m$ in the long run, $p_t$ converges to a steady state $p$. Interpret the economics of this stability condition. 
+
+\item Explain why this equation should be thought of as a \textit{forward} equation.
+
+\item Now assume that agents form expectations rationally instead of adaptively. That is, replace the third equation above by 
+\begin{equation*}
+	p_{t+1}^e = p_{t+1}.
+\end{equation*}
+Simplify the model equations again to obtain a difference equation for $p_t$ in terms of $m_t$. What kind of difference equation is this?
+
+\item Argue that we should think of this equation now as a \textit{backward} equation. Solve again for the \textit{general} solution of this difference equation (backwards), i.e., express $p_t$ in terms of $p_{t+s}$ and $m_{t+s}$. 
+
+\item Solve for a \textit{particular} solution by imposing some transversality (terminal) condition on $\lim_{T \to \infty} p_T$. 
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 5}
+
+Take the continuous-time limit of the following equations:
+\begin{enumerate}[(a)]
+\item $a_{t+1} = R_t a_t + y_t - c_t$
+
+\item $u'(c_t) = \beta R_t u'(c_{t+1})$
+
+\item $\pi_t = \beta \pi_{t+1} + \kappa x_t$
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 6}
+
+Revert back from continuous to discrete time by plugging in for the definition of first-order derivative
+\begin{equation*}
+	\dot X_t = \frac{dX_t}{dt} \approx \frac{X_{t+\Delta} - X_t}{\Delta}
+\end{equation*}
+for small $\Delta$. 
+
+\begin{enumerate}[(a)]
+\item $\dot K_t = I_t - \delta K_t$
+
+\item $\dot a_t = r_t a_t + y_t - c_t$
+
+\item $\frac{\dot C_t}{C_t} = \frac{r_t - \rho}{\gamma}$
+
+\item $\dot \pi_t = \rho \pi_t - \kappa x_t$
+\end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 7}
+
+Consider the equation for wealth dynamics
+\begin{equation*}
+	\dot a_t = r_t a_t + y_t - c_t.
+\end{equation*}
+We take $\{r_t\}$ and $\{y_t - c_t\}$ as exogenously given.
+
+\begin{enumerate}[(a)]
+\item Solve for the lifetime budget constraint.
+
+\item Solve the ODE for its general solution using the integrating factor method introduced in class, i.e., find an expression for $a_t$ in terms of the exogenous processes $\{r_t, y_t, c_t\}$ and some arbitrary initial condition $a_0 = c$. 
+
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 8}
+
+\textbf{Credit:} Miranda Holmes-Cerfon \url{https://cims.nyu.edu/~holmes/teaching/asa19/handout_Lecture4_2019.pdf}
+
+\vspace{5mm}
+\noindent
+In this problem, we will prove the Chapman-Kolmogorov Equation for a \textit{time-homogeneous} continuous-time Markov chains. Denote the \textit{transition probability} as
+\begin{equation*}
+	P_{ij}(t+s) = \mathbb P(X_{t+s} = j \mid X_t = i)
+\end{equation*}
+where $i$ and $j$ should be thought of as indices on the state space, i.e., the $i$th value of the finite state space $\mathcal X$ of the Markov chain.
+
+Denote $I$ the indices associated with the state space $\mathcal X$. The Chapman-Kolmogorov equation is: 
+\begin{equation*}
+	P_{ij}(t+s) = \sum_{k \in I} P_{ik}(t) P_{kj}(s).
+\end{equation*}
+
+\begin{enumerate}[(a)]
+\item Use the law of total probability to show that 
+\begin{equation*}
+	\mathbb P(X_{t+s} = j \mid X_0 = i) = \sum_k \mathbb P(X_{t+s} = j \mid X_t = k, X_0 = i) \mathbb P(X_t = k \mid X_0 = i) 
+\end{equation*}
+
+\item Use the Markov property
+
+\item Invoke time homogeneity to arrive at the result
+\end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 9}
+
+This problem collects several exercises on Brownian motion and stochastic calculus.
+
+\begin{enumerate}[(a)]
+\item Show that $\mathbb Cov(B_s, B_t) = \min\{s, t\}$ for two times $0 \leq s < t$. Use the following tricks: Use the covariance formula $\mathbb Cov(A, B) = \mathbb E (AB) - \mathbb E(A) \mathbb E(B)$. Use $B_t \sim \mathcal N(0, t)$ as well as $B_t - B_s \sim \mathcal N(0, t-s)$. And use $B_t = B_s + (B_t - B_s)$.
+
+\item Geometric Brownian motion evolves as: $dX_t = \mu X_t dt + \sigma X_t dB_t$. Show that
+\begin{equation*}
+	X_t = X_0 e^{\mu t - \frac{\sigma^2}{2} t + \sigma B_t}
+\end{equation*}
+for a given initial value $X_0$.
+
+\item For Geometric Brownian motion as defined above, show that $\mathbb E = X_0 e^{\mu t}$.
+
+\item The Ornstein-Uhlenbeck (OU) process is like a continuous-time variant of the AR(1) process. It evolves as $dX_t = - \mu X_t dt + \sigma dB_t$ for drift parameter $\mu$, diffusion parameter $\sigma$, and some $X$. Show that it solves 
+\begin{equation*}
+	X_t = X_0 e^{- \mu t} + \sigma \int_0^t e^{-\mu(t - s)} dB_s.
+\end{equation*}
+\end{enumerate}
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
