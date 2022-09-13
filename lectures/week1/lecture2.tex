@@ -270,8 +270,8 @@ after using change of variables $Y(t) = X(t) + \frac{b}{a}$
 
 \item Continuous-time limit:
 \begin{align*}
-	K_{t+\Delta} &= K_t + \Delta (I_t + (1-\delta) K_t \\
-	K_{t+\Delta} - K_t &= I_t -\delta K_t \\
+	K_{t+\Delta} &= K_t + \Delta (I_t - \delta K_t) \\
+	\frac{K_{t+\Delta} - K_t}{\Delta} &= I_t -\delta K_t \\
 	\dot K_t &= I_t -\delta K_t
 \end{align*}
 \end{itemize}
