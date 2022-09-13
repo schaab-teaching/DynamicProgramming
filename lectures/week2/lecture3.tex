@@ -1,0 +1,510 @@
+\documentclass[10pt]{beamer}
+\usepackage{amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm,centernot}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+
+\usepackage{palatino}
+\usepackage{mathpazo} % or: {newpxtext,newpxmath}
+\renewcommand\familydefault{\rmdefault}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{bm}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows,shapes}
+\usepackage{caption, subcaption}
+
+%% BEAMER BUTTON
+%\setbeamertemplate{button}{\tikz
+%\node[
+%	inner xsep = 2pt, 
+%	draw = structure!0, 
+%	fill = myblue, 
+%	rounded corners = 4pt]{\color{white} \tiny\insertbuttontext};
+%}
+
+
+%% ALGORITHM 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{multimedia}
+
+%% THEME
+\usetheme[frametitleformat=regular,titleformat=regular]{Madrid}
+\setbeamerfont{frametitle}{shape=\normalfont}
+\setbeamerfont{title}{shape=\normalfont}
+
+%% PATHS
+\graphicspath{{./results/}}
+\makeatletter
+\def\input@path{{../draft/tables/latexData/}}
+\makeatother
+
+%% FIGURE ENVIRONMENT 
+\usepackage{booktabs,siunitx}
+
+\usepackage{pgfplots} 
+%\usepackage[outdir=./figures]{epstopdf}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{graphicx}
+
+\usepackage[absolute,overlay]{textpos}
+
+%% COLORS
+%% LINKS
+\definecolor{myred}{RGB}{163,32,45}
+\definecolor{navyblue}{rgb}{0.05,0.2,0.70}
+\definecolor{myblue}{RGB}{0,51,150}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{myref}{RGB}{160,160,160}
+\definecolor{shock}{RGB}{0, 125, 34}%{50, 168, 82}
+
+%% TRANSPARENCY
+
+\usepackage{transparent}
+
+%% BEAMER TEMPLATE
+\usetheme{Boadilla}
+
+\makeatother
+\setbeamertemplate{itemize items}{\large\raisebox{-0.25ex}{\textbullet}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.15ex}{--}}
+\setbeamertemplate{itemize subsubitem}{\Tiny\raisebox{0.7ex}{$\blacktriangleright$}}
+%\setbeamertemplate{itemize subsubitem}{\color{yellow}$\blacksquare$}
+
+\setbeamertemplate{enumerate item}[default]
+\setbeamertemplate{enumerate subitem}{\textbullet}
+\setbeamertemplate{footline}{}
+\makeatletter
+\setbeamertemplate{navigation symbols}{}
+
+
+% TODO:
+% Introduce page number but no other footer
+% Define appropriate itemize and enumerate environments so I never have to touch these
+% What about an automatic subitemize environment? 
+
+
+%% FORMATTING AUTHORS
+%\usepackage{authblk}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{array}
+
+%% FRAME ITEMIZE SPACING
+\usepackage{xpatch}
+
+\xpatchcmd{\itemize}
+{\def\makelabel}
+{\setlength{\itemsep}{2.5ex}\def\makelabel}
+{}
+{}
+
+\xpatchcmd{\enumerate}
+{\def\makelabel}
+{\setlength{\itemsep}{10ex}\def\makelabel}
+{}
+{}
+
+%% APPENDIX 
+\usepackage{appendixnumberbeamer}
+
+
+%% TITLE AND OPENING
+\title{\large M2: Lecture 3}
+\subtitle{Dynamic Programming in Discrete Time (I)}
+\author{Andreas Schaab}
+\date{}
+
+
+\begin{document}
+\tikzstyle{every picture}+=[remember picture]
+%\everymath{\displaystyle}
+\thispagestyle{empty}
+\maketitle 
+\newpage
+
+\addtocounter{framenumber}{-1}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Outline of today's lecture}
+\addtocounter{framenumber}{-1}
+
+\begin{enumerate}
+\item Neoclassical growth model (no uncertainty)
+\item Sequence problem
+\item Dynamic programming: the principle of optimality 
+\item Bellman equation
+\item Solving the Bellman equation via guess-and-verify
+\item Example: optimal stopping
+\end{enumerate}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{1. Neoclassical growth model}
+\begin{itemize}
+\item Time is discrete with $t = 0, 1, \ldots$ and there is no uncertainty
+
+\item Consider a \textbf{representative household} 
+
+\item Preferences over consumption $c_t$ given by
+\begin{equation*}
+	\max_{ \{ c_t \}_{t=0}^\infty } \sum_{t = 0}^\infty \beta^t u(c_t)
+\end{equation*}
+
+\item $u(\cdot)$ is \textbf{flow utility}: units of $c_t$ ``dollars'' or ``apples'', units of $u(c_t)$ ``utils''
+
+\item Subject to capital accumulation equation 
+\begin{equation*}
+	k_{t+1} = f(k_t) - c_t = k_t^\alpha - c_t,
+\end{equation*}
+for $\alpha \in (0, 1)$, $c_t, k_t \geq 0$, and $k_0$ given (\textbf{initial condition})
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2. Sequence problem}
+\begin{itemize}
+\item We define the \textbf{lifetime value} of the representative household as 
+\begin{equation*}
+	V(k_0) = \max_{ \{ c_t \}_{t=0}^\infty } \sum_{t = 0}^\infty \beta^t u(c_t)
+\end{equation*}
+s.t. 
+\begin{equation*}
+	k_{t+1} = k_t^\alpha - c_t.
+\end{equation*}
+
+\item This is the \textbf{sequence problem} (or problem in sequence form)
+
+\item We can substitute in: 
+\begin{equation*}
+	V(k_0) = \max_{ \{ k_{t+1} \}_{t=0}^\infty } \sum_{t = 0}^\infty \beta^t u(k_t^\alpha  - k_{t+1})
+\end{equation*}
+
+\item Given initial condition $k_0$
+
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item We can tackle the sequence problem directly using tools from constrained dynamic optimization
+
+\item Lagrangian after substituting with FOC for $k_{t+1}$:
+\begin{equation*}
+	L(k_0) =  \sum_{t = 0}^\infty \beta^t u(k_t^\alpha  - k_{t+1})
+\end{equation*}
+\begin{equation*}
+	0 = - \beta^t u'(c_t) + \beta^{t+1} u'(c_{t+1}) \alpha k_{t+1}^{\alpha - 1}
+\end{equation*}
+
+\item Lagrangian with multiplier before substituting with FOCs for $c_t$ and $k_{t+1}$:
+\begin{equation*}
+	L(k_0) =  \sum_{t = 0}^\infty \beta^t \bigg[ u(c_t) + \lambda_t \bigg( k_t^\alpha - c_t - k_{t+1} \bigg) \bigg]
+\end{equation*}
+\begin{align*}
+	0 &= \beta^t u'(c_t) - \beta^t \lambda_t \\
+	0 &= -\beta^t \lambda_t + \alpha \beta^{t+1} \lambda_{t+1} k_{t+1}^{\alpha - 1}
+\end{align*}
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{3. Bellman equation}
+\begin{itemize}
+\item \textbf{Definition:} The \textbf{Bellman equation} characterizes the value function as the sum of the \textbf{flow payoff} and the discounted \textbf{continuation value}
+\begin{equation*}
+	V(k) = \max_{k'} \Big\{ u(k^\alpha - k') + \beta V(k') \Big\} \quad \text{ for all } k
+\end{equation*}
+
+\item We call $V(k)$ the value function and $u(k^\alpha - k')$ the flow payoff or (instantaneous) utility flow
+
+\item \textbf{Recursive representation} (not sequence form)
+
+\item We say that $\mathcal X = [0, \bar k]$ is the \textbf{state space} of the neoclassical growth model. The Bellman equation must hold for all feasible levels of capital $k \in \mathcal X$.
+
+\item If $V(k)$ solves the above equation, then it is a solution to the Bellman equation
+
+\item We now show that the unique value function that solves the sequence problem also solves the Bellman equation
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Sequence problem $\longrightarrow$ recursive representation (Bellman equation)
+\begin{align*}
+	V(k_0) &= \max_{ \{ k_{t+1} \}_{t=0}^\infty } \, \bigg\{  \sum_{t = 0}^\infty \beta^t u(k_t^\alpha  - k_{t+1}) \bigg\} \\
+	&= \max_{ \{ k_{t+1} \}_{t=0}^\infty } \, \bigg\{ u(k_0^\alpha  - k_1) + \sum_{t = 1}^\infty \beta^t u(k_t^\alpha  - k_{t+1}) \bigg\}  \\
+	&= \max_{ \{ k_{t+1} \}_{t=0}^\infty } \, \bigg\{ u(k_0^\alpha  - k_1) + \beta \sum_{t = 1}^\infty \beta^{t-1} u(k_t^\alpha  - k_{t+1}) \bigg\} \\
+	&= \max_{k_1} \, \bigg\{ u(k_0^\alpha  - k_1) + \beta \max_{ \{ k_{t+1} \}_{t=1}^\infty } \, \bigg\{  \sum_{t = 0}^\infty \beta^t u(k_{t+1}^\alpha  - k_{t+2}) \bigg\} \bigg\} \\
+	&= \max_{ k_1} \, \bigg\{ u(k_0^\alpha  - k_1) + \beta V(k_1) \bigg\}
+\end{align*}
+
+\item Recursively, with $k$ capital ``today'' and $k'$ capital ``tomorrow''
+\begin{align*}
+	V(k) &= \max_{k'} \, \bigg\{ u(k^\alpha  - k') + \beta V(k') \bigg\}
+\end{align*}
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item A solution to the Bellman equation also solves Sequence Problem
+\begin{align*}
+	V(k_0) &= \max_{ k_1} \, \bigg\{ u(k_0^\alpha  - k_1) + \beta V(k_1) \bigg\} \\
+	&= \max_{ k_1} \, \bigg\{ u(k_0^\alpha  - k_1) + \beta \bigg( \max_{ k_2} \, \bigg\{ u(k_1^\alpha  - k_2) + \beta V(k_2) \bigg\} \bigg) \bigg\} \\
+	&= \max_{ k_1, k_2} \, \bigg\{ u(k_0^\alpha  - k_1) + \beta u(k_1^\alpha  - k_2) + \beta^2 V(k_2) \bigg\} \\
+	&= \max_{ k_1, k_2, k_3} \, \bigg\{ u(k_0^\alpha  - k_1) + \beta u(k_1^\alpha  - k_2) + \beta^2 u(k_2^\alpha  - k_3) + \beta^3 V(k_3) \bigg\} \\
+	&\;\; \vdots \\
+	&= \max_{ \{ k_{t+1} \}_{t=0}^\infty } \, \bigg\{  \sum_{t = 0}^\infty \beta^t u(k_t^\alpha  - k_{t+1}) \bigg\} 
+\end{align*}
+
+\item Stokey and Lucas Thm 4.3: Sufficient condition is that $\lim_{n \to \infty} \beta^n V(k_n) = 0$ for all feasible sequences of $\{ k_t \}$ 
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item How do we find optimal behavior? 
+
+\item First-order condition for $k'$ is
+\begin{equation*}
+	\frac{\partial u(k^\alpha - k')}{\partial k'} = \beta \frac{\partial V(k')}{\partial k'}
+\end{equation*}
+
+\item FOC defines \textbf{policy function} $k'(k)$, use to plug back into Bellman:
+\begin{align*}
+	V(k) &= u(k^\alpha  - k'(k)) + \beta V(k'(k))
+\end{align*}
+
+\item The implied \textbf{consumption policy function} is: $c(k) = k^\alpha - k'(k)$
+
+\item Envelope theorem (in discrete time):
+\begin{align*}
+	\frac{\partial V(k)}{\partial k} &= \frac{\partial u(k^\alpha - k')}{\partial k}
+\end{align*}
+
+\item Work out at home: (i) prove envelope condition (ii) show resulting Euler equation coincides with solving sequence problem using Lagrangian
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{4. Solving the Bellman equation with guess-and-verify}
+\begin{itemize}
+\item Assume the functional form $u(c_t) = \log(c_t)$ 
+
+\item Guess that the value function takes the form 
+\begin{equation*}
+	V(k) = A + B \log(k)
+\end{equation*}
+
+\item Strategy: Plug into Bellman equation, match coefficients
+
+\item Oftentimes, value function inherits functional form / shape of utility function
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item First-order condition for capital with log utility:
+\begin{equation*}
+	\frac{1}{k^\alpha - k'} = \beta B \frac{1}{k'} \implies  k' = \frac{\beta B}{1 + \beta B} k^\alpha
+\end{equation*}
+
+\item Plug guess into Bellman:
+\begin{align*}
+	V(k) &= \max_{k'} \, \bigg\{ \log(k^\alpha  - k') + \beta V(k') \bigg\} \\
+	A + B \log(k) &= \max_{k'} \, \bigg\{ \log(k^\alpha  - k') + \beta A + \beta B \log(k') \bigg\} \\
+	A + B \log(k) &= \log\bigg(k^\alpha  - \frac{\beta B}{1 + \beta B} k^\alpha \bigg) + \beta A + \beta B \log\bigg( \frac{\beta B}{1 + \beta B} k^\alpha \bigg)
+\end{align*}
+
+\item Solve for $A$ and $B$ so that coefficients of $\log(k)$ and constant terms cancel 
+
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+More general Stokey-Lucas notation: Let $F(x_t, x_{t+1})$ be flow payoff
+
+\vspace{8mm}
+\textbf{Sequence problem}: Find $V(x)$ such that 
+\begin{equation*}
+	V(x_0) = \sup_{ \{ x_{t+1} \}_{t=0}^\infty} \, \sum_{t=0}^\infty \beta^t F(x_t, x_{t+1})
+\end{equation*}
+subject to $x_{t+1}$ in some feasible set $\Gamma(x_t)$, with $x_0$ given
+
+\vspace{8mm}
+\textbf{Bellman equation}: Find $V(x)$ such that 
+\begin{equation*}
+	V(x) = \sup_{x' \in \Gamma(x)} \Big\{ F(x, x') + \beta V(x') \Big\}
+\end{equation*}
+for all $x$ in the state space
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{5. Bellman operator}
+\begin{itemize}
+\item In discrete time, Bellman equation is a \textbf{functional equation}
+
+\item Define the \textbf{Bellman operator} $B$, operating on function $w(\cdot)$, as
+\begin{equation*}
+	(Bw)(x) \equiv \max_{x'} \Big\{ F(x, x') + \beta w(x') \Big\} \quad \text{ for all } x
+\end{equation*}
+
+\item \textbf{Operators} are maps from one function space to another (learn functional analysis!)
+
+\item The value function $V(\cdot)$ is a fixed point of the operator $B$:
+\begin{align*}
+	(BV)(x) &= \max_{x'} \Big\{ F(x, x') + \beta w(x') \Big\} \\
+	&= V(x)
+\end{align*}
+
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+
+\item This idea is useful in numerical analysis: Suppose we guess $V^0$ and look for fixed point 
+\begin{equation*}
+	\lim_{n \to \infty} B^n V^0 = V
+\end{equation*}
+
+\item The Bellman operator is a \textbf{contraction mapping} under some conditions
+
+\item This tells us that the Bellman operator converges (and we can use this to construct numerical fixed point algorithms)
+
+\item For example: If an operator $B$ maps a complete metric space into itself and is a contraction mapping, then it has a unique fixed point
+
+\item This is a very important idea. And you should read about this on your own. 
+
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{6. Example: Optimal stopping}
+
+\vspace{5mm}
+\textbf{Problem}: Every period $t$, an agent draws an offer $x$ from the unit interval $[0, 1]$. The agent can accept the offer, in which case her payoff is $x$, and the game ends. Draws are independent. The agent discounts the future at $\beta$. The game continues until the agent receives an offer she accepts.
+
+\vspace{5mm}
+\begin{itemize}
+\item Agent's dynamic optimization problem given recursively by Bellman equation 
+\begin{equation*}
+	V(x) = \max \Big\{ x, \, \beta \mathbb{E} V(x') \Big\}
+\end{equation*}
+where the expectation (operator) $\mathbb{E}$ is taken over the next draw $x'$
+
+\item There will be a threshold $x^* \in [0, 1]$ such that agent accepts for $x \geq x^*$
+
+\item This is also called a \textbf{free boundary problem} because we have to look for the endogenous boundary of the problem $x^*$
+
+\item Many applications (problems in life) look like this: 
+
+buying a house, searching for a partner, closing a production plant, exercising an option, adopting a new technology, ... 
+
+\end{itemize}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+\begin{itemize}
+\item The value function will look like:
+\begin{equation*}
+	V(x) = \begin{cases} x & \text{ if } \;\; x \geq x^* \\
+		x^* & \text{ if } \;\; x < x^* 
+		\end{cases}
+\end{equation*}
+
+\item Find the value $x^*$ such that this function satisfies the Bellman equation
+
+\item At $x = x^*$, indifferent between accepting and stopping:
+\begin{align*}
+	V(x^*) &= x^* \\
+	&= \beta \mathbb{E} V(x') \\
+	&= \beta \int_0^{x^*} x^* f(x) dx + \beta \int_{x^*}^1 x f(x) dx \\
+	&= \beta x^*  [x]_0^{x^*} + \beta \frac{1}{2} [x^2]_{x^*}^1
+\end{align*}
+where $f(x) = \frac{1}{1 - 0}$ is the uniform density
+
+\item Solution: $x^* = \beta (x^*)^2 + \beta \frac{1}{2} [1 - (x^*)^2]$ or $x^* = \frac{1}{\beta} (1 - \sqrt{1 - \beta^2})$
+
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+
+\end{document}
+
+
+
+
+
+
+
+
+

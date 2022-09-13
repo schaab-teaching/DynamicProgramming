@@ -1,0 +1,470 @@
+\documentclass[10pt]{beamer}
+\usepackage{amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm,centernot}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+
+\usepackage{palatino}
+\usepackage{mathpazo} % or: {newpxtext,newpxmath}
+\renewcommand\familydefault{\rmdefault}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{bm}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows,shapes}
+\usepackage{caption, subcaption}
+
+%% BEAMER BUTTON
+%\setbeamertemplate{button}{\tikz
+%\node[
+%	inner xsep = 2pt, 
+%	draw = structure!0, 
+%	fill = myblue, 
+%	rounded corners = 4pt]{\color{white} \tiny\insertbuttontext};
+%}
+
+
+%% ALGORITHM 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{multimedia}
+
+%% THEME
+\usetheme[frametitleformat=regular,titleformat=regular]{Madrid}
+\setbeamerfont{frametitle}{shape=\normalfont}
+\setbeamerfont{title}{shape=\normalfont}
+
+%% PATHS
+\graphicspath{{./results/}}
+\makeatletter
+\def\input@path{{../draft/tables/latexData/}}
+\makeatother
+
+%% FIGURE ENVIRONMENT 
+\usepackage{booktabs,siunitx}
+
+\usepackage{pgfplots} 
+%\usepackage[outdir=./figures]{epstopdf}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{graphicx}
+
+\usepackage[absolute,overlay]{textpos}
+
+%% COLORS
+%% LINKS
+\definecolor{myred}{RGB}{163,32,45}
+\definecolor{navyblue}{rgb}{0.05,0.2,0.70}
+\definecolor{myblue}{RGB}{0,51,150}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{myref}{RGB}{160,160,160}
+\definecolor{shock}{RGB}{0, 125, 34}%{50, 168, 82}
+
+%% TRANSPARENCY
+
+\usepackage{transparent}
+
+%% BEAMER TEMPLATE
+\usetheme{Boadilla}
+
+\makeatother
+\setbeamertemplate{itemize items}{\large\raisebox{-0.25ex}{\textbullet}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.15ex}{--}}
+\setbeamertemplate{itemize subsubitem}{\Tiny\raisebox{0.7ex}{$\blacktriangleright$}}
+%\setbeamertemplate{itemize subsubitem}{\color{yellow}$\blacksquare$}
+
+\setbeamertemplate{enumerate item}[default]
+\setbeamertemplate{enumerate subitem}{\textbullet}
+\setbeamertemplate{footline}{}
+\makeatletter
+\setbeamertemplate{navigation symbols}{}
+
+
+% TODO:
+% Introduce page number but no other footer
+% Define appropriate itemize and enumerate environments so I never have to touch these
+% What about an automatic subitemize environment? 
+
+
+%% FORMATTING AUTHORS
+%\usepackage{authblk}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{array}
+
+%% FRAME ITEMIZE SPACING
+\usepackage{xpatch}
+
+\xpatchcmd{\itemize}
+{\def\makelabel}
+{\setlength{\itemsep}{2.5ex}\def\makelabel}
+{}
+{}
+
+\xpatchcmd{\enumerate}
+{\def\makelabel}
+{\setlength{\itemsep}{10ex}\def\makelabel}
+{}
+{}
+
+%% APPENDIX 
+\usepackage{appendixnumberbeamer}
+
+
+%% TITLE AND OPENING
+\title{\large M2: Lecture 4}
+\subtitle{Dynamic Programming in Discrete Time (II)}
+\author{Andreas Schaab}
+\date{}
+
+
+\begin{document}
+\tikzstyle{every picture}+=[remember picture]
+%\everymath{\displaystyle}
+\thispagestyle{empty}
+\maketitle 
+\newpage
+
+\addtocounter{framenumber}{-1}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Outline of today's lecture}
+\begin{enumerate}
+\item Example: growth model with labor supply
+\item Stochastic dynamic programming
+\item History notation
+\item Stochastic growth model
+\end{enumerate}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{1. Example: growth model with labor supply}
+\begin{itemize}
+\item Time is discrete with $t = 0, 1, \ldots$ and there is no uncertainty
+
+\item Representative household consumes ($c_t$), saves and works ($l_t$)
+
+\item Preferences over consumption and work given by
+\begin{equation*}
+	V(k_0) = \max_{ \{ c_t, l_t \}_{t=0}^\infty } \sum_{t = 0}^\infty \beta^t u(c_t, l_t)
+\end{equation*}
+
+\item We will use constant relative risk aversion (CRRA) preferences:
+\begin{equation*}
+	u(c, l) = \frac{1}{1-\gamma} c^{1-\gamma} - \frac{1}{1+\phi}l^{1+\phi}
+\end{equation*}
+
+\item Budget constraint: household owns capital and rents it at rate $r_t$
+\begin{equation*}
+	k_{t+1} = (1 + r_t - \delta) k_t + w_t l_t - c_t
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\textbf{Definition} (household problem): The representative household chooses sequences $\{c_t, l_t\}_{t=0}^\infty$ to maximize lifetime value $V(k_0)$ subject to the budget constraint, given initial capital $k_0$ and taking as given paths of prices $\{r_t, w_t\}_{t=0}^\infty$
+
+\vspace{6mm}
+\begin{itemize}
+\item Household problem in sequence form associated with Lagrangian:
+\begin{equation*}
+	L(k_0) = \sum_{t = 0}^\infty \beta^t \bigg[ u(c_t, l_t) + \lambda_t \bigg( (1 + r_t - \delta) k_t + w_t l_t - c_t - k_{t+1} \bigg) \bigg]
+\end{equation*}
+
+\item FOCs for $c_t$, $l_t$, and $k_{t+1}$:
+\begin{align*}
+	0 &= u_c(c_t, l_t) - \lambda_t \\
+	0 &= u_l(c_t, l_t) + w_t \lambda_t \\
+	0 &= - \lambda_t + \beta \lambda_{t+1} (1 + r_t - \delta)
+\end{align*}
+
+\item Euler equation for consumption: $u_c(c_t, l_t) = \beta (1 + r_t - \delta) u_c(c_{t+1}, l_{t+1})$
+
+\item Optimal labor supply: $MRS = - \frac{u_l(c_t, l_t)}{u_c(c_t, l_t)} = w_t$
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Recursive representation (show this):
+\begin{equation*}
+	V(k) = \max_{c, l} \bigg\{ u(c, l) + \beta V((1 + r - \delta) k + w l - c) \bigg\}
+\end{equation*}
+
+\item FOCs:
+\begin{align*}
+	u_c &= \beta V_k(k') \\
+	u_l &= - \beta w V_k(k')
+\end{align*}
+which again implies $- u_l / u_c = w$
+
+\item Use the envelope condition to derive the consumption Euler equation
+
+\item Plug in for CRRA utility and interpret Euler equation and optimal labor supply condition
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2. Stochastic dynamic programming}
+\begin{itemize}
+\item Follow Ljungqvist-Sargent notation, Chapter 3.2 
+
+\item Under uncertainty, household problem takes the form 
+\begin{equation*}
+	\max_{ \{c_t\} } \mathbb E_0 \sum_{t=0}^\infty \beta^t u(c_t)
+\end{equation*}
+subject to $k_{t+1} = g(k_t, c_t, \epsilon_{t+1})$ \hspace{1mm} (\textit{first-order stochastic difference equation})
+
+\item $\{\epsilon_t\}_{t=0}^\infty$ is sequence of iid random variables (\textit{stochastic process})
+
+\item Initial condition $x_0$ given
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Dynamic programming approach: we again look for recursive representation on state space $k_t \in \mathcal X$
+
+\item The problem is to look for a \textit{policy function} $c(k)$ that solves 
+\begin{equation*}
+	V(k) = \max_{c} \bigg\{ u(c) + \beta \mathbb E \bigg[ V\Big( g(k, c, \epsilon) \Big) \, \Big| \, k \bigg] \bigg\}
+\end{equation*}
+where $\mathbb E[V(\cdot) \mid k] = \int V(\cdot) dF(\epsilon)$
+
+\item $V(k)$ is the (lifetime) value that an agent obtains from solving this problem starting from $k$
+
+\item FOC that characterizes the consumption policy function $c(k)$ is 
+\begin{equation*}
+	0 = u'(c(k)) + \beta \mathbb E \Big\{ \partial_k V \Big( g(k, c(k), \epsilon) \Big) \cdot \partial_c g(k, c(k), \epsilon) \, \Big| \, k \Big\} = 0
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{3. History notation}
+\begin{itemize}
+\item A very popular approach to deal with uncertainty in macro is to use history notation (Ljungqvist-Sarget, e.g., chapters 8, 12)
+
+\item Economy populated by individuals, indexed by $i \in I$
+
+\item Time is discrete and indexed by $t = 0, 1, \ldots$
+
+\item At every $t$, there is a realization of a stochastic event $s_t \in \mathcal S$
+
+\item We denote the \textbf{history} of such events up to $t$ by $s^t = \{s_0, s_1, \ldots, s_t\}$
+
+\item The unconditional probability of history $s^t$ is given by $\pi_t(s^t \mid s_0)$
+
+\item If Markov, $\pi_t \Big( s^t \, | \, s_0 \Big) = \pi(s_t \mid s_{t-1}) \pi(s_{t-1} \mid s_{t-2}) \ldots \pi(s_0)$
+
+\item Single consumption good (dollars) as numeraire
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item The \textbf{lifetime value} of individual $i$ is then defined as 
+\begin{align*}
+	V_i(s_0) = \sum_{t=0}^T \Big( \beta_i \Big)^t \sum_{s^t} \pi_t \Big( s^t \mid s_0 \Big) u_i \Big( c_t^i \Big( s^t \Big), n_t^i \Big(s^t \Big) \Big)
+\end{align*}
+
+\item \textit{Generalizations}: heterogeneous beliefs, general preferences (Epstein-Zin), recursive formulation, multiple commodities, intergenerational considerations
+
+\item Suppose $c_t^i(\cdot)$ and $l_t^i(\cdot)$ are functions of some primitive (policy) $\theta$
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Consider policy experiment $d \theta$, then $i$'s \textbf{private welfare assessment} is
+\begin{align*}
+	\frac{ d V_i(s_0) }{d \theta} = \sum_{t=0}^T \Big( \beta_i \Big)^t \sum_{s^t} \pi_t \Big( s^t \mid s_0 \Big)  \frac{\partial u_i (s^t)}{\partial c_t^i}  {\color{myorange} \frac{ d u_{i \mid c} (s^t)}{d \theta}}
+\end{align*}
+
+\vspace{4mm}
+{\color{myorange} Instantaneous consumption-equivalent effect} of policy $d \theta$ at date ${\color{myorange} t}$, history ${\color{myorange} s^t}$ on individual ${\color{myorange} i}$:
+\vspace*{0mm}
+\begin{align*}
+	{\color{myorange} \frac{ d u_{i \mid c} (s^t)}{d \theta}} \equiv \frac{ \frac{d u_i (c_t^i(s^t), n_t^i(s^t))}{d \theta} }{ \frac{\partial u_i (s^t)}{\partial c_t^i}}  = \underbrace{ \frac{d c_t^i (s^t)}{d \theta} + \frac{ \frac{\partial u_i (s^t)}{\partial n_t^i} }{ \frac{\partial u_i (s^t)}{\partial c_t^i}}  \frac{d n_t^i (s^t)}{d \theta} }_\text{in {\color{myorange} \textit{consumption} units}}
+\end{align*}
+
+\item Example: $d \theta$ gives $i$ marginal dollar at $s^t$, then
+\begin{equation*}
+	\frac{dV_i(s_0)}{d \theta} = (\beta_i)^t \pi_t(s^t \mid s_0) \frac{\partial u_i(s^t)}{\partial c_t^i}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\vspace{4mm}
+{\color{myblue} \textbf{Conventional benchmarks}}:
+\begin{itemize}
+	{\small
+		
+		\vspace{2mm}
+		\item Policy $d \theta$ is {\color{myorange} Pareto improving} if $\frac{ d V_i(s_0) }{d \theta} \geq 0$ for all $i$, strictly for some $i$
+		
+		\vspace{0mm}
+		\item {\color{myorange}Welfarist planners}: \hspace{0.5mm} SWF given by \hspace{0.2mm} $\mathcal{W}\left(\left\{ V_{i}\left(s_{0}\right)\right\} _{i\in I}\right)$
+		
+		\vspace{0.5mm}
+		{\footnotesize \textit{Utilitarian, Isoelastic, Rawlsian, Nash, Dictator, ...}}
+		
+		\vspace{0mm}
+		\item Policy $d \theta$ is desirable for a {\color{myorange} welfarist planner} if
+		\vspace*{-1mm}
+		\begin{equation*}
+			\int \lambda_{i}\left(s_{0}\right) \frac{ d V_i(s_0) }{d \theta} d i > 0 \, , \hspace{10mm}  \text{where} \hspace{2mm} \lambda_{i}\left(s_{0}\right)=\frac{\partial\mathcal{W}\left(\left\{ V_{i}\left(s_{0}\right)\right\} _{i\in I}\right)}{\partial V_{i}}
+		\end{equation*}
+		}
+\end{itemize}
+
+\vspace{6mm}
+{\color{navyblue} \textbf{Remarks}}:
+{\small
+\begin{itemize}
+\item All welfarist planners agree when individuals ex-ante ($s_0$) homogeneous
+
+\vspace{-1mm}
+\item How to make welfare assessments with \textit{heterogeneous} individuals?
+
+\vspace{-1mm}
+\item If you're interested, see D\'avila-Schaab (2022)
+\end{itemize}
+}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{4. Stochastic Growth Model}
+\begin{itemize}
+\item Discrete time: $t \in \{0, 1, \ldots, T\}$, where $T \leq \infty$
+
+\item At $t$, event $s_t \in \mathcal{S}$ is realized; history $s^t = (s_0, \ldots, s_t)$ has probability $\pi_t(s^t)$
+
+\item Representative household has preferences of paths of consumption $c_t(s^t)$ and labor $l_t(s^t)$ 
+\begin{equation*}
+	\sum_{t=0}^\infty \beta^t \sum_{s^t} \pi_t\Big(s^t \Big) u \Big( c_t(s^t), l_t(s^t) \Big)
+\end{equation*}
+
+\item Inada conditions $\lim_{c\to 0} u_c(c, l) = \lim_{l\to0} u_l (c, l) = \infty$
+
+\item At $t=0$, household endowed with $k_0$
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Technology, capital accumulation, and budget / resource constraint:
+\begin{align*}
+	c_t(s^t) + \iota_t(s^t) &\leq A_t(s^t) F(k_t(s^{t-1}), l_t(s^t)) \\
+	k_{t+1}(s^t) &= (1-\delta) k_t(s^{t-1}) + \iota_t(s^t)
+\end{align*}
+
+\item $F(\cdot)$ is twice continuously differentiable and constant returns to scale
+
+\item Source of uncertainty is stochastic process for TFP $A_t(s^t)$
+
+\item Standard regularity conditions on $F(\cdot)$ (see LS)
+\end{itemize}
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Lagrangian approach to sequence problem}
+\begin{itemize}
+\item Form Lagrangian 
+\begin{align*}
+	L = &\sum_{t=0}^\infty \sum_{s^t} \beta^t \pi_t(s^t) \bigg\{ u (c_t(s^t), l_t(s^t)) \\
+	&+ \lambda_t(s^t) \bigg[ A_t(s^t) F(k_t(s^{t-1}), l_t(s^t)) - c_t(s^t) + (1-\delta) k_t(s^{t-1})  - k_{t+1}(s^t) \bigg] \bigg\}
+\end{align*}
+
+\item FOCs for $c_t(s^t)$, $l_t(s^t)$ and $k_{t+1}(s^t)$ are given by
+\begin{align*}
+	u_c(s^t) &= \lambda_t(s^t) \\
+	u_l(s^t) &= u_c(s^t) A_t(s^t) F_n(s^t) \\
+	u_c(s^t) \pi_t(s^t) &= \beta \sum_{s^{t+1} \mid s^t} u_c(s^{t+1}) \pi_{t+1}(s^{t+1}) \bigg[ A_{t+1} (s^{t+1}) F_k (s^{t+1}) + (1-\delta) \bigg]
+\end{align*}
+
+\item Summation over $(s^{t+1} \mid s^t)$ is like conditional expectation (summing over histories that branch out from $s^t$)
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Recursive representation: dynamic programming}
+\begin{itemize}
+\item Assume time-homogeneous Markov process:
+\begin{equation*}
+	\mathbb E_t (A_{t+1}) = \mathbb E \Big[ A(s^{t+1}) \mid s^t \Big] = \mathbb E \Big[ A(s_{t+1}) \mid s_t \Big] = \sum_{s'} \pi(s' \mid s_t) A(s')
+\end{equation*}
+
+\item Drop $t$ subscripts: $s$ is current state, $s'$ denotes next period's draw
+
+\item Denote by $X_t$ the \textit{endogenous state} of the problem: for now, assume there is such a representation (Fabrice's part will be all about this)
+
+\item Intuitively: $s$ is the exogenous state and $X$ is the endogenous state 
+
+\item Bellman equation can be written: 
+\begin{equation*}
+	V(X, s) = \max_{c, l} \bigg\{ u(c, l) + \beta \sum_{s'} \pi(s' \mid s) V(X', s') \bigg\}
+\end{equation*}
+subject to $X' = g(X, c, l, s, s')$
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
