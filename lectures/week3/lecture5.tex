@@ -1,0 +1,451 @@
+\documentclass[10pt]{beamer}
+\usepackage{amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm,centernot}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+
+\usepackage{palatino}
+\usepackage{mathpazo} % or: {newpxtext,newpxmath}
+\renewcommand\familydefault{\rmdefault}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{bm}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows,shapes}
+\usepackage{caption, subcaption}
+
+%% BEAMER BUTTON
+%\setbeamertemplate{button}{\tikz
+%\node[
+%	inner xsep = 2pt, 
+%	draw = structure!0, 
+%	fill = myblue, 
+%	rounded corners = 4pt]{\color{white} \tiny\insertbuttontext};
+%}
+
+
+%% ALGORITHM 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{multimedia}
+
+%% THEME
+\usetheme[frametitleformat=regular,titleformat=regular]{Madrid}
+\setbeamerfont{frametitle}{shape=\normalfont}
+\setbeamerfont{title}{shape=\normalfont}
+
+%% PATHS
+\graphicspath{{./results/}}
+\makeatletter
+\def\input@path{{../draft/tables/latexData/}}
+\makeatother
+
+%% FIGURE ENVIRONMENT 
+\usepackage{booktabs,siunitx}
+
+\usepackage{pgfplots} 
+%\usepackage[outdir=./figures]{epstopdf}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{graphicx}
+
+\usepackage[absolute,overlay]{textpos}
+
+%% COLORS
+%% LINKS
+\definecolor{myred}{RGB}{163,32,45}
+\definecolor{navyblue}{rgb}{0.05,0.2,0.70}
+\definecolor{myblue}{RGB}{0,51,150}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{myref}{RGB}{160,160,160}
+\definecolor{shock}{RGB}{0, 125, 34}%{50, 168, 82}
+
+%% TRANSPARENCY
+
+\usepackage{transparent}
+
+%% BEAMER TEMPLATE
+\usetheme{Boadilla}
+
+\makeatother
+\setbeamertemplate{itemize items}{\large\raisebox{-0.25ex}{\textbullet}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.15ex}{--}}
+\setbeamertemplate{itemize subsubitem}{\Tiny\raisebox{0.7ex}{$\blacktriangleright$}}
+%\setbeamertemplate{itemize subsubitem}{\color{yellow}$\blacksquare$}
+
+\setbeamertemplate{enumerate item}[default]
+\setbeamertemplate{enumerate subitem}{\textbullet}
+\setbeamertemplate{footline}{}
+\makeatletter
+\setbeamertemplate{navigation symbols}{}
+
+
+%% FORMATTING AUTHORS
+%\usepackage{authblk}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{array}
+
+%% FRAME ITEMIZE SPACING
+\usepackage{xpatch}
+
+\xpatchcmd{\itemize}
+{\def\makelabel}
+{\setlength{\itemsep}{2.5ex}\def\makelabel}
+{}
+{}
+
+\xpatchcmd{\enumerate}
+{\def\makelabel}
+{\setlength{\itemsep}{10ex}\def\makelabel}
+{}
+{}
+
+%% APPENDIX 
+\usepackage{appendixnumberbeamer}
+
+
+%% TITLE AND OPENING
+\title{\large M2: Lecture 5}
+\subtitle{Dynamic Optimization in Continuous Time}
+\author{Andreas Schaab}
+\date{}
+
+
+\begin{document}
+\tikzstyle{every picture}+=[remember picture]
+%\everymath{\displaystyle}
+\thispagestyle{empty}
+\maketitle 
+\newpage
+
+\addtocounter{framenumber}{-1}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Outline of today's lecture}
+\addtocounter{framenumber}{-1}
+
+\begin{enumerate}
+\item Neoclassical growth model in continuous time
+\vspace{3mm}
+\item Calculus of variations
+\vspace{3mm}
+\item Optimal control theory
+\vspace{3mm}
+\item Example: 
+\end{enumerate}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{1. Neoclassical growth model in continuous time}
+\begin{itemize}
+	\item The lifetime value of the representative household is
+	\begin{equation*}
+		v(k_0) = \max_{\{ c_t \}_{t \geq 0} } \int_0^\infty e^{-\rho t} u(c_t) dt
+	\end{equation*}
+	subject to
+	\begin{align*}
+		\dot k_t &= F(k_t) - \delta k_t - c_t \\
+		k_0 &\text{ given },
+	\end{align*}
+	where $\dot x_t = \frac{d}{dt} x_t$, $\rho$ is the discount rate, $c_t$ is the rate of consumption, $u(\cdot)$ is instantaneous utility flow, and $\dot k_t$ is the rate of (net) capital accumulation
+	
+	\item No uncertainty for now
+	
+	\item This is the \textbf{sequence problem} in continuous time
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2. Calculus of variations}
+\begin{itemize}
+\item Resources:
+\begin{itemize}
+	\item LeVeque: Finite Difference Methods for Ordinary and Partial Differential Equations
+	
+	\item Kamien and Schwartz: Dynamic Optimization
+	
+	\item Gelfand and Fomin: Calculus of Variations
+\end{itemize}
+
+\item This dynamic optimization problem is associated with the Lagrangian
+\begin{equation*}
+	L = \int_0^\infty e^{-\rho t} \bigg[ u(c_t) + \mu_t \bigg( F(k_t) - \delta k_t - c_t - \dot k_t \bigg) \bigg] dt 
+\end{equation*}
+
+\item $\mu_t$ is the Lagrange multiplier on the capital accumulation ODE
+
+\item What do we do with $\dot k_t$??
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}		
+\item Integrate by parts:
+\begin{align*}
+	\int_0^\infty e^{-\rho t} \mu_t \dot k_t dt &= e^{-\rho t} \mu_t k_t \Big|_0^\infty - \int_0^\infty \frac{d}{dt} \bigg( e^{-\rho t} \mu_t \bigg) k_t dt \\
+	&= - \mu_0 k_0 + \int_0^\infty e^{-\rho t} \rho \mu_t k_t dt - \int_0^\infty e^{-\rho t} \dot \mu_t k_t dt
+\end{align*}
+
+\item Plugging into Lagrangian: 
+\begin{equation*}
+	L = \int_0^\infty e^{-\rho t} \bigg[ u(c_t) + \mu_t \bigg( F(k_t) - \delta k_t - c_t \bigg) - \rho \mu_t k_t + \dot \mu_t k_t \bigg] dt + \mu_0 k_0
+\end{equation*}
+
+\item What have we accomplished? 
+
+\item Notice $\mu_0 k_0$, this is crucial. What's intuition? 
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{equation*}
+	L = \int_0^\infty e^{-\rho t} \bigg[ u(c_t) + \mu_t \bigg( F(k_t) - \delta k_t - c_t \bigg) - \rho \mu_t k_t + \dot \mu_t k_t \bigg] dt + \mu_0 k_0
+\end{equation*}
+
+\begin{itemize}
+\item The planner optimizes over paths $\{ c_t \}$ and $\{ k_t \}$
+
+\item At an optimum, there cannot be \textit{any} small perturbation in these paths that the planner finds preferable
+
+\item Let $\{ c_t \}$ and $\{ k_t \}$ be \textit{candidate} optimal paths. Consider $\hat c_t = c_t + \alpha h_t^c$ and $\hat k_t = k_t + \alpha h_t^k$ for arbitrary functions $h_t^c$ and $h_t^k$
+\end{itemize}
+
+
+\vspace{-2mm}
+\begin{align*}
+	L(\alpha) = \int_0^\infty e^{-\rho t} \bigg[ &u(c_t + \alpha h_t^c) + \mu_t \bigg( F(k_t + \alpha h_t^k) - \delta k_t - \delta \alpha h_t^k - c_t - \alpha h_t^c \bigg) \\
+	&- \rho \mu_t (k_t + \alpha h_t^k) + \dot \mu_t (k_t + \alpha h_t^k) \bigg] dt + \mu_0 (k_0 + \alpha h_0^k)
+\end{align*}
+
+\vspace{-2mm}
+\begin{itemize}
+\item What about \textit{boundary conditions}? At $t=0$, capital stock is fixed ($k_0$ given) while consumption is free. So must have: $h_0^k = 0$ while $h_0^c$ is free
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+Necessary condition for optimality: $\frac{d}{d \alpha} L(0) = 0$
+\begin{align*}
+	L(\alpha) = \int_0^\infty e^{-\rho t} \bigg[ &u(c_t + \alpha h_t^c) + \mu_t \bigg( F(k_t + \alpha h_t^k) - \delta k_t - \delta \alpha h_t^k - c_t - \alpha h_t^c \bigg) \\
+	&- \rho \mu_t (k_t + \alpha h_t^k) + \dot \mu_t (k_t + \alpha h_t^k) \bigg] dt + \mu_0 (k_0 + \alpha h_0^k)
+\end{align*}
+
+Work this out yourselves (many times, in many applications!)
+\begin{align*}
+	\frac{d}{d \alpha}L(0) = \int_0^\infty e^{-\rho t} \bigg[ &u'(c_t) h_t^c + \mu_t \bigg( F'(k_t) h_t^k  - \delta h_t^k - h_t^c \bigg) \\
+	&- \rho \mu_t h_t^k + \dot \mu_t h_t^k \bigg] dt + \mu_0 h_0^k
+\end{align*}
+where $h_0^k = 0$ because $k_0$ is fixed
+
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+	
+Group terms: 
+\begin{align*}
+	\frac{d}{d \alpha}L(0) = \int_0^\infty e^{-\rho t} \bigg[ &\bigg( u'(c_t) - \mu_t \bigg) h_t^c + \bigg( \mu_t \Big( F'(k_t) - \delta \Big) - \rho \mu_t + \dot \mu_t \bigg) h_t^k \bigg] dt 
+\end{align*}
+
+\vspace{5mm}
+\textbf{Fundamental Theorem of the Calculus of Variations}: Since $h_t^c$ and $h_t^k$ were arbitrary, we must have \textit{pointwise}
+\begin{align*}
+	0 &= u'(c_t) - \mu_t \\
+	0 &= \mu_t \Big( F'(k_t) - \delta \Big) - \rho \mu_t + \dot \mu_t
+\end{align*}
+
+\vspace{5mm}
+\textbf{Proposition.} (Euler equation for marginal utility) 
+\begin{equation*}
+	\frac{\dot \mu_t}{\mu_t} = \frac{\dot u_{c, t}}{u_{c, t}} = \rho -  F'(k_t) + \delta = \rho - r_t 
+\end{equation*}
+	
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+\begin{itemize}
+\item We have now solved the neoclassical growth model in continuous time. Its solution is given by a system of two ODEs. 
+
+\item Suppose $u(c) = \log(c)$ and $F(k) = k^\alpha$, then:
+\begin{align*}
+	\frac{\dot c_t}{c_t} &= \alpha k_t^{\alpha - 1} - \delta - \rho \\
+	\dot k_t &= k_t^\alpha - \delta k_t - c_t
+\end{align*}
+with $k_0$ given
+
+\item Derive the consumption Euler equation yourselves!
+
+\item What are the boundary conditions? (Always ask about BCs!) 
+\begin{itemize}
+	\vspace{1mm}
+	\item Initial condition on capital: $k_0$ given
+	\vspace{-3mm}
+	\item Terminal condition on consumption : $\lim_{T \to \infty} c_T = c_\text{ss}$ 
+\end{itemize}
+
+\end{itemize}
+	
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{3. Optimal control theory}
+\begin{itemize}
+\item Optimal control theory emerged from the calculus of variations
+
+\item Applies to dynamic optimization problems in continuous time that feature (ordinary) differential equations as constraints
+
+\item Again the neoclassical growth model:
+\begin{equation*}
+	v(k_0) = \max_{\{ c_t \}_{t \geq 0} } \int_0^\infty e^{-\rho t} u(c_t) dt
+\end{equation*}
+subject to
+\begin{align*}
+	\dot k_t &= F(k_t) - \delta k_t - c_t,  \quad k_0 \text{ given}
+\end{align*}
+
+\item Three new terms: 
+\begin{itemize}
+\vspace{1mm}
+\item \textbf{State variable}: $k_t$
+
+\vspace{-2mm}
+\item \textbf{Control variable}: $c_t$
+
+\vspace{-2mm}
+\item \textbf{Hamiltonian}: $H(c_t, k_t, \mu_t) = u(c_t) + \mu_t \big[ F(k_t) - \delta k_t - c_t \big]$
+\end{itemize}
+\end{itemize}	
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item With Hamiltonian in hand, \textit{copy-paste} formula that we can always use:
+
+\vspace{1mm}
+\textbf{Optimality condition}: $\frac{\partial}{\partial c} H = 0$
+
+\vspace{2mm}
+\textbf{Multiplier condition}: $\rho \mu_t - \dot \mu_t = \frac{\partial}{\partial k} H$
+
+\vspace{2mm}
+\textbf{State condition}: $\dot k_t = \frac{\partial}{\partial \mu} H$
+
+\item This gives us the same equations that we derived using calc of variations:
+\begin{align*}
+	u'(c_t) &= \mu_t \\
+	\rho \mu_t - \dot \mu_t &= \mu_t (F'(k_t) - \delta) \\
+	\dot k_t &= F(k_t) - \delta k_t - c_t
+\end{align*}
+
+\item We again get system of Euler equation and capital accumulation:
+\begin{align*}
+	\dot c_t &= \frac{u'(c_t)}{u''(c_t)} \Big( \rho - F'(k_t) + \delta \Big) \\
+	\dot k_t &= F(k_t) - \delta k_t - c_t
+\end{align*}
+
+\end{itemize}
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{4. Simple example}
+\begin{itemize}
+	
+\item Credit: Kamien-Schwartz p. 129
+
+\item Simple problem: not much intuition, but illustrates mechanics
+\begin{equation*}
+	\max \int_0^1 (x + u) dt 
+\end{equation*}
+subject to $\dot x = 1 - u^2$ and initial condition $x_0 = 1$
+
+\item Step 1: form Hamiltonian $H(t, x, u, \lambda) = x + u + \lambda (1 - u^2)$
+
+\item Step 2: necessary conditions (note: no discounting here)
+\begin{align*}
+	0 &= H_u = 1 - 2 \lambda u \\
+	- \dot \lambda &= H_x = 1
+\end{align*}
+and terminal condition $\lambda_1 = 0$ (because $u_1$ is \textit{free})
+
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+
+\item Step 3: manipulate necessary conditions:
+\begin{align*}
+	\lambda &= 1 - t \\
+	u &= \frac{1}{2 \lambda}
+\end{align*}
+and therefore: $u = \frac{1}{2} (1 - t)$
+
+\item Finally: solve for all paths (control, state, multiplier)
+\begin{align*}
+	x_t &= t - \frac{1}{4} (1 - t) + \frac{5}{4} \\
+	\lambda_t &= 1 - t \\
+	u_t &= \frac{1}{2} (1 - t)
+\end{align*}
+
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
