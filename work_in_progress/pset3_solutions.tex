@@ -1,0 +1,579 @@
+\documentclass[11pt]{extarticle}
+\usepackage{fullpage,amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm}
+\usepackage[left=1in, bottom=1in, top=1in, right = 1in]{geometry}
+\usepackage{textcomp}
+\usepackage{mathpazo}
+\usepackage{mathrsfs}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+
+\usepackage{microtype}
+
+\usepackage{bm}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{ragged2e}
+
+\setlength{\parindent}{24pt}
+\setlength{\jot}{8pt}
+
+
+\usepackage[shortlabels]{enumitem}
+
+
+%% FOOTNOTES
+\usepackage[bottom]{footmisc}
+\usepackage{footnotebackref}
+
+
+%% FIGURE ENVIRONMENT
+%\graphicspath{{}}
+\usepackage[margin=15pt, font=small, labelfont={bf}, labelsep=period]{caption}
+\usepackage{subcaption}
+\captionsetup[figure]{name={Figure}, position=above}
+\usepackage{float}
+\usepackage{epstopdf}
+
+
+%% NEW COMMANDS
+\renewcommand{\baselinestretch}{1.25} 
+\renewcommand{\qedsymbol}{$\blacksquare$}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\indep}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\renewcommand{\b}{\begin}
+\newcommand{\e}{\end}
+
+%% NEWTHEOREM
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{cor}[thm]{Corollary}
+
+%% LINKS and COLORS
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\definecolor{myred}{RGB}{163, 32, 45}
+\hypersetup{
+	%backref=true,
+	%pagebackref=true,
+	colorlinks=true,
+	urlcolor=myred,
+	citecolor=myred, 
+	linktoc=all,     
+	linkcolor=myred,
+}
+
+%% TABLE OF CONTENTS
+\addto\captionsenglish{
+	\renewcommand{\contentsname}
+	{}% This removes the heading over the table of contents.
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%            END PREAMBLE           %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Dynamic Optimization: Problem Set \#3}
+
+\author{Andreas Schaab}
+
+\date{Fall, 2022}
+
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\setcounter{page}{0}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 1}
+
+
+Consider an economy populated by a continuum of infinitely lived households. There is no uncertainty in this economy for now. Households' preferences are given by
+\begin{equation*}
+	\max \int_0^\infty e^{-\rho t} u(c_t) dt.
+\end{equation*}
+That is, households discount future consumption $c_t$ at a rate $\rho$. Oftentimes, we will use constant relative risk aversion (CRRA) preferences, given by
+\begin{equation*}
+	u(c_t) = \frac{c_t^{1-\gamma}}{1-\gamma}.
+\end{equation*}
+A special form of these preferences are log preferences, 
+\begin{equation*}
+	u(c_t) = \log(c_t). 
+\end{equation*}
+
+
+
+The household's flow budget constraint in this economy is given by
+\begin{equation*}
+	\frac{d}{dt}(P_t a_t) = i_t (P_t a_t) - P_t c_t + P_t y_t,
+\end{equation*}
+where $P_t$ is the nominal price level, $c_t$ is real consumption expenditures, $a_t$ is the real wealth of the household and $\{y_t\}$ is an \textbf{exogenous} stream of income whose future path the household knows at any time point with certainty (because there is no uncertainty or risk for now).
+
+
+\vspace{5mm}
+\begin{enumerate}
+\item [(a)] Derive the budget constraint for real wealth, i.e., $\frac{d}{dt} a_t = \dot a_t$. Define the real interest rate as $r_t = i_t - \pi_t$, where $\pi_t \equiv \frac{\dot P_t}{P_t}$ is price inflation.
+\end{enumerate}
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} We can write the budget constraint directly in real terms. We have
+\begin{gather*}
+	\dot{P}_t a_t + P_t \dot{a}_t  = i_t P_t a_t - P_t c_t + P_t y_t \\
+	P_t \dot{a_t} = (i_t P_t - \dot{P}_t) a_t - P_t c_t + P_t y_t,
+\end{gather*}
+and finally, defining inflation as 
+\begin{equation}
+	\pi_t = \frac{\dot{P}_t}{P_t}
+\end{equation}
+and the real interest rate as 
+\begin{equation}
+	r_t = i_t - \pi_t
+\end{equation}
+we have
+\begin{equation}
+	\dot{a}_t = r_t a_t - c_t + y_t. 
+\end{equation}
+
+
+
+\vspace{5mm}
+\begin{enumerate}
+	\item [(b)] Derive the lifetime budget constraint
+\end{enumerate}
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} We can write the lifetime budget constraint here as 
+\begin{equation*}
+	\int_0^\infty e^{-R_t} c_t dt = a_0 + \int_0^\infty e^{-R_t} y_t dt,
+\end{equation*}
+where 
+\begin{equation*}
+	R_t = \int_0^t r(s) ds. 
+\end{equation*}
+This follows from time-integrating the flow budget constraint. 
+
+
+\vspace{5mm}
+\begin{enumerate}
+	\item [(c)] In class, we have so far always worked with the flow budget constraint as our constraint. And then we used either calculus of variations or optimal control theory. Alterantively, we can use the lifetime budget constraint as our constraint in this setting. (Why? When would you not be able to work with a lifetime budget constraint?) Set up the optimization problem with the lifetime budget constraint (i.e., write down the Lagrangian and introduce a multiplier) and take the first-order conditions. Solve for a consumption Euler equation. 
+\end{enumerate}
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} The Lagrangian would be
+\begin{equation*}
+	L(a_0) = \max \int_0^\infty e^{-\rho t} u(c_t) dt + \lambda \bigg[ a_0 + \int_0^\infty e^{-R_t} y_t dt - \int_0^\infty e^{-R_t} c_t dt \bigg].
+\end{equation*}
+Why is the Lagrange multiplier $\lambda$ not indexed by time $t$? Because this problem now only has one constraint (a lifetime constraint) rather than a sequence of constraints, one for each time period. 
+
+
+So now we can derive the Euler equation directly from this lifetime budget constraint. We have 
+\begin{gather*}
+	e^{-\rho t} u'(c_t) = \lambda e^{-R_t} \\
+	-\rho t + \log[u'(c_t)] = \log \lambda - R_t.
+\end{gather*}
+Taking derivatives, 
+\begin{equation*}
+	- \rho + \frac{ u''(c_t) \dot{c}_t}{u'(c_t)} = - r_t. 
+\end{equation*}	
+And so, by rearranging, we now have the Euler equation
+\begin{equation*}
+	\frac{\dot{c}_t}{c_t}= \frac{u'(c_t)}{ u''(c_t) c_t} \bigg(\rho - r_t \bigg).
+\end{equation*}
+
+Note: We could have alternatively directly worked with the budget constraint for \textit{nominal} wealth. This would give us
+\begin{gather*}
+	- \rho t + \log[u'(c_t)] = \log(\lambda) - I_t + \log (P_t) \\
+	- \rho + \frac{u''(c_t) \dot{c}_t}{u'(c_t)} = - i_t + \frac{\dot{P}_t}{P_t}. 
+\end{gather*}
+
+
+
+\vspace{5mm}
+\begin{enumerate}
+	\item [(d)] Consider the two functional forms given earlier for utility, $u(c_t)$. Plug them into the Euler equation and solve for the term $\frac{u'(c_t)}{ u''(c_t) c_t}$.
+\end{enumerate}
+
+
+
+\vspace{6mm}
+\noindent
+We will now derive the simple Euler equation using two different approaches. The first approach will be using optimal control theory, and the second approach will use dynamic programming.
+
+
+\vspace{5mm}
+\begin{enumerate}
+	\item [(e)] Write down the optimal control problem. Identify the state, control variables and multipliers.
+\end{enumerate}
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} Let's rewrite the household's optimization problem:
+\begin{equation*}
+	\max_{\{c_t\}_{t>0}} \int_0^\infty e^{-\rho t} u(c_t) dt
+\end{equation*}
+subject to 
+\begin{equation*}
+	\dot{a}_t = r a_t + y_t - c_t. 
+\end{equation*}
+We will distinguish between four different types of objects. 
+\begin{enumerate}[1.]
+	\item State variables: $\{ a_t\}$ (heuristically: variables for which we have a law of motion in the constraint set)
+	
+	\item Control variables: $\{c_t\}$ (heuristically: variables the agent chooses
+	
+	\item Exogenous variables: $\{y_t\}$ 
+
+	\item Costate / multiplier variables: $\{\mu_t\}$
+\end{enumerate}
+
+
+
+\vspace{5mm}
+\begin{enumerate}
+	\item [(f)] Write down the (current-value) Hamiltonian.
+\end{enumerate}
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} It is given by
+\begin{equation}
+	\mathcal{H}_t(a_t, c_t, y_t, \mu_t) = u(c_t) + \mu_t \bigg( r a_t + y_t - c_t \bigg). 
+\end{equation}
+The solution to the optimization problem is then characterized by three sets of equations:
+
+
+\vspace{5mm}
+\begin{enumerate}
+	\item [(g)] Find the FOCs. Rearrange and again find the consumption Euler equation. Confirm that it's the same equation we derived above. 
+\end{enumerate}
+
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} 
+\textbf{Optimality:} Differentiate the Hamiltonian with respect to the choice variable, and set it to $0$. So
+\begin{equation}\label{eq:optimality}
+	0 = \partial_{c_t} \mathcal{H} = u'(c_t) - \mu_t. 
+\end{equation}
+
+\vspace{3mm}
+\noindent
+\textbf{Multiplier:} Differentiate the Hamiltonian with respect to the state variables, and set that equal to 
+\begin{equation}\label{eq:multiplier}
+	\rho \mu_t - \dot{\mu}_t  = \partial_{a_t} \mathcal{H} = r  \mu_t.
+\end{equation}
+
+\vspace{3mm}
+\noindent
+\textbf{State equations:} Finally, there are the original laws of motion that characterize the economy. Here, we simply have the law of motion for wealth. That is, 
+\begin{equation}\label{eq:state}
+	\dot{a}_t = r a_t + y_t - c_t.
+\end{equation}
+
+\vspace{6mm}
+\noindent
+This now gives us a system of 3 equations, (\ref{eq:optimality}) through (\ref{eq:state}), in the 3 unknowns $\{c_t, a_t, \mu_t\}$. For convenience, let's again write down this system: 
+\begin{align*}
+	\mu_t &= u'(c_t) \\
+	(\rho - r) \mu_t &= \dot{\mu}_t \\
+	\dot{a}_t &= r a_t + y_t - c_t.
+\end{align*}
+All we have to do now is to combine the first (optimality) and second (multiplier) equations. This yields 
+\begin{align*}
+	(\rho - r) u'(c_t) &= u''(c_t) \dot{c}_t,
+\end{align*}
+where I used 
+\begin{equation*}
+	\dot{\mu}_t = \frac{d}{dt} \mu_t = \frac{d}{dt} u'(c_t) = \frac{d u'(c_t)}{d c_t} \frac{d c_t}{dt} = u''(c_t) \dot{c}_t. 
+\end{equation*}
+
+
+The complete solution to this model, giving us the allocation of consumption and assets over time, is thus given by
+\begin{align*}
+	\dot{c}_t  &= \frac{u'(c_t)}{u''(c_t)} (\rho - r) \\
+	\dot{a}_t &= r a_t + y_t - c_t,
+\end{align*}
+for a given exogenous stream of income $\{y_t\}$. 
+
+
+
+
+\vspace{10mm}
+\noindent
+In the last part of this problem, we will now use dynamic programming. The tools of dynamic programming allow us to recast this optimization problem \textbf{recursively}. Consider again the simple objective function of the household, given by
+\begin{equation*}
+	V_0 = \max_{\{c_t\}_{t>0}} \int_0^\infty e^{-\rho t} u(c_t) dt,
+\end{equation*}
+where we will call $V_t$ the \textbf{value function} of the household at time $t$. In general, the value function is a function of both the \textbf{state variable}, $a_t$, and time (because of the $e^{-\rho t}$ term). That is, $V = V(a_t, t)$. 
+
+\begin{enumerate}
+	\item [(h)] Why does the value function at time $t$ depend on wealth at time $t$, $a_t$? 
+\end{enumerate}
+
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} Because we take the path of income $\{ y_t \}$ as given. It may be time-varying. So the value function is not stationary. 
+
+
+\begin{enumerate}
+	\item [(i)] The Bellman equation of this problem is given by
+	\begin{equation*}
+		\rho V_t(a) = \partial_t V_t(a) \max_c \bigg\{ u(c) + \Big[ ra + y_t - c \Big] \partial_a V_t(a) \bigg\}
+	\end{equation*}
+	where $\partial_x$ denotes the partial derivative with respect to $x$. (i.1) Write down the FOC for consumption and interpret every term. (i.2) Why is there a $\partial_t V_t(a)$ term? Discuss whether this Bellman equation is stationary or not. (i.3) Plug the consumption policy function $c_t(a)$, which is now characterized by the FOC, back into the HJB. (i.4) Take the envelope condition by differentiating the Bellman with respect to $a$. (i.5) Use this to plug back into the FOC for $\partial_a V_t(a)$ and arrive at the consumption Euler equation.
+\end{enumerate}
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} Every step as in class. The only term that you have to watch out for is the $\partial_t V_t(a)$, but this doesn't change any of the steps. 
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 2: a finite resource}
+
+\textbf{Credit:} Pablo Kurlat (\url{https://sites.google.com/view/pkurlat/teaching})
+
+
+\vspace{5mm}
+\noindent
+Time is continuous and indexed by $t \in [0, \infty)$. At time $t=0$, there is a finite amount of oil $x_0$. Denote by $c_t$ the rate of oil consumption at date $t$. Oil is non-renewable, so the remaining amount of oil at date $t$ is 
+\begin{equation*}
+	x_t = x_0 - \int_0^t c_s ds.
+\end{equation*}
+A social planner (the government) wants to set the rate of oil consumption to maximize utility of the representative household given by
+\begin{equation*}
+	\int_0^\infty e^{- \rho t} u(c_t) dt,
+\end{equation*}
+with $u(c) = \log(c)$. 
+
+\begin{enumerate}
+\item Explain the expression for the remaining amount of oil: $x_t = x_0 - \int_0^t c_s ds$
+
+\item Set up the (present-value) Hamiltonian for this problem. List all state variables, control variables, and multipliers
+
+\item Write down the first-order necessary conditions. Solve for the optimal policy $c_t$
+
+\item Write down the HJB equation for this problem
+
+\item Guess and verify that the value function is $V(x) = a + b \log(x)$. Solve for $a$ and $b$
+\end{enumerate}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 3: heuristic proof of Ito's lemma}
+
+\textbf{Credit:} derivation follows David Laibson's class notes. For a more formal treatment, see especially Oksendal. 
+
+\vspace{5mm}
+\noindent
+Consider a pretty general Ito process
+\begin{equation*}
+	dx = a(x, t) dt + b(x, t) dB,
+\end{equation*}
+where $dB$ is standard Brownian motion. We call $a(\cdot)$ the drift and $b(\cdot)$ the diffusion coefficients. Suppose $x(t)$ describes the price of oil (or the stock market) over time. Let's denote by $V(x, t)$ the \textit{value} of an oil well (or a particular portfolio) at time $t$, given the value of oil. 
+
+We would like to characterize how $V(x, t)$ evolves over time. If there was no uncertainty, we would just take a time derivative and have $\frac{d}{dt} V(x, t) = \partial_t V(x, t) + \partial_x V(x, t) \frac{dx}{dt}$ by the chain rule. With uncertainty, we will have one additional term. 
+
+\begin{prop}
+	Ito's lemma: We have 
+	\begin{align*}
+		dV &= \partial_t V dt + \partial_x V dx + \frac{1}{2} \partial_{xx} V b(x, t)^2 dt \\
+		&= \bigg[ \partial_t V + \partial_x V a(x, t) + \frac{1}{2} \partial_{xx} V b(x, t)^2\bigg] dt + \partial_x V b(x, t) dB.
+	\end{align*}
+\end{prop}
+
+\vspace{5mm}
+\noindent
+We will now work through a heuristic proof.
+\begin{enumerate}
+\item Consider the function $V(x, t)$ and take a Taylor expansion.
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} We have 
+\begin{equation*}
+	dV = \partial_t V dt + \frac{1}{2} \partial_{tt} V (dt)^2 + \partial_x V dx + \frac{1}{2} \partial_{xx} V (dx)^2 + \partial_{tx} V dx dt + \text{ higher order terms}
+\end{equation*}
+
+
+\item Use the fact that terms of order $(dt)^\frac{3}{2}$ become really small in continuous time and ``drop out''. Show that $dx dt$ drops out. What are we left with
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} 
+\begin{equation*}
+	dV = \partial_t V dt + \partial_x V dx + \frac{1}{2} \partial_{xx} V (dx)^2 + \text{ higher order terms}
+\end{equation*}
+
+
+\item Plug in for $dx$ and $(dx)^2$ and arrive at Ito's lemma. Use $(dB)^2 \sim dt$.
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} 
+\begin{equation*}
+	dV = \partial_t V dt + \partial_x V \Big( a(x, t) dt + b(x, t) dB \Big) + \frac{1}{2} \partial_{xx} V b(x, t)^2 dt + \text{ higher order terms}
+\end{equation*}
+where we have
+\begin{align*}
+	(dx)^2 &= \Big( a(x, t) dt + b(x, t) dB \Big)^2 = a^2 (dt)^2 + b^2 (dB)^2 + 2 a b dt dB \\
+	&= b(x, t)^2 (dB)^2 \\
+	&= b(x, t)^2 dt.
+\end{align*}
+\end{enumerate}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 4: more practice with Ito's lemma}
+
+Take the setting from above where we try to model the value of an oil well. Suppose that 
+\begin{equation*}
+	V(x, t) = \log(x).
+\end{equation*}
+
+\begin{enumerate}
+\item Derive $V'(x)$ and $V''(x)$. Why do we need them? Why are we suddenly working with ordinary derivative terms rather than partial derivatives? 
+
+\item Suppose $dx = \alpha x dt + \sigma x dB$. Plug into Ito's Lemma.
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} We have
+\begin{align*}
+	dV &= \bigg[ V'(x) \alpha x + \frac{1}{2} V''(x) (\sigma x)^2 \bigg] dt + V'(x) \sigma x dB.
+\end{align*}
+
+
+\item Plug in for $V'(x)$ and $V''(x)$ and arrive at the solution for $dV$. 
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} We have
+\begin{align*}
+	dV &= (\alpha - \frac{1}{2} \sigma^2 ) dt + \sigma dB.
+\end{align*}
+
+
+\item Notice that $\mathbb E[ dV ] = \alpha - \frac{1}{2} \sigma^2$ because $\mathbb E (dB) = 0$. Interpret this. Why is the drift of $V$ less than $\alpha$ even thow the drift of the oil price is $\alpha$? (Hint: What is the important economic property of log preferences that we care about here?)
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} $V$ is concave. So we get a degree of risk aversion here.
+
+\end{enumerate}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 5: let's derive the HJB}
+
+Let $u(x, c, t)$ denote the instantaneous utility flow of an agent. $x$ is a state variable and $c$ is the control variable. For the state variable $x$, assume the same Ito process as above. In the continuous time limit with $\Delta t$ time steps, let $x' = x + \Delta x$ and $t' = t + \Delta t$.
+
+\begin{enumerate}
+\item Write down the discrete-time Bellman equation with $\Delta t$ time steps. Explain each term where a $\Delta t$ shows up. 
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} We have
+\begin{equation*}
+	V(x, t) = \max_c \bigg\{ u(x, c, t) \Delta t + \frac{1}{1 + \rho \Delta t} \mathbb E V(x', t') \bigg\}
+\end{equation*}
+
+
+\item Multiply by $(1 + \rho \Delta t)$ and simplify terms to arrive at an expression $\rho V \Delta t = \ldots$. 
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} We have
+\begin{align*}
+	(1 + \rho \Delta t) V(x, t) &= \max_c \bigg\{ (1 + \rho \Delta t) u(x, c, t) \Delta t + \mathbb E V(x', t') \bigg\} \\
+	\rho V(x, t) \Delta t &= \max_c \bigg\{ (1 + \rho \Delta t) u(x, c, t) \Delta t + \mathbb E \bigg[ V(x', t') - V(x, t) \bigg] \bigg\}
+\end{align*}
+
+
+\item Divide by $\Delta t$. Then take the continuous time limit $\Delta t \to dt$ and notice that $(dt)^2 \approx 0$. 
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} We have
+\begin{align*}
+	\rho V(x, t) &= \max_c \bigg\{ (1 + \rho \Delta t) u(x, c, t) + \mathbb E \bigg[ \frac{V(x', t') - V(x, t)}{\Delta t} \bigg] \bigg\} \\
+	\rho V(x, t) &= \max_c \bigg\{ u(x, c, t) + \mathbb E \bigg[ \frac{dV}{dt} \bigg] \bigg\}
+\end{align*}
+where the second line follows because $\Delta t \to 0$, and where we introduced
+\begin{equation*}
+	dV = V(x', t') - V(x, t).
+\end{equation*}
+
+
+\item Use Ito's lemma to rewrite $\mathbb E[dV]$ as 
+\begin{equation*}
+	\mathbb E[dV] = \bigg[ \partial_t V + \partial_x V a + \frac{1}{2} \partial_{xx} V b^2 \bigg] dt.
+\end{equation*}
+We have now derived the HJB equation with risk:
+\begin{equation*}
+		\rho V(x, t) = \max_c \bigg\{ u(x, c, t) + \partial_t V + a \partial_x V + \frac{b^2}{2} \partial_{xx} V \bigg\}
+\end{equation*}
+
+
+\vspace{5mm}
+\noindent
+\textbf{Solution.} Just plug into Ito's lemma and use the expression for $dx$. Notice that $\mathbb E(dB) = 0$. 
+
+\end{enumerate}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
