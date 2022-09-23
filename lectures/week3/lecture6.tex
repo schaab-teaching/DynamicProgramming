@@ -1,0 +1,394 @@
+\documentclass[10pt]{beamer}
+\usepackage{amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm,centernot}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+
+\usepackage{palatino}
+\usepackage{mathpazo} % or: {newpxtext,newpxmath}
+\renewcommand\familydefault{\rmdefault}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{bm}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows,shapes}
+\usepackage{caption, subcaption}
+
+%% BEAMER BUTTON
+%\setbeamertemplate{button}{\tikz
+%\node[
+%	inner xsep = 2pt, 
+%	draw = structure!0, 
+%	fill = myblue, 
+%	rounded corners = 4pt]{\color{white} \tiny\insertbuttontext};
+%}
+
+
+%% ALGORITHM 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{multimedia}
+
+%% THEME
+\usetheme[frametitleformat=regular,titleformat=regular]{Madrid}
+\setbeamerfont{frametitle}{shape=\normalfont}
+\setbeamerfont{title}{shape=\normalfont}
+
+%% PATHS
+\graphicspath{{./results/}}
+\makeatletter
+\def\input@path{{../draft/tables/latexData/}}
+\makeatother
+
+%% FIGURE ENVIRONMENT 
+\usepackage{booktabs,siunitx}
+
+\usepackage{pgfplots} 
+%\usepackage[outdir=./figures]{epstopdf}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{graphicx}
+
+\usepackage[absolute,overlay]{textpos}
+
+%% COLORS
+%% LINKS
+\definecolor{myred}{RGB}{163,32,45}
+\definecolor{navyblue}{rgb}{0.05,0.2,0.70}
+\definecolor{myblue}{RGB}{0,51,150}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{myref}{RGB}{160,160,160}
+\definecolor{shock}{RGB}{0, 125, 34}%{50, 168, 82}
+
+%% TRANSPARENCY
+
+\usepackage{transparent}
+
+%% BEAMER TEMPLATE
+\usetheme{Boadilla}
+
+\makeatother
+\setbeamertemplate{itemize items}{\large\raisebox{-0.25ex}{\textbullet}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.15ex}{--}}
+\setbeamertemplate{itemize subsubitem}{\Tiny\raisebox{0.7ex}{$\blacktriangleright$}}
+%\setbeamertemplate{itemize subsubitem}{\color{yellow}$\blacksquare$}
+
+\setbeamertemplate{enumerate item}[default]
+\setbeamertemplate{enumerate subitem}{\textbullet}
+\setbeamertemplate{footline}{}
+\makeatletter
+\setbeamertemplate{navigation symbols}{}
+
+
+% TODO:
+% Introduce page number but no other footer
+% Define appropriate itemize and enumerate environments so I never have to touch these
+% What about an automatic subitemize environment?
+% Write an external template that gets loaded on each for each lecture .tex
+
+
+%% FORMATTING AUTHORS
+%\usepackage{authblk}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{array}
+
+%% FRAME ITEMIZE SPACING
+\usepackage{xpatch}
+
+\xpatchcmd{\itemize}
+{\def\makelabel}
+{\setlength{\itemsep}{2.5ex}\def\makelabel}
+{}
+{}
+
+\xpatchcmd{\enumerate}
+{\def\makelabel}
+{\setlength{\itemsep}{10ex}\def\makelabel}
+{}
+{}
+
+%% APPENDIX 
+\usepackage{appendixnumberbeamer}
+
+
+%% TITLE AND OPENING
+\title{\large M2: Lecture 2}
+\subtitle{Continuous Time Dynamics}
+\author{Andreas Schaab}
+\date{}
+
+
+\begin{document}
+\tikzstyle{every picture}+=[remember picture]
+%\everymath{\displaystyle}
+\thispagestyle{empty}
+\maketitle 
+\newpage
+
+\addtocounter{framenumber}{-1}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Outline of today's lecture}
+\addtocounter{framenumber}{-1}
+
+\begin{enumerate}
+\item Hamilton-Jacobi-Bellman (HJB) equation
+\item First-order condition for consumption 
+\item Envelope condition and Euler equation
+\item Connection between calculus of variations / optimal control and HJBs
+\item Boundary conditions: no-borrowing in the wealth / capital dimension
+\item Example: solving the growth model in closed form 
+\end{enumerate}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{1. Hamilton-Jacobi-Bellman equation}
+\begin{itemize}
+\item Recall the neoclassical growth model in continuous time
+\begin{equation*}
+	v(k_0) = \max_{\{ c_t \}_{t \geq 0} } \int_0^\infty e^{-\rho t} u(c_t) dt
+\end{equation*}
+subject to
+\begin{align*}
+	\dot k_t &= F(k_t) - \delta k_t - c_t \\
+	k_0 &\text{ given },
+\end{align*}
+where $\dot x_t = \frac{d}{dt} x_t$, $\rho$ is the discount rate, $c_t$ is the rate of consumption, $u(\cdot)$ is instantaneous utility flow, and $\dot k_t$ is the rate of (net) capital accumulation
+
+\item No uncertainty for now %: $\{ r_t, y_t \}_{t \geq 0}$ are deterministic processes
+
+\item This is the infinite-horizon sequence problem, $t \in [0, \infty)$
+
+\item A function $v(\cdot)$ that solves this problem is a solution to the neoclassical growth model 
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item We will now work towards a recursive representation (good reference: Stokey textbook)
+
+\item The discrete-time Bellman equation would be
+\begin{equation*}
+	v(k_t) = \max_c \Big\{ u(c) \Delta t + \frac{1}{1 + \rho \Delta t} v(k_{t+\Delta}) \Big\}
+\end{equation*}
+where $\beta = \frac{1}{1+ \rho \Delta t}$
+
+\item Next: multiply by $1 + \rho \Delta t$ and note that $(\Delta t)^2 \approx 0$
+\begin{align*}
+	(1 + \rho \Delta t) v(k_t) &= \max_c \Big\{ (1 + \rho \Delta t) u(c) \Delta t + v(k_{t+\Delta}) \Big\} \\
+	\rho \Delta t v(k_t) &= \max_c \Big\{ u(c) \Delta t + v(k_{t+\Delta}) - v(k_t) \Big\} \\
+	\rho v(k_t) &= \max_c \Big\{ u(c) + \frac{v(k_{t+\Delta}) - v(k_t)}{\Delta t} \Big\}
+\end{align*}
+
+\item Finally: take limit $\Delta t \to 0$ and drop $t$ subscripts
+\begin{equation*}
+	\rho v(k) = \max_c \Big\{ u(c) + dv \Big\}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item We want to express $dv$ in terms of $v'(\cdot)$ and $dk$
+
+\item Different ways to think about this: chain rule, Ito's lemma (though no uncertainty here), generator
+
+\item Recall generator of (stochastic) process $dk_t$: For any $f(\cdot)$
+\begin{equation*}
+	\mathcal A f(k_t) = \lim_{\Delta t \to 0} \mathbb{E}_t \frac{ f(k_{t + \Delta t}) - f(k_t) }{\Delta t}
+\end{equation*}
+
+\item For simple ODE (no uncertainty) $dk = (F(k) - \delta k - c) dt$, we have
+\begin{equation*}
+	\mathcal A f(k) = (F(k) - \delta k - c) f'(k)
+\end{equation*}
+
+\item Therefore, we arrive at the \textbf{Hamilton-Jacobi-Bellman equation}:
+\begin{equation*}
+	\rho v(k) = \max_c \Big\{ u(c) + \Big( F(k) - \delta k - c \Big) v'(k) \Big\}
+\end{equation*}
+
+\item Notice: We conjectured a stationary value function (what does this mean?)
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2. First-order condition for consumption}
+\begin{itemize}
+\item HJB still has ``max'' operator:
+\begin{equation*}
+	\rho v(k) = \max_c \Big\{ u(c) + \Big( F(k) - \delta k - c \Big) v'(k) \Big\}
+\end{equation*}
+
+\item To get rid of this, we have to resolve optimal consumption choice
+
+\item First-order condition:
+\begin{equation*}
+	u'(c(k)) = v'(k)
+\end{equation*}
+
+\item This defines the \textbf{consumption policy function}
+
+\item We can now plug back in, obtaining an ODE in $v'(k)$
+\begin{equation*}
+	\rho v(k) = u(c(k)) + \Big( F(k) - \delta k - c(k) \Big) v'(k)
+\end{equation*}
+
+\item Why is this a “stationary” value function and ODE? What would a time-dependent ODE look like? When would we get one?
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{3. Envelope condition and Euler equation}
+\begin{itemize}
+\item We now derive the Euler equation in continuous time
+
+\item We start with the \textbf{HJB envelope condition}. Differentiating in $k$:
+\begin{align*}
+	\rho v'(k) &= u'(c(k)) c'(k) + \Big( F'(k) - \delta - c'(k) \Big) v'(k) + \Big( F(k) - \delta k - c(k) \Big) v''(k) \\
+	\rho v'(k) &= \Big( \underbrace{ F'(k) - \delta}_\text{interest rate $r$} \Big) v'(k) + \Big( F(k) - \delta k - c(k) \Big) v''(k) \\
+	(\rho - r) v'(k) &= \Big( F(k) - \delta k - c(k) \Big) v''(k)
+\end{align*}
+
+\item Next, we characterize \textit{process} $d v'(k)$. Using Ito's lemma (even though no uncertainty):
+\begin{align*}
+	d v'(k) &= v''(k) dk \\
+	&= v''(k) (F(k) - \delta k - c(k)) dt \\
+	&= (\rho - r) v'(k) dt.
+\end{align*}
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Recall first-order condition $u'(c(k)) = v'(k)$.
+
+\item The \textbf{Euler equation for marginal utility }is given by
+\begin{equation*}
+	\frac{d u'(c)}{u'(c)} = (\rho - r) dt.
+\end{equation*}
+
+\item To go from marginal utility to consumption, we use CRRA utility: $u(c) = \frac{1}{1-\gamma} c^{1-\gamma}$. $u'(c) = c^{-\gamma}$ is a function of \textit{process} $c$, so by Ito's lemma: 
+\begin{align*}
+	d u'(c) &= -\gamma c^{-\gamma - 1} dc \\
+	&= -\gamma u'(c) \frac{dc}{c} 
+\end{align*}
+
+\item Plugging in yields \textbf{Euler equation for consumption} in continuous time:
+\begin{equation*}
+	\frac{dc}{c} = \frac{r - \rho}{\gamma} dt
+\end{equation*}
+or (you'll often see this notation when no uncertainty): $\frac{\dot c}{c} = \frac{r - \rho}{\gamma}$
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{4. Connection between calculus of variations and HJB}
+\begin{itemize}
+\item 
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{5. Boundary conditions}
+\begin{itemize}
+\item This is really important: everything we have done so far is only valid in the \textbf{interior of the state space}
+
+\item What's the state space of a model? 
+
+\item For the neoclassical growth model without uncertainty, state space is $k \in [0, \infty)$, or 
+\begin{equation*}
+	\mathcal X = \Big\{ k \mid k \in [0, \bar k] \Big\}
+\end{equation*}
+where we impose an upper boundary $\bar k$ 
+
+\item This is like the domain of the function $v(k)$ that will be valid 
+
+\item We say $\partial \mathcal X = \{ 0, \bar k \}$ is the \textbf{boundary} of the state space and $\mathcal X \backslash \partial \mathcal X = (0, \bar k)$ is the \textbf{interior}
+
+\item As is the case \textbf{for all differential equations}, the HJB holds on the interior and we need \textbf{boundary conditions} to characterize $v(k)$ along the boundary 
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item What kind of differential equation is the HJB in this model?
+
+\item So how many boundary conditions do we need?
+
+\item In terms of the economics, what is the correct boundary condition? I.e., what is the correct economic behavior at the boundary $k \in \{0, \bar k\}$? 
+
+\item Nice intuition: 2 boundary inequalities do same job as 1 boundary equality
+
+\item We want households to not leave the state space, so we impose that they do not dissave / borrow as $k \to 0$ and save as $k \to \bar k$
+
+\item This implies: (why?)
+\begin{align*}
+	u'(c(0)) &\geq v'(0) \\
+	u'(c(\bar k)) &\leq v'(\bar k)
+\end{align*}
+
+\item  If households ever hit the boundaries (in the neoclassical growth model, this doesn't really happen), then consumption behavior is no longer determined by the Euler equations but rather by the boundary conditions 
+
+\end{itemize}
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{6. Example}
+\begin{itemize}
+\item Closed-form solution of neoclassical growth model
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
