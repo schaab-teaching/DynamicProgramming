@@ -1,0 +1,518 @@
+\documentclass[11pt]{extarticle}
+\usepackage{fullpage,amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm}
+\usepackage[left=1in, bottom=1in, top=1in, right = 1in]{geometry}
+\usepackage{textcomp}
+\usepackage{mathpazo}
+\usepackage{mathrsfs}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+
+\usepackage{microtype}
+
+\usepackage{bm}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{ragged2e}
+
+\setlength{\parindent}{24pt}
+\setlength{\jot}{8pt}
+
+
+\usepackage[shortlabels]{enumitem}
+
+
+%% FOOTNOTES
+\usepackage[bottom]{footmisc}
+\usepackage{footnotebackref}
+
+
+%% FIGURE ENVIRONMENT
+%\graphicspath{{}}
+\usepackage[margin=15pt, font=small, labelfont={bf}, labelsep=period]{caption}
+\usepackage{subcaption}
+\captionsetup[figure]{name={Figure}, position=above}
+\usepackage{float}
+\usepackage{epstopdf}
+
+
+%% NEW COMMANDS
+\renewcommand{\baselinestretch}{1.25} 
+\renewcommand{\qedsymbol}{$\blacksquare$}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\indep}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\renewcommand{\b}{\begin}
+\newcommand{\e}{\end}
+
+%% NEWTHEOREM
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{cor}[thm]{Corollary}
+
+%% LINKS and COLORS
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\definecolor{myred}{RGB}{163, 32, 45}
+\hypersetup{
+	%backref=true,
+	%pagebackref=true,
+	colorlinks=true,
+	urlcolor=myred,
+	citecolor=myred, 
+	linktoc=all,     
+	linkcolor=myred,
+}
+
+%% TABLE OF CONTENTS
+\addto\captionsenglish{
+	\renewcommand{\contentsname}
+	{}% This removes the heading over the table of contents.
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%            END PREAMBLE           %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Dynamic Optimization: Problem Set \#2}
+
+\author{Andreas Schaab}
+
+\date{Fall, 2022}
+
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\setcounter{page}{0}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 1: proof of contraction mapping theorem}
+
+\textbf{Credit:} David Laibson
+
+
+\vspace{5mm}
+\noindent
+In class, we defined the Bellman operator $B$, which operates on functions $w$, and is defined by
+\begin{equation*}
+	(Bw)(x) \equiv \max_{x' \in \Gamma(x)} \bigg\{ F(x, x') + \beta w(x') \bigg\}
+\end{equation*}
+for all $x \in \mathcal X$ in the state space, where $\Gamma(x)$ is some constraint set---in our case, this was the budget constraint. The definition is expressed pointwise, but it applies to all possible values in the state space. We call $B$ an operator because it maps a function $w$ to a new function $Bw$. So both $w$ and $Bw$ map $\mathcal X$ into $\mathbb R$. Operator $B$ maps \textit{functions} and is therefore called a functional operator. In class, we showed that the solution of the Bellman equation---the value function---is a fixed point of the Bellman operator.
+
+What does it mean to \textit{iterate} $B^n w$?
+\begin{align*}
+	(Bw) (x) &= \max_{x' \in \Gamma(x)} \bigg\{ F(x, x') + \beta w(x') \bigg\} \\
+	(B(Bw)) (x) &= \max_{x' \in \Gamma(x)} \bigg\{ F(x, x') + \beta (Bw)(x') \bigg\} \\
+	(B(B^2w)) (x) &= \max_{x' \in \Gamma(x)} \bigg\{ F(x, x') + \beta (B^2w)(x') \bigg\} \\
+	\vdots & \vdots  \\
+	(B(B^nw)) (x) &= \max_{x' \in \Gamma(x)} \bigg\{ F(x, x') + \beta (B^nw)(x') \bigg\}.
+\end{align*}
+What does it mean for functions to converge to a limiting function? Let $v_0$ be some guess for the value function, then convergence would mean
+\begin{equation*}
+	\lim_{n \to \infty} B^n v_0 = v.
+\end{equation*}
+And why might $B^n w$ converge as $n \to \infty$? The answer is that $B$ is a \textit{contraction mapping}.
+
+
+\vspace{5mm}
+\begin{defn}
+	
+	Let $(S, d)$ be a metric space and $B: S \to S$ be a function that maps $S$ into intself. $B$ is a contraction mapping if for some $\beta \in (0, 1)$, $d(Bf, Bg) \leq \beta d(f, g)$, for any two functions $f$ and $g$.\footnote{
+		A metric $d$ is a way of representing the distance between two functions, or two members of (metric) space $S$. One example: the supremum pointwise gap.
+	}
+	
+\end{defn}
+
+
+\vspace{5mm}
+\noindent
+Intuitively, $B$ is a contraction mapping if applying the operator $B$ to any two functions $f$ and $g$ (that are not the same) moves them strictly closer together. $Bf$ and $Bg$ are strictly closer together than $f$ and $g$. We can now state the contraction mapping theorem. 
+
+
+\vspace{5mm}
+\begin{thm}
+	
+
+	If $(S, d)$ is a complete metric space and $B: S \to S$ is a contraction mapping, then: 
+	\begin{enumerate}[(i)]
+		\item $B$ has exactly one fixed point $v \in S$
+		\item For any $v_0 \in S$, $\lim_{n \to \infty} B^n v_0 = v$
+		\item $B^n v_0$ has an exponential convergence rate at least as great as $- \ln(\beta)$
+	\end{enumerate}
+	
+\end{thm}
+
+
+\vspace{10mm}
+\noindent
+In this problem, we will illustrate and prove the contraction mapping theorem.
+
+\begin{enumerate}[(a)]
+\item Consider the contraction mapping $(Bw)(x) \equiv h(x) + \alpha w(x)$ with $\alpha \in (0, 1)$. Iteratively apply the operator $B$ and show that 
+\begin{equation*}
+	\lim_{n \to \infty} (B^n f)(x) = \frac{h(x)}{1-\alpha}
+\end{equation*}
+Argue that this shows that the fixed point of this operator $B$ is consequently the function $v(x) = \frac{1}{1-\alpha} h(x)$. Show that $(Bv)(x) = v(x)$. 
+
+
+\item Now we will prove the contraction mapping theorem in 3 steps (we will not prove the convergence rate). Show that $\{ B^n f_0\}_{n=0}^\infty$ is a Cauchy sequence. (Cauchy sequence definition: Fix any $\epsilon > 0$. Then there exists $N$ such that $d(B^m f_0, B^n f_0) \leq \epsilon$ for all $m, n \leq N$.) 
+
+
+\item Show that the limit point $v$ is a fixed point of $B$. 
+
+\item Show that only one fixed point exists. 
+
+
+\end{enumerate}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 2: Blackwell's sufficiency conditions}
+
+\textbf{Credit:} David Laibson
+
+
+\vspace{5mm}
+\noindent
+We now show that there are in fact sufficient conditions for an operator to be contraction mapping.
+
+\begin{thm}
+	
+	(Blackwell's sufficient conditions) Let $X \subset \mathbb R^l$ and let $C(X)$ be a space of bounded functions $f:X \to \mathbb R$, with the sup-metric. Let $B : C(X) \to C(X)$ be an operator satisfying two conditions:
+	\begin{enumerate}[1.]
+		\item monotonicity: if $f,g\in C(X)$ and $f(x)\leq g(x)$ $\forall x\in X$,%
+		\newline
+		then $(Bf)(x)\leq (Bg)(x),$ $\forall x\in X$\newline
+		
+		\item discounting: there exists some $\delta \in (0,1)$ such that 
+		\[
+		\lbrack B(f+a)](x)\leq (Bf)(x)+\delta a\text{ \ }\forall \text{ }f\in C(X),\
+		a\geq 0,\ x\in X. 
+		\]%
+	\end{enumerate}
+	
+	\noindent
+	Then, $B$ is a contraction with modulus $\delta$.
+\end{thm}
+
+\noindent
+Note that $a$ is a constant and $(f+a)$ is the function generated by adding $a$ to the function $f$. Blackwell's conditions are sufficient but not necessary for $B$ to be a contraction.
+
+\vspace{10mm}
+\noindent
+In this problem, we will prove these sufficient conditions.
+\begin{enumerate}[(a)]
+\item Let $d$ be the sup-metric and show that, for any $f, g \in C(X)$, we have $f(x) \leq g(x) + d(f, g)$ for all $x$
+
+
+
+\item Use monotonicity and discounting to show that, for any $f, g \in C(X)$, we have $(Bf)(x) \leq (Bg)(x) + \delta d(f, g)$ and $(Bg)(x) \leq (Bf)(x) + \delta d(f, g)$. 
+
+
+\item Combine these to show that $d(Bf, Bg) \leq \delta d(f, g)$. 
+
+
+\end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 3: example of Blackwell's conditions}
+
+\textbf{Credit:} David Laibson
+
+\vspace{5mm}
+\noindent
+We will now work out a simple example to illustrate these sufficient conditions. In particular, consider the Bellman operator in a consumption problem (with stochastic asset returns, stochastic labor income, and a liquidity constraint). 
+\begin{equation*}
+	(Bf)(x)=\sup_{c\in \lbrack 0,x]}\left\{ u(c)+\delta Ef(\tilde{R}_{+1}(x-c)+%
+	\tilde{y}_{+1})\right\} \text{ \ }\forall x\text{\ } 
+\end{equation*}
+
+\vspace{10mm}
+\noindent
+\begin{enumerate}
+\item Check the first of Blackwell's conditions: monotonicity
+
+
+\item Check the second of Blackwell's conditions: discounting
+
+
+
+\end{enumerate}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 4: growth model}
+
+\textbf{Credit:} David Laibson (\url{https://projects.iq.harvard.edu/econ2010c/problem-sets-david-laibson})
+
+\vspace{5mm}
+\noindent
+In class, we studied the growth model with deterministic dynamics. Consider the sequence of the problem with $\ln$ utility and full depreciation
+\begin{equation*}
+	V(k_0) = \max_{ \{ k_{t+1} \}_{t=0}^\infty} \sum_{t=0}^\infty \beta^t \ln (k_t^\alpha - k_{t+1})
+\end{equation*}
+where $0 < \alpha < 1$, subject to the constraint
+\begin{equation*}
+	k_{t+1} \in [0, k_t^\alpha] \equiv \Gamma(k_t).
+\end{equation*}
+Think of $k_t^\alpha$ as the resources you have available, and so the most you would be allowed to save is $k_t^\alpha$. We represent this constraint by the \textit{feasibility set} $\Gamma(k_t)$. (This is the more general notation you will find in Stokey-Lucas, for example.)
+
+Also consider the associated Bellman equation 
+\begin{equation*}
+	V(k) = \max_{k' \in \Gamma(k)} \bigg\{ \ln (k^\alpha - k') + \beta V(k') \bigg\}.
+\end{equation*}
+
+a. Consider the Bellman (functional) operator, $T$, defined by
+$$
+(T f)(k)=\sup _{y \in \Gamma(k)} \ln \left(k^\alpha-y\right)+\beta f(y) .
+$$
+Let $\hat{V}(k)=\frac{\alpha \ln (k)}{1-\alpha \beta}$. Show that
+$$
+\left(T^n \hat{V}\right)(k)=\frac{1-\beta^n}{1-\beta}\left[\ln (1-\alpha \beta)+\frac{\alpha \beta}{1-\alpha \beta} \ln (\alpha \beta)\right]+\frac{\alpha \ln (k)}{1-\alpha \beta} .
+$$
+To prove this you'll need to show that $y=\alpha \beta k^\alpha$, and substitute this expression into the functional operator. Let,
+$$
+\lim _{n \rightarrow \infty}\left(T^n \hat{V}\right)(k)=V(k)
+$$
+Confirm that $V(k)$ is a solution to the the functional equation. You have now solved the functional equation by iterating the operator $T$ on a starting guess.
+
+b. Try to solve the Bellman Equation by "guessing" a solution. Specifically, start by guessing that the form of the solution is
+$$
+V(k)=\psi+\phi \ln (k) .
+$$
+We will solve for the coefficients $\psi$ and $\phi$, and show that $v(k)$ solves the functional equation. Rewrite the functional equation substituting in $V(k)=\psi+\phi \ln (k)$. Use the Envelope Theorem (ET) and the First Order Condition (FOC) to show
+$$
+\phi=\frac{\alpha}{1-\alpha \beta} .
+$$
+Now use the FOC to show
+$$
+y=\alpha \beta k^\alpha .
+$$
+Finally, show that the functional equation is satisfied at all feasible values of $k_0$ if
+$$
+\psi=\frac{1}{1-\beta}\left[\ln (1-\alpha \beta)+\frac{\alpha \beta}{1-\alpha \beta} \ln (\alpha \beta)\right] .
+$$
+You have now solved the functional equation by using the guess and check method.
+
+
+c. We have derived the policy function:
+$$
+y=g(k)=\alpha \beta k^\alpha .
+$$
+Derive the optimal sequence of state variables $\left\{k_t^*\right\}_0^{\infty}$ which would be generated by this policy function. Show that
+$$
+v\left(k_0\right)=\sum_{t=0}^{\infty} \beta^t \ln \left(\left[\left(k_t^*\right)^\alpha-k_{t+1}^*\right],\right.
+$$
+thereby confirming that this policy function is optimal. \\
+
+d. (Optional problem for students who want to be challenged and have an interest in growth theory.) Show that the steady state capital stock is given by:
+$$
+\alpha \beta k^{\alpha-1}=1
+$$
+
+
+Now, linearize the equilibrium policy function in a neighborhood of the steady state. You should find:
+$$
+\frac{k_{t+1}-k_{\text {steadystate }}}{k_t-k_{\text {steadystate }}}=e^{-(-\ln \alpha)}
+$$
+implying that the convergence rate is $-\ln (\alpha)$. Explain why $\alpha$ is the capital share in this economy. Most economists think that the capital share lies somewhere between $0.3$ (the capital share for physical capital), and $0.7$ (the capital share for physical and human capital). What do these capital shares imply for the convergence rate? In the data, the measured convergence rate tends to be below 0.05. Why aren't we matching the data? (Hint: think about the depreciation rate which has been implicitly assumed in the model above. What depreciation rate did we implicitly assume and why does it speed up the rate of convergence?)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 5: equity model}
+
+\textbf{Credit:} David Laibson (\url{https://projects.iq.harvard.edu/econ2010c/problem-sets-david-laibson})
+
+\vspace{5mm}
+\noindent
+Assume that a consumer with only equity wealth must choose period by period consumption in a discrete-time dynamic optimization problem. Specifically, consider the sequence problem:
+\begin{equation*}
+	V(x_0) = \max_{ \{ c_t \}_{t=0}^\infty } \mathbb E_0 \sum_{t=0}^\infty e^{- \rho t} u(c_t)
+\end{equation*}
+subject to the constraints
+\begin{equation*}
+	x_{t+1} = e^{r + \sigma u_t - \frac{\sigma^2}{2}} (x_t - c_t)
+\end{equation*}
+where $u_t$ is iid and $u_t \sim \mathcal N(0, 1)$. There is a feasibility constraint $c_t \in [0, x_t]$. And we assume an endowment $x_0 > 0$. Here, $x_t$ represents equity wealth at period $t$ and $c_t$ is consumption in period $t$. The consumer has discount rate $\rho$. The consumer can only invest in a risky asset with expected return $e^r = \mathbb E e^{r + \sigma u_t - \frac{\sigma^2}{2}}$. And we assume CRRA preferences with $u(c) = \frac{1}{1-\gamma} c^{1-\gamma}$, with $\gamma \in [0, \infty]$. We call this \textit{constant} relative risk aversion because the relative risk aversion coefficient
+\begin{equation*}
+	- \frac{c u''(c)}{u'(c)} = \gamma
+\end{equation*}
+is constant. 
+
+The associated Bellman equation is 
+\begin{equation*}
+	V(x) = \max_{x' \in [0, x]} \bigg\{ u(x - x') + \mathbb E e^{- \rho} V \bigg( e^{r + \sigma u - \frac{\sigma^2}{2}} x' \bigg) \bigg\}.
+\end{equation*}
+
+\begin{enumerate}[(a)]
+\item Explain all terms in this Bellman equation. Why is $u$ not a state variable, i.e., why don't we have $V(x, u)$?
+
+
+\item Now guess that the value function takes the special form
+$$
+V(x)=\phi \frac{x^{1-\gamma}}{1-\gamma} .
+$$
+Note the close similarity between this functional form and the functional form of the utility function. Assuming that the value function guess is correct, use the Envelope Theorem to derive the consumption function:
+$$
+c=\phi^{-\frac{1}{\gamma}} x .
+$$
+Now verify that the Bellman Equation is satisfied for a particular value of $\phi$. Do not solve for $\phi$ (it's a very nasty expression). Instead, show that
+$$
+\ln \left(1-\phi^{-\frac{1}{\gamma}}\right)=\frac{1}{\gamma}[(1-\gamma) r-\rho]+\frac{1}{2}(\gamma-1) \sigma^2
+$$
+
+
+\item Now consider the natural $\log$ of the ratio of $c_{t+1}$ and $c_t$. Show that
+$$
+E \ln \left(\frac{c_{t+1}}{c_t}\right)=\frac{1}{\gamma}(r-\rho)+\frac{\gamma}{2} \sigma^2-\sigma^2 .
+$$
+\item Interpret the previous equation for the certainty case $\sigma=0$. Note that $\ln \left(\frac{c_{t+1}}{c_t}\right)=\Delta \ln c_{t+1}$ is the growth rate of consumption. Explain why $\Delta \ln c_{t+1}$ increases in $r$ and decreases in $\rho$. Why does the coefficient of relative risk aversion, $\gamma$, appear in the denominator of the expression? Why does the coefficient of relative risk aversion regulate the consumer's willingness to substitute consumption between periods?
+\item (Very interesting optional question for students who want to be challenged and are interested in finance.) Suppose a bond with a sure payoff were added to this economy. Assume the bond pays off $\varepsilon$ dollars in perpetuity, where $\varepsilon$ is small. What will the equilibrium interest rate be on this bond? For starters, how will the bond interest rate compare to the interest rate on stocks? Can you derive a closed form expression for the bond interest rate? What is the marginal utility of a marginal sure payoff next period? How much marginal consumption would you give up today to get such a sure marginal payoff tomorrow. We'll come back to this question later in the course. But, for those of you who want a challenge, think about the bond problem now.
+
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 6: some true / false questions}
+
+\textbf{Credit:} David Laibson (\url{https://projects.iq.harvard.edu/econ2010c/problem-sets-david-laibson})
+
+\vspace{5mm}
+\noindent
+Discuss whether the following are true / false / uncertain:
+\begin{enumerate}
+\item All supremium / max sequence problems have a unique value function solution. (True: Why?) 
+
+\item If the flow payoff / instantaneous utility function is bounded, then there exists a unique bounded solution to the Bellman equation. 
+
+\item In the growth problem above, for any $\epsilon > 0$, there exists a value $T$ such taht $k_t < 1 + \epsilon$ for all $t > T$. (True: Why?)
+
+\item In the growth problem above, we have $\lim_{n \to \infty} \beta^n V(k_n) \leq 0$. 
+\end{enumerate}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 7: optimal stopping}
+
+\textbf{Credit:} David Laibson (\url{https://projects.iq.harvard.edu/econ2010c/problem-sets-david-laibson})
+
+\vspace{5mm}
+\noindent
+Consider the optimal stopping application from class: Each period $t = 0, 1, \ldots$ the consumer draws a job offer from a uniform distribution with support in the unit interval: $x \sim \text{unif}[0, 1]$. The consumer can either accept the offer and realize net present value $x$, or the consumer can wait another period and draw again. Once you accept an offer the game ends. Waiting to accept an offer is costly because the value of the remaining offers declines at rate $\rho = - \ln(\beta)$ between periods. The Bellman equation for this problem is:
+\begin{equation*}
+	V(x) = \max \bigg\{ x, \; \beta \mathbb E V(x') \bigg\}
+\end{equation*}
+where $x'$ is your next draw, which is a random variable.
+
+
+\vspace{5mm}
+\begin{enumerate}
+\item Explain the intuition behind this Bellman equation. Explain every term.
+
+\item Consider the associated functional operator:
+\begin{equation*}
+	(Bw)(x) = \max \bigg\{ x, \; \beta \mathbb E w(x') \bigg\}
+\end{equation*}
+for all $x$. Using Blackwell's conditions, show that this Bellman operator is a contraction mapping. 
+
+\item What does the contraction mapping property imply about $\lim_{n \to \infty} B^n w$, where $w$ is \textit{any} arbitrary function? 
+
+\item Suppose we make a (bad?) guess $w(x) = 1$ for all $x$. Analytically iterate on $B^n w$ and show that 
+\begin{equation*}
+	\lim_{n \to \infty} (B^n w) (x) = V(x) = \begin{cases}
+		x^* & \text { if } x \leq x^* \\
+		x & \text { if } x > x^*
+	\end{cases}
+\end{equation*}
+where
+\begin{equation*}
+	x^* = e^\rho \bigg( 1 - \Big[ 1 - e^{- 2 \rho} \Big]^\frac{1}{2} \bigg).
+\end{equation*}
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 8: optimal investment}
+
+\textbf{Credit:} David Laibson (\url{https://projects.iq.harvard.edu/econ2010c/problem-sets-david-laibson})
+
+\vspace{5mm}
+\noindent
+Every period you draw a cost $c$ distributed uniformly between $0$ and $1$ for completing a project. If you undertake the project, you pay $c$, and complete the project with probability $1-p$. Each period in which the project remains uncompleted, you pay a late fee of $l$. The game continues until you complete the project.
+
+\vspace{5mm}
+\begin{enumerate}[(a)]
+\item Write down the Bellman Equation assuming no discounting. Why is it ok to assume no discounting in this problem?
+
+\item Derive the optimal threshold: $c^* = \sqrt{2l}$. Explain intuitively, why this threshold does not depend on the probability of failing to complete the project, $p$. 
+
+\item How would these results change if we added discounting to the framework? Redo steps a and b, assuming that the agent discounts the future with discount factor $0 < \beta < 1$ and assuming that $p = 0$. Show that the optimal threshold is given by
+\begin{equation*}
+	c^* = \frac{1}{\beta} \bigg( \beta - 1 + \sqrt{ (1-\beta)^2 + 2 \beta^2 l } \bigg)
+\end{equation*}
+
+\item When $0 < \beta < 1$, is the optimal value of $c^*$ still independent of the value of $p$? If not, how does $c^*$ qualitatively vary with $p$? Provide an intuitive argument.
+
+\item Take the perspective of an agent who has not yet observed the current period's draw of $c$. Prove that the expected delay until completion is given by:
+\begin{equation*}
+	\frac{1}{c^*(1-p)} - 1
+\end{equation*}
+
+\end{enumerate}
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
