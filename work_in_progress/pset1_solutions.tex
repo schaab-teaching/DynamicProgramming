@@ -153,10 +153,10 @@ where $\sim$ reads ``is distributed according to''. \\
 \end{equation*}
 Compute the probability of being unemployed $n$ quarters after being employed. Take $n \to \infty$ and find the stationary distribution of this Markov chain. Find the stationary distribution by alternatively plugging into the above equation for $\psi^*$. \\
 \textcolor{blue}{As a summary (Check the link form quantecon for more detail): A Markov Chain is irreducible if all states communicate, that is there is a positive probability of going from any y to any x (possibly in many steps). Then an irreducible MC converges to a stationary (or ergodic) distribution. So if we take $n\rightarrow \infty$ the marginal distribution converges to the stationary: $\psi_{t+n}\rightarrow \psi^*$.\\
-To find the stationary distribution we need to solve the equation above. Note $\psi =0$ is a solution but it's not a probability distribution. Let $\psi^* = (\psi^*(y^U),1-\psi^*(y^U))$, then solving the equation we get $$\psi^*(y^U)=\frac{\beta}{\alpha + \beta }$$
+To find the stationary distribution we need to solve the equation above. Note $\psi =0$ is a solution but it's not a probability distribution. Let $\psi^* = (\psi^*(y^U),1-\psi^*(y^U))$, then solving the equation we get $$\psi^*(y^U)=\frac{1-\beta}{2-\alpha - \beta }$$
 Economic intuition: Spend more time unemployed (or unemployment rate higher) if the probability of finding a job is lower (the job finding rate) or the probability of losing job is higher (the separation rate). }
 \item Suppose $y_0 = y^H$. Solve for $\mathbb E_0 (y_t)$. Use the law of total / iterated expectation to relate expectation to probabilities. Then use the formulas for marginal (probability) distributions derived above. 
-\textcolor{blue}{$$\mathbb E_0 (y_t)=P(y_t=y^U|y_0=y^E)y^U+P(y_t=y^E|y_0=y^E)y^E $$ And we get the transition probabilities from $P^t$ (REVISAR)}
+\textcolor{blue}{$$\mathbb E_0 (y_t)=P(y_t=y^U|y_0=y^E)y^U+P(y_t=y^E|y_0=y^E)y^E $$ And we get the transition probabilities from $P^t$ }
 \end{enumerate}
 
 
@@ -190,7 +190,7 @@ for $t > s$. \\
 \textcolor{blue}{We have $c=\frac{x_s}{\rho^s}$ for any s, substitute in the general solution from (a) and we get the result.}
 
 \item Prove that this difference equation satisfies the Markov property. \\
-\textcolor{blue}{We defined Markov property for stochastic processes.  But here we have something similar in that $\{x_t\}_{t>s}=f(x_s,x_{s-1},...)=f(x_s)$???}
+\textcolor{blue}{Note we can think of an equation in difference as a stochastic process where the noise term is always zero. So $\mathbb P (x_{t+1}=\rho x|x_t=x)=1$. Because $x_{t+1}$ is a function of $x_t$ but not of $(x_{t-1},x_{t-2}...)$ this difference equation satisfies the Markov property.}
 \end{enumerate}
 
 
