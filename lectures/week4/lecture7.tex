@@ -1,0 +1,463 @@
+\documentclass[10pt]{beamer}
+\usepackage{amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm,centernot}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+
+\usepackage{palatino}
+\usepackage{mathpazo} % or: {newpxtext,newpxmath}
+\renewcommand\familydefault{\rmdefault}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{bm}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows,shapes}
+\usepackage{caption, subcaption}
+
+%% BEAMER BUTTON
+%\setbeamertemplate{button}{\tikz
+%\node[
+%	inner xsep = 2pt, 
+%	draw = structure!0, 
+%	fill = myblue, 
+%	rounded corners = 4pt]{\color{white} \tiny\insertbuttontext};
+%}
+
+
+%% ALGORITHM 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{multimedia}
+
+%% THEME
+\usetheme[frametitleformat=regular,titleformat=regular]{Madrid}
+\setbeamerfont{frametitle}{shape=\normalfont}
+\setbeamerfont{title}{shape=\normalfont}
+
+%% PATHS
+\graphicspath{{./results/}}
+\makeatletter
+\def\input@path{{../draft/tables/latexData/}}
+\makeatother
+
+%% FIGURE ENVIRONMENT 
+\usepackage{booktabs,siunitx}
+
+\usepackage{pgfplots} 
+%\usepackage[outdir=./figures]{epstopdf}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{graphicx}
+
+\usepackage[absolute,overlay]{textpos}
+
+%% COLORS
+%% LINKS
+\definecolor{myred}{RGB}{163,32,45}
+\definecolor{navyblue}{rgb}{0.05,0.2,0.70}
+\definecolor{myblue}{RGB}{0,51,150}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{myref}{RGB}{160,160,160}
+\definecolor{shock}{RGB}{0, 125, 34}%{50, 168, 82}
+
+%% TRANSPARENCY
+
+\usepackage{transparent}
+
+%% BEAMER TEMPLATE
+\usetheme{Boadilla}
+
+\makeatother
+\setbeamertemplate{itemize items}{\large\raisebox{-0.25ex}{\textbullet}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.15ex}{--}}
+\setbeamertemplate{itemize subsubitem}{\Tiny\raisebox{0.7ex}{$\blacktriangleright$}}
+%\setbeamertemplate{itemize subsubitem}{\color{yellow}$\blacksquare$}
+
+\setbeamertemplate{enumerate item}[default]
+\setbeamertemplate{enumerate subitem}{\textbullet}
+\setbeamertemplate{footline}{}
+\makeatletter
+\setbeamertemplate{navigation symbols}{}
+
+
+%% FORMATTING AUTHORS
+%\usepackage{authblk}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{array}
+
+%% FRAME ITEMIZE SPACING
+\usepackage{xpatch}
+
+\xpatchcmd{\itemize}
+{\def\makelabel}
+{\setlength{\itemsep}{2.5ex}\def\makelabel}
+{}
+{}
+
+\xpatchcmd{\enumerate}
+{\def\makelabel}
+{\setlength{\itemsep}{10ex}\def\makelabel}
+{}
+{}
+
+%% APPENDIX 
+\usepackage{appendixnumberbeamer}
+
+
+%% TITLE AND OPENING
+\title{\large M2: Lecture 7}
+\subtitle{Stochastic Dynamic Programming}
+\author{Andreas Schaab}
+\date{}
+
+
+\begin{document}
+\tikzstyle{every picture}+=[remember picture]
+%\everymath{\displaystyle}
+\thispagestyle{empty}
+\maketitle 
+\newpage
+
+\addtocounter{framenumber}{-1}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Outline of today's lecture}
+\addtocounter{framenumber}{-1}
+
+\begin{enumerate}
+\item What is the generator of a stochastic process?
+\item Stochastic neoclassical growth model
+\item Stochastic neoclassical growth with diffusion process
+\item Stochastic neoclassical growth with Poisson process
+\item Many examples
+\end{enumerate}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{1. The generator of a stochastic process}
+\begin{itemize}
+\item We start with the diffusion process
+\begin{equation*}
+	dX = \mu(t, X) dt + \sigma (t, X) dB
+\end{equation*}
+where $dB$ is a standard Brownian motion
+
+\item The generator $\mathcal A$ tells us how the stochastic process is \textit{expected} to evolve
+
+\item The generator $\mathcal A$ is a functional operator
+
+\item Formally, for $f(t, X)$, we have 
+\begin{equation*}
+	\mathcal A f = \lim_{\Delta t \to 0} \mathbb E_t \frac{ f(t + \Delta t, X(t + \Delta t)) - f(t, X(t)) }{\Delta t}
+\end{equation*}
+
+\item We will now show that:
+\begin{equation*}
+	\mathcal A f = \partial_t f(t, X) + \mu(t, X) \partial_X f(t, X) + \frac{1}{2} \sigma(t, X)^2 \partial_{XX} f(t, X)
+\end{equation*}
+
+\item For the general / multi-dimensional version see Oksendal
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Next, we consider the poisson process $\{ Y_t \}$ where $Y_t \in \{ Y^1, Y^2 \}$. This is a two-state Markov chain in continuous time.
+
+\item We assume that the Poisson intensity / arrival rate / hazard rate is $\lambda$
+
+\item The generator is now given by
+\begin{equation*}
+	\mathcal A f (Y^j) = \lambda \Big[ f( Y^{-j} ) - f (Y^j) \Big]
+\end{equation*}
+
+\item Intuition: at rate $\lambda$ you transition, so you lose the value of your current state, $f(Y^j)$, and obtain the value of the new state, $f(Y^{-j})$
+
+\item Again see Oksendal for general version of this and more details
+\end{itemize}
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2. Neoclassical stochastic growth}
+\begin{itemize}
+\item Time is continuous and the horizon is infinite, $t \in [0, \infty)$
+
+\item Economy populated by representative household that operates production technology $F(k_t, z_t)$ where $z_t$ is exogenous productivity
+
+\item Assume $F(\cdot)$ is well behaved: $F(0, z) = 0$, as well as $F_k$, $F_z > 0$, and $F_{kk} < 0$
+
+\item At time $t = 0$, economy's initial state is $(k_0, z_0)$
+
+\item Lifetime value of household is given by
+\begin{equation*}
+	V(k_0, z_0) = \max_{ \{c_t\}_{t \geq 0}} \mathbb{E}_0 \int_0^\infty e^{- \rho t} u(c_t) dt 
+\end{equation*}
+where $u(\cdot)$ is instantaneous utility flow and $\{ c_t \}_{t \geq 0}$ is stochastic consumption process. $\mathbb{E}_0$ denotes expectation over future productivity realizations. We assume labor supply is inelastic and normalized to $1$
+
+\item Capital evolves as before: $\frac{d}{dk} k_t = F(k_t, z_t) - \delta k_t - c_t$
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{3. Productivity as a diffusion process}
+\begin{itemize}
+\item We start with diffusion process:
+\begin{equation*}
+	dz_t = - \theta z_t dt + \sigma dB_t,
+\end{equation*}
+where $\theta$ and $\sigma$ are constants
+
+\item This is a continuous-time, mean-reverting AR(1) process called the Ornstein-Uhlenbeck process
+
+\item State space is now given by
+\begin{equation*}
+	\Big\{ (k, z) \mid k \in [0, \bar k] \text{ and } z \in [\underline z, \bar z] \Big\}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item In discrete time, we would have 
+\begin{equation*}
+	V(k_t, z_t) = \max_c \Big\{ u(c) \Delta t + \frac{1}{1 + \rho \Delta t} \mathbb{E}_t V(k_{t + \Delta t}, z_{t + \Delta t} ) \Big\}
+\end{equation*}
+
+\item Difference from previous lecture: $\mathbb E$ because there is uncertainty
+\begin{align*}
+	(1 + \rho \Delta t) V(k_t, z_t) &= \max_c \Big\{ (1 + \rho \Delta t) u(c) \Delta t+ \mathbb{E}_t V(k_{t + \Delta t}, z_{t + \Delta t})  \Big\} \\
+	\rho \Delta t V(k_t, z_t) &= \max_c \Big\{ u(c) \Delta t+ \mathbb{E}_t V(k_{t + \Delta t}, z_{t + \Delta t} ) - V(k_t, z_t) \Big\} \\
+	\rho V(k_t, z_t) &= \max_c \Big\{ u(c) + \mathbb{E}_t \frac{V(k_{t + \Delta t}, z_{t + \Delta t} ) - V(k_t, z_t)}{\Delta t} \Big\}
+\end{align*}
+
+\item Take limit $\Delta t \to 0$ and drop time subscripts: 
+\begin{equation*}
+	\rho V(k, z) = \max_c \Big\{ u(c) + \mathbb{E} \frac{d V(k, z)}{dt} \Big\}
+\end{equation*}
+
+\item What remains? Characterizing continuation value $\frac{d}{dt} V(k, z)$ (i.e., characterizing how process $dV$ evolves)
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item The generator $\mathcal A$ is exactly the answer to this question! I.e., 
+\begin{align*}
+	\mathbb E \frac{d V(k, z)}{d t} &= \mathcal A V(k , z) \\
+	&= \Big( F(k, z) - \delta z - c \Big) \partial_k V(k, z) - \theta z \partial_z V(k, z) + \frac{\sigma^2}{2} \partial_{zz} V(k, z)
+\end{align*}
+
+\item Therefore, we arrive at the Hamilton-Jacobi-Bellman equation
+\begin{align*}
+	\rho V(k, z) = \max_c \Big\{ & u(c) + \Big( F(k, z) - \delta z - c \Big) \partial_k V(k, z) \\
+	&- \theta z \partial_z V(k, z) + \frac{\sigma^2}{2} \partial_{zz} V(k, z) \Big\}
+\end{align*}
+with first-order condition 
+\begin{equation*}
+	u'(c(k, z)) = \partial_k V(k, z)
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{4. Productivity as a Poisson process}
+\begin{itemize}
+\item Next, consider Poisson process for $\{ z_t \}$ with $z_t \in \{z^L, z^H\}$
+
+\item Generator now given by
+\begin{equation*}
+	\mathcal A V(k, z^j) = \Big( F(k, z) - \delta z - c \Big) \partial_k V(k, z) + \lambda \Big[ V(k, z^{-j}) - V(k, z^j) \Big]
+\end{equation*}
+
+\item Note: derivation of HJB exactly as before \textit{up to} characterizing $\mathbb E [d V]$
+
+\item With Poisson process, HJB becomes
+\begin{align*}
+	\rho V(k, z^j) = \max_c \Big\{ & u(c) + \Big( F(k, z) - \delta z - c \Big) \partial_k V(k, z) \\
+	&+ \lambda \Big[ V(k, z^{-j}) - V(k, z^j) \Big] \Big\}
+\end{align*}
+with first-order condition 
+\begin{equation*}
+	u'(c(k, z^j)) = \partial_k V(k, z^j)
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{5.1. Example: income fluctuations}
+\begin{itemize}
+\item Economy is populated by representative household that faces income risk
+
+\item Household accumulates wealth according to
+\begin{equation*}
+	\dot a_t = r a_t + e^{z_t} - c_t 
+\end{equation*}
+subject to borrowing constraint $a_t \geq 0$
+
+\item Preferences again: $V_0 = \max \mathbb{E}_0 \int_0^\infty e^{- \rho t} u(c_t) dt$
+
+\item Income follows diffusion process: $d y_t = - \theta y_t dt + \sigma dB_t$
+
+\item Away from borrowing constraint, HJB given by
+\begin{equation*}
+	\rho V = \max_c \Big\{ u(c) + (r a + e^{z} - c) V_a - \theta z V_z + \frac{\sigma^2}{2} V_{zz} \Big\}
+\end{equation*}
+with $V_a = \partial_a V(a, z)$ (you'll see this often) 
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{5.2. Example: firm profit maximization}
+\begin{itemize}
+\item Firm maximizes NPV of profit: $V_0 = \max \mathbb{E}_0 \int_0^\infty e^{- r t} \pi_t dt$
+
+\item For now, profit given by: $\pi_t = A_t n_t^\alpha - w_t n_t$ where firm chooses labor $n_t$ \\
+Assume $\alpha < 1$, so this is a decreasing-returns production function
+
+\item Firm is small and takes wage $\{ w_t \}$ as given (wages determined in general equilibrium)
+
+\item Productivity follows two-state high-low process, with $A_t \in \{ A^\text{rec}, A^\text{boom} \}$
+
+\item Recursive representation: $A$ is only state variable, $w_t = w(A_t)$
+\begin{equation*}
+	r V(A^\text{boom}) = \max_n \Big\{ A^\text{boom} n^\alpha - w(A^\text{boom}) n + \lambda \Big[ V(A^\text{rec}) - V(A^\text{boom}) \Big] \Big\}
+\end{equation*}
+with first-order condition
+\begin{equation*}
+	n = \bigg(\frac{\alpha A^j}{w(A^j)}\bigg)^\frac{1}{1-\alpha}
+\end{equation*}
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{5.3. Example: capital investment with adjustment cost}
+\begin{itemize}
+\item Firm again maximizes NPV of profit: $V_0 = \max \mathbb{E}_0 \int_0^\infty e^{- r t} \pi_t dt$
+
+\item Now: let $\psi(\cdot)$ denote an adjustment cost
+\begin{align*}
+	\pi_t &= e^{A_t} k_t^\alpha - Q_t \iota_t - \psi(\iota_t, k_t) \\
+	d k_t &= (\iota_t - \delta k_t) dt \\
+	d A_t &= - \theta A_t dt + \sigma dB_t
+\end{align*}
+
+\item Firm is small and takes capital price as given 
+
+\item Recursive representation in terms of $(k, A)$, i.e., $Q_t = Q(k_t, A_t)$
+\begin{align*}
+	r V(k, A) = \max_\iota \Big\{ &e^{A_t} k_t^\alpha - Q(A) \iota_t - \psi(\iota_t, k_t) + (\iota - \delta k) \partial_k V(k, A) \\
+	& - \theta A \partial_A V(k, A) + \frac{\sigma^2}{2} \partial_{AA} V(k, A) \Big\}
+\end{align*}
+with first-order condition: $Q(k, A) + \partial_\iota \psi(\iota(k, A), k) = \partial_k V(k, A)$
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{5.4. Example: investing in stocks}
+\begin{itemize}
+\item Suppose you optimize lifetime utility $V_0 = \mathbb{E}_0 \int_0^\infty u(c_t) dt$
+
+\item You can trade two assets: riskfree bond (return $r dt$), and risky stock 
+\begin{equation*}
+	dR = (r + \pi) dt + \sigma dB, \text{ where } \pi \text{ is the equity premium}
+\end{equation*}
+
+\item You have wealth $a_t$ and invest a share $\theta_t$ in stocks, thus,
+\begin{equation*}
+	da_t = \theta_t a_t dR_t + (1-\theta_t) a_t r_t dt + y - c_t
+\end{equation*}
+or, rearranging, and dropping $t$ subscripts
+\begin{equation*}
+	da = r a + \theta a \pi dt + y - c + \theta a \sigma dB 
+\end{equation*}
+
+\item HJB becomes:
+\begin{equation*}
+	\rho V(a) = \max_{c, \theta} \Big\{ u(c) + (  r a + \theta a \pi dt + y - c  ) V'(a) + \frac{1}{2} (\sigma \theta a)^2 V''(a) \Big\}
+\end{equation*}
+with FOCs: (i) $u'(c) = V'(a)$ and (ii) $\theta = -\frac{\pi}{\sigma^2} \frac{ V'(a) }{a V''(a)}$
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{5.5. Example: tax competition}
+\begin{itemize}
+\item Two countries, $i \in \{A, B\}$, setting corporate tax rates $\tau_t^i$ on firms operating / headquartered in country $i$
+
+\item Mass of multinational firms $j$, with $\mu_t$ denoting $\%$ in country $A$ at time $t$
+
+\item Firms relocate activity / headquarters at rate $\theta$ towards low-tax country:
+\begin{equation*}
+	d \mu_t = \theta \mu_t (\tau_t^B - \tau_t^A)^\gamma dt  
+\end{equation*}
+
+\item Country $A$ maximizes tax revenue: $\max \int_0^\infty e^{- \rho t} \tau_t^A \mu_t dt$. Countries compete over taxes $\{ \tau_{it} \}$
+
+\item Dynamic Nash: country $A$ sets $\tau_t^A$ as best response taking $\tau_t^B$ as given 
+
+\item Recursive representation: the only state variable is $\mu_t$
+\begin{equation*}
+	\rho V^A(\mu) = \max_{\tau^A} \Big\{ \tau^A \mu + \theta \mu \Big( \tau^B(\mu) - \tau^A \Big)^\gamma \partial_\mu V^A(\mu) \Big\}
+\end{equation*}
+Best response strategies: $0 = \mu + \gamma \theta \mu (\tau^B(\mu) - \tau^A)^{\gamma - 1} V_\mu^A(\mu)$
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
