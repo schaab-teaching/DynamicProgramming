@@ -380,13 +380,79 @@ with $u(c) = \log(c)$.
 \begin{enumerate}
 \item Explain the expression for the remaining amount of oil: $x_t = x_0 - \int_0^t c_s ds$
 
+\textbf{Solution:} The LOM of the remaining oil is: $\dot{x}_t = - c_t$, so this is the solution: oil remaining = initial- all past consumption
+
 \item Set up the (present-value) Hamiltonian for this problem. List all state variables, control variables, and multipliers
+
+\textbf{Solution:} Take derivative wrt $t$ to the equation of remaining oil, we could derive the law of motion for change in oil stock:
+$$
+\dot{x}(t)=-c(t)
+$$
+The present-value Hamiltonian for this problem is given by:
+$$
+\mathcal{H}(c(t), x(t), \lambda(t))=e^{-\rho t} \log (c(t))+\lambda(t)(-c(t))
+$$
+
+State variable $x(t)$, control $c(t)$ and co-state/multiplier $ \lambda(t)$
 
 \item Write down the first-order necessary conditions. Solve for the optimal policy $c_t$
 
+\textbf{Solution:} Take FOCs of the Hamiltonian, we have:
+$$
+\begin{gathered}
+\frac{\partial \mathcal{H}}{\partial c(t)}=0 \Rightarrow e^{-\rho t} \frac{1}{c(t)}=\lambda(t) \\
+\frac{\partial \mathcal{H}}{\partial x(t)}=-\dot{\lambda}(t) \Rightarrow 0=-\dot{\lambda}(t)
+\end{gathered}
+$$
+The second FOC implies that $\lambda(t)$ does not vary over time, which would require $c(t)=c(0) \cdot e^{-\rho t}$ for the first FOC to hold. The transversality condition is
+$$
+\lim _{t \rightarrow \infty} x(t) \lambda(t)=0
+$$
+so
+$$
+\begin{aligned}
+\int_0^{\infty} c(s) d s &=x_0 \\
+c(0) \int_0^{\infty} e^{-\rho s} d s &=x_0 \\
+c(0) &=\rho x_0
+\end{aligned}
+$$
+Therefore
+$$
+c(t)=\rho x_0 e^{-\rho t}
+$$
+
 \item Write down the HJB equation for this problem
 
+\textbf{Solution:} The HJB equation for this problem is:
+$$
+\rho V(x)=\max _c \log (c)+V^{\prime}(x)(-c)
+$$
+
 \item Guess and verify that the value function is $V(x) = a + b \log(x)$. Solve for $a$ and $b$
+
+\textbf{Solution:} Take FOC of the HJB equation, we could get:
+$$
+\frac{1}{c}=V^{\prime}(x) \Rightarrow c=\frac{1}{V^{\prime}(x)}
+$$
+Substitute c into the HJB equation:
+$$
+\rho V(x)=-\log \left(V^{\prime}(x)\right)-1
+$$
+Guess $V(x)=b \log (x)+a$ and substitute into the HJB equation:
+$$
+\begin{aligned}
+\rho(b \log (x)+a) &=\log \left(\frac{x}{b}\right)-1 \\
+\rho b \log (x)+a \rho &=\log (x)-\log (b)-1
+\end{aligned}
+$$
+Match the coefficients and we have:
+$$
+\begin{array}{r}
+\rho b=1 \Rightarrow b=\frac{1}{\rho} \\
+a \rho=-1-\log (b) \Rightarrow a=-\frac{1-\log (\rho)}{\rho}
+\end{array}
+$$
+
 \end{enumerate}
 
 
