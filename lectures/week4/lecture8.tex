@@ -1,0 +1,309 @@
+\documentclass[10pt]{beamer}
+\usepackage{amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm,centernot}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+
+\usepackage{palatino}
+\usepackage{mathpazo} % or: {newpxtext,newpxmath}
+\renewcommand\familydefault{\rmdefault}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{bm}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows,shapes}
+\usepackage{caption, subcaption}
+
+%% BEAMER BUTTON
+%\setbeamertemplate{button}{\tikz
+%\node[
+%	inner xsep = 2pt, 
+%	draw = structure!0, 
+%	fill = myblue, 
+%	rounded corners = 4pt]{\color{white} \tiny\insertbuttontext};
+%}
+
+
+%% ALGORITHM 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{multimedia}
+
+%% THEME
+\usetheme[frametitleformat=regular,titleformat=regular]{Madrid}
+\setbeamerfont{frametitle}{shape=\normalfont}
+\setbeamerfont{title}{shape=\normalfont}
+
+%% PATHS
+\graphicspath{{./results/}}
+\makeatletter
+\def\input@path{{../draft/tables/latexData/}}
+\makeatother
+
+%% FIGURE ENVIRONMENT 
+\usepackage{booktabs,siunitx}
+
+\usepackage{pgfplots} 
+%\usepackage[outdir=./figures]{epstopdf}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{graphicx}
+
+\usepackage[absolute,overlay]{textpos}
+
+%% COLORS
+%% LINKS
+\definecolor{myred}{RGB}{163,32,45}
+\definecolor{navyblue}{rgb}{0.05,0.2,0.70}
+\definecolor{myblue}{RGB}{0,51,150}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{myref}{RGB}{160,160,160}
+\definecolor{shock}{RGB}{0, 125, 34}%{50, 168, 82}
+
+%% TRANSPARENCY
+
+\usepackage{transparent}
+
+%% BEAMER TEMPLATE
+\usetheme{Boadilla}
+
+\makeatother
+\setbeamertemplate{itemize items}{\large\raisebox{-0.25ex}{\textbullet}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.15ex}{--}}
+\setbeamertemplate{itemize subsubitem}{\Tiny\raisebox{0.7ex}{$\blacktriangleright$}}
+%\setbeamertemplate{itemize subsubitem}{\color{yellow}$\blacksquare$}
+
+\setbeamertemplate{enumerate item}[default]
+\setbeamertemplate{enumerate subitem}{\textbullet}
+\setbeamertemplate{footline}{}
+\makeatletter
+\setbeamertemplate{navigation symbols}{}
+
+
+% TODO:
+% Introduce page number but no other footer
+% Define appropriate itemize and enumerate environments so I never have to touch these
+% What about an automatic subitemize environment?
+% Write an external template that gets loaded on each for each lecture .tex
+
+
+%% FORMATTING AUTHORS
+%\usepackage{authblk}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{array}
+
+%% FRAME ITEMIZE SPACING
+\usepackage{xpatch}
+
+\xpatchcmd{\itemize}
+{\def\makelabel}
+{\setlength{\itemsep}{2.5ex}\def\makelabel}
+{}
+{}
+
+\xpatchcmd{\enumerate}
+{\def\makelabel}
+{\setlength{\itemsep}{10ex}\def\makelabel}
+{}
+{}
+
+%% APPENDIX 
+\usepackage{appendixnumberbeamer}
+
+
+%% TITLE AND OPENING
+\title{\large M2: Lecture 8}
+\subtitle{Theory of the Consumption Function (I)}
+\author{Andreas Schaab}
+\date{}
+
+
+\begin{document}
+\tikzstyle{every picture}+=[remember picture]
+%\everymath{\displaystyle}
+\thispagestyle{empty}
+\maketitle 
+\newpage
+
+\addtocounter{framenumber}{-1}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Outline of today's lecture}
+\addtocounter{framenumber}{-1}
+
+\begin{enumerate}
+\item Canonical income fluctuations problem in discrete time
+
+\vspace{2mm}
+\item Permanent income hypothesis
+
+\vspace{2mm}
+\item Certainty equivalence and consumption as a martingale
+
+\vspace{2mm}
+\item Linearization of Euler equation
+
+\vspace{2mm}
+\item Euler equation empirics
+
+\end{enumerate}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{1. Canonical model of consumption}
+\begin{itemize}
+\item The standard model is known as the \textbf{consumption-savings} or \textbf{income-fluctuations} problem
+\begin{equation*}
+	V(a_0) = \max_{ \{c_t\}_{t=0}^\infty } \, \mathbb{E}_0 \sum_{t=0}^\infty \beta^t u(c_t)
+\end{equation*}
+subject to
+\begin{equation*}
+	a_{t+1} = R_{t+1} (a_t - c_t) + y_t
+\end{equation*}
+
+\item $a_t$ is wealth, $\{ R_{t+1} \}$ is deterministic (gross) interest rate process, and $y_t$ is iid. income risk
+
+\item Assume $u(\cdot)$ concave ($u' > 0$ and $u''< 0$ for all $c$) and $\lim_{c \to 0} u'(c) = \infty$
+
+\item What should we assume about borrowing capacity?
+\begin{itemize}
+\vspace{1mm}
+\item Natural borrowing limit: $a_t \geq a^n$
+
+\vspace{-2mm}
+\item Ad-hoc borrowing limit: $a_t \geq \underline a$
+\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Bellman equation:
+\begin{align*}
+	V_t(a) &= \max_{c, a'} \Big\{ u(c) + \beta \mathbb{E}_t V_{t+1}(a') \Big\} \;\; s.t. \;\; a' = R_{t+1} (a - c) + y
+\end{align*}
+
+\item Bellman equation may not be stationary or time-independent: $R_t$
+
+\item If income process $\{y_t\}$ persistent, would need $y$ as second state variable
+
+\item First-order conditions (with ad-hoc borrowing limit $\underline a$):
+\begin{align*}
+	u'(c_t(a)) = &\; \beta R_{t+1} \mathbb{E}_t \frac{\partial V_{t+1}(a')}{\partial a'} \quad \text{ if }  a' > \underline a \\
+	u'(c_t(a)) \geq &\; \beta R_{t+1} \mathbb{E}_t \frac{\partial V_{t+1}(a')}{\partial a'} \quad \text{ if }  a' = \underline a
+\end{align*}
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Envelope theorem: $\frac{\partial V_t(a)}{\partial a} = u'(c_t(a))$
+
+\item So we again get a consumption Euler equation:
+\begin{align*}
+	u'(c_t) = &\; \beta R_{t+1} \mathbb{E}_t u'(c_{t+1}) \quad \text{ if }  a' > \underline a \\
+	u'(c_t) \geq &\; \beta R_{t+1} \mathbb{E}_t u'(c_{t+1})  \quad \text{ if }  a' = \underline a
+\end{align*}
+\end{itemize}
+
+
+\vspace{6mm}
+Perturbation intuition:
+\begin{itemize}
+\item What is the cost of consuming $\epsilon$ dollars less today? 
+\begin{equation*}
+	\text{Utility loss today} = \epsilon \cdot u'(c_t)
+\end{equation*}
+
+\item What is the expected, discounted gain of consuming $\epsilon \cdot R_{t+1}$ dollars more tomorrow?
+\begin{equation*}
+	\text{Utility gain tomorrow} = \beta (\epsilon \cdot R_{t+1}) \mathbb{E}_t u'(c_{t+1})
+\end{equation*}
+\end{itemize}
+
+\end{frame}
+
+
+\iffalse
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2. Linearization of Euler equation}
+\begin{itemize}
+\item 
+
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{3. Permanent income hypothesis}
+\begin{itemize}
+\item 
+
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{4. Certainty equivalence and consumption as a martingale}
+\begin{itemize}
+\item 
+
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{5. Eat-the-pie problem}
+\begin{itemize}
+\item 
+
+\end{itemize}
+\end{frame}
+
+
+\fi
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
