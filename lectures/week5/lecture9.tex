@@ -1,0 +1,466 @@
+\documentclass[10pt]{beamer}
+\usepackage{amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm,centernot}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+
+\usepackage{palatino}
+\usepackage{mathpazo} % or: {newpxtext,newpxmath}
+\renewcommand\familydefault{\rmdefault}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{bm}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows,shapes}
+\usepackage{caption, subcaption}
+
+%% BEAMER BUTTON
+%\setbeamertemplate{button}{\tikz
+%\node[
+%	inner xsep = 2pt, 
+%	draw = structure!0, 
+%	fill = myblue, 
+%	rounded corners = 4pt]{\color{white} \tiny\insertbuttontext};
+%}
+
+
+%% ALGORITHM 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{multimedia}
+
+%% THEME
+\usetheme[frametitleformat=regular,titleformat=regular]{Madrid}
+\setbeamerfont{frametitle}{shape=\normalfont}
+\setbeamerfont{title}{shape=\normalfont}
+
+%% PATHS
+\graphicspath{{./results/}}
+\makeatletter
+\def\input@path{{../draft/tables/latexData/}}
+\makeatother
+
+%% FIGURE ENVIRONMENT 
+\usepackage{booktabs,siunitx}
+
+\usepackage{pgfplots} 
+%\usepackage[outdir=./figures]{epstopdf}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{graphicx}
+
+\usepackage[absolute,overlay]{textpos}
+
+%% COLORS
+%% LINKS
+\definecolor{myred}{RGB}{163,32,45}
+\definecolor{navyblue}{rgb}{0.05,0.2,0.70}
+\definecolor{myblue}{RGB}{0,51,150}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{myref}{RGB}{160,160,160}
+\definecolor{shock}{RGB}{0, 125, 34}%{50, 168, 82}
+
+%% TRANSPARENCY
+
+\usepackage{transparent}
+
+%% BEAMER TEMPLATE
+\usetheme{Boadilla}
+
+\makeatother
+\setbeamertemplate{itemize items}{\large\raisebox{-0.25ex}{\textbullet}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.15ex}{--}}
+\setbeamertemplate{itemize subsubitem}{\Tiny\raisebox{0.7ex}{$\blacktriangleright$}}
+%\setbeamertemplate{itemize subsubitem}{\color{yellow}$\blacksquare$}
+
+\setbeamertemplate{enumerate item}[default]
+\setbeamertemplate{enumerate subitem}{\textbullet}
+\setbeamertemplate{footline}{}
+\makeatletter
+\setbeamertemplate{navigation symbols}{}
+
+
+%% FORMATTING AUTHORS
+%\usepackage{authblk}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{array}
+
+%% FRAME ITEMIZE SPACING
+\usepackage{xpatch}
+
+\xpatchcmd{\itemize}
+{\def\makelabel}
+{\setlength{\itemsep}{2.5ex}\def\makelabel}
+{}
+{}
+
+\xpatchcmd{\enumerate}
+{\def\makelabel}
+{\setlength{\itemsep}{10ex}\def\makelabel}
+{}
+{}
+
+%% APPENDIX 
+\usepackage{appendixnumberbeamer}
+
+
+%% TITLE AND OPENING
+\title{\large M2: Lecture 9}
+\subtitle{Models of Consumption: Marginal Propensity to Consume}
+\author{Andreas Schaab}
+\date{}
+
+
+\begin{document}
+\tikzstyle{every picture}+=[remember picture]
+%\everymath{\displaystyle}
+\thispagestyle{empty}
+\maketitle 
+\newpage
+
+\addtocounter{framenumber}{-1}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Outline of today's lecture}
+\addtocounter{framenumber}{-1}
+
+\begin{enumerate}
+\item Closed-form examples continued
+\item GHH preferences
+\item Return risk
+\item Income fluctuations and precautionary savings 
+\item Linearization of consumption Euler equation: deterministic and stochastic 
+\item Interest rate risk (Gabaix linearization)
+\end{enumerate}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{1.1. Example: no risk, no income (eat-the-pie)}
+\begin{itemize}
+\item Time is continuous, $t \in [0, \infty)$
+
+\item Infinitely-lived household's wealth evolves according to 
+\begin{equation*}
+	\frac{da}{dt} = ra - c
+\end{equation*}
+given initial wealth position $a_0$, constant interest rate $r$
+
+\item The HJB equation is given by
+\begin{equation*}
+	\rho V(a) = \frac{1}{\gamma} c(a)^{1-\gamma} + V_a (r a - c(a))
+\end{equation*}
+where $c(a)$ solves first-order condition $c(a)^{-\gamma} = V_a$
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Consider Ansatz $V = Aa^B$, so that $V_a = AB a^{B-1}$ and $c = [AB a^{B-1}]^{- \frac{1}{\gamma}}$
+
+\item Then HJB becomes
+\begin{align*}
+	\rho A a^B &= \frac{1}{\gamma} \bigg( [AB a^{B-1}]^{- \frac{1}{\gamma}} \bigg)^{1-\gamma} + AB a^{B-1} \bigg( r a - [AB a^{B-1}]^{- \frac{1}{\gamma}} \bigg) \\
+	\rho A a^B - r A B a^B &= \frac{\gamma}{1-\gamma} [A B a^{B-1}]^\frac{\gamma-1}{\gamma}
+\end{align*}
+Plug in $B = 1-\gamma$ and solve for (do this yourself!):
+\begin{equation*}
+	A = \frac{1}{1-\gamma} \bigg[ \frac{1}{\gamma} \rho - \frac{1-\gamma}{\gamma} r \bigg]^{-\gamma}
+\end{equation*}
+
+\item Solution of this model:
+\begin{align*}
+	V(a) &= \frac{1}{1-\gamma} \kappa^{-\gamma} a^{1-\gamma} \\
+	V_a(a) &= \kappa^{-\gamma} a^{-\gamma} \\
+	c(a) &= \kappa a,
+\end{align*}
+\end{itemize}
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Marginal propensity to consume (MPC) is defined as
+\begin{equation*}
+	c'(a) = \kappa \equiv \frac{1}{\gamma} \rho - \frac{1-\gamma}{\gamma} r
+\end{equation*}
+
+\item Consider $u(c) = \log(c)$, with $\gamma \to 1$ (income and substitution effects offset each other), then 
+\begin{equation*}
+	c'(a) = \kappa = \rho \approx 0.5 \% \text{ annually }
+\end{equation*}
+
+\item The standard CRRA calibration with $\gamma = 2$ yields
+\begin{equation*}
+	c'(a) = \kappa \equiv \frac{1}{2} (\rho + r).
+\end{equation*}
+In models with uninsurable risk and incomplete financial markets, $r < \rho$
+
+\end{itemize}
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{1.2. Example: unearned labor income}
+\begin{itemize}
+\item Infinitely-lived household's wealth now evolves according to 
+\begin{equation*}
+	\frac{da}{dt} = ra + w - c
+\end{equation*}
+
+\item The HJB equation now given by
+\begin{equation*}
+	\rho V(a) = \frac{1}{\gamma} c(a)^{1-\gamma} + V_a (r a + w - c(a))
+\end{equation*}
+
+\item Solution of this model (work this out yourself):
+\begin{align*}
+	V(a) &= \frac{1}{1-\gamma} \kappa^{-\gamma} \Big( a + \frac{w}{r} \Big)^{1-\gamma} \\
+	c(a) &= \kappa \Big(a + \frac{w}{r} \Big)
+\end{align*}
+with MPC given by: $c'(a) = \kappa$ (as before)
+
+\item Intuition? Human capital affects lifetime wealth but not MPC
+\end{itemize}
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2. Example: labor supply with GHH preferences}
+\begin{itemize}
+\item What happens when households can decide how much to work? 
+
+\item Households solve: $\max \int_0^\infty e^{- \rho t} u(c_t, h_t) dt$.  
+\begin{align*}
+	u(c, h) &= \frac{1}{1-\gamma} \bigg( c - \frac{ h^{1+\eta}}{1+\eta} \bigg)^{1-\gamma} \\
+	\rho V(a) &= u(c, h) + (r a + w h - c) \partial_a V(a)
+\end{align*}
+where FOCs are $u_c = V_a$ and $u_h = - w V_a$, so 
+\begin{align*}
+	\bigg( c - \frac{h^{1+\eta}}{1+\eta} \bigg)^{-\gamma} &= V_a \\
+	\bigg( c - \frac{h^{1+\eta}}{1+\eta} \bigg)^{-\gamma} h^\eta &= w V_a
+\end{align*}
+
+\item Putting FOCs together, $c = V_a^{- \frac{1}{\gamma}} + \frac{1}{1 + \eta} w^\frac{1+\eta}{\eta}$ and $h = w^\frac{1}{\eta}$
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item HJB becomes
+\begin{align*}
+	\rho V &= \frac{1}{\gamma} V_a^\frac{\gamma-1}{\gamma} + V_a \Big( ra + w h - c \Big) \\
+	&= \frac{1}{\gamma} V_a^\frac{\gamma-1}{\gamma} + V_a \bigg( ra + \frac{\eta}{1 + \eta} w^\frac{1+\eta}{\eta} - V_a^{- \frac{1}{\gamma}} \bigg)
+\end{align*}
+
+\item Solution of this model given by (work this out yourself):
+\begin{align*}
+	V(a) &= \frac{1}{1-\gamma} \kappa^{-\gamma} \bigg( a + \frac{\eta}{1+\eta} \frac{w^\frac{1+\eta}{\eta}}{r} \bigg)^{1-\gamma}
+\end{align*}
+implying
+\begin{align*}
+	V'(a) &= \kappa^{-\gamma} \bigg( a + \frac{\eta}{1+\eta} \frac{w^\frac{1+\eta}{\eta}}{r} \bigg)^{-\gamma} \\
+	c(a) &= \kappa a + \bigg( \frac{\eta}{1+\eta} \frac{\tilde \kappa}{r} + \frac{1}{1+\eta} \bigg) w^\frac{1+\eta}{\eta}
+\end{align*}
+\end{itemize}
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item The household's MPC (out of wealth) is still constant and given by $c'(a) = \text{MPC} = \kappa$ (same $\kappa$ as before)
+
+\item Intuition: we correct for an \textit{effective wage adjustment} in human capital / lifetime wealth but consumption is unaffected by labor supply under GHH
+
+\item This is because GHH shuts down income effects on labor supply!
+
+\end{itemize}
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{3. Example: Return risk}
+\begin{itemize}
+\item In the data, we see (a) much higher MPCs and (b) MPCs are higher at low income / wealth
+
+\item So far: we considered deterministic consumption-savings problems. They all yielded (roughly) $\text{MPC} \approx \rho \approx 5\%$ annually. 
+
+\item We now start exploring theories of consumption that can break this and match the data much better
+
+\item Let's start with a simple example of return risk: You can only trade stocks (no bonds) and stocks trade at a stochastic price
+\begin{equation*}
+	Q dk = Dk - c
+\end{equation*}
+where $D$ is the dividend
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Define net worth as $a = Qk$, so $da = k dQ + Q dk$ by Ito's product rule, noting that $(dk)(dQ) = 0$, so 
+\begin{equation*}
+	da = \frac{D}{Q} - c + a \frac{dQ}{Q}
+\end{equation*}
+
+\item Assume stock prices follow a diffusion process (geometric Brownian): 
+\begin{equation*}
+	\frac{dQ}{Q} = \mu dt + \sigma dB
+\end{equation*}
+
+\item Rewrite wealth as: $da = (\mu_R - c) dt + a \sigma dB$, where $\mu_R = \mu_Q + \frac{D}{Q}$ (dividend + capital gains yield)
+
+\item HJB: 
+\begin{equation*}
+	\rho V(a) = u(c(a) + V_a (\mu_R a - c) + \frac{1}{2} (a \sigma)^2 V_{aa}
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Solution of this model is (work this out yourself): 
+\begin{align*}
+	V(a) &= \frac{1}{1-\gamma} \tilde \kappa^{-\gamma} a^{1-\gamma} \\
+	c(a) &= \tilde \kappa a,
+\end{align*}
+where 
+\begin{equation*}
+	\kappa \equiv \frac{1}{\gamma} \bigg[ \rho - (1-\gamma) \mu_R + \underbrace{ \gamma(1-\gamma) \frac{\sigma^2}{2}}_\text{Precautionary savings} \bigg] 
+\end{equation*}
+
+\item Households' MPC now has a precautionary savings term $\frac{1}{2}(1-\gamma) \sigma^2$
+
+\item The consumption Euler equation for this model (work this out yourself) is:
+\begin{equation*}
+	\mathbb{E} \bigg( \frac{dc}{c} \bigg) = \frac{r - \rho}{\gamma} dt - \frac{1-\gamma}{2} \sigma^2 dt
+\end{equation*}
+
+\item For $\gamma = 2$, precautionary term is negative, so households tilt consumption profile towards the future (hence, precautionary savings)
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{4. Income fluctuations}
+\begin{itemize}
+\item We now work through arguably \textit{the} benchmark model of consumption in macro
+
+\item Households face uninsurable income risk $dz_t$. They can trade a bond, $a_t$ allowing for partial self-insurance, but face borrowing constraint $a_t \geq 0$.
+
+\item Sequence problem:
+\begin{equation*}
+	V_0 = \max_{ \{ c_t \}_{t \geq 0} } \mathbb{E}_0 \int_0^\infty e^{- \rho t} u(c_t) dt
+\end{equation*}
+subject to 
+\begin{align*}
+	da_t &= r a_t + e^{z_t} - c_t \\
+	dz_t &= - \theta z_t dt + \sigma dB_t
+\end{align*}
+
+\item We will use isoelastic (CRRA) preferences with $u(c) = \frac{1}{1-\gamma} c^{1-\gamma}$
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Household states are $(a, z)$, so recursive representation is 
+\begin{equation*}
+	\rho V = u(c) + (r a + e^z - c) V_a - \theta z V_z + \frac{\sigma^2}{2} V_{zz}
+\end{equation*}
+where $c(a, z) = V_a(a, z)^{- \frac{1}{\gamma}}$
+
+\item First step in deriving Euler equation: envelope condition
+\begin{equation*}
+	(\rho - r) V_a = (ra + e^z - c) V_{aa} - \theta z V_{z a} + \frac{\sigma^2}{2} V_{zz a }
+\end{equation*}
+
+\item Using Ito's lemma, noting $V_a$ is function of $(a_t, z_t)$, 
+\begin{align*}
+	dV_a &= V_{aa} da + V_{az} dz + \frac{1}{2} V_{azz} (dz)^2 \\
+	&= V_{aa} (r a + e^z - c) dt + V_{az} (- \theta z dt + \sigma dB) + \frac{\sigma^2}{2} V_{azz} dt \\
+	&= (\rho - r)V_a dt +  \sigma V_{az} dB
+\end{align*}
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Using $u_c = V_a$ and $V_{az} = u_{cc} c_z$, Euler equation for marginal utility is
+\begin{equation*}
+	\frac{du_c}{u_c} = (\rho - r) dt + \sigma \frac{u_{cc} c_z}{u_c} dB
+\end{equation*}
+
+\item For isoelastic (CRRA), we have $\frac{u_{cc}}{u_c} = - \frac{\gamma}{c}$
+
+\item Consumption Euler equation (derivation is on PSET):
+\begin{equation*}
+	\frac{dc}{c} = \frac{r - \rho}{\gamma} dt + \frac{1+\gamma}{2} \bigg( \frac{\sigma c_z}{c} \bigg)^2 dt + \frac{c_z}{c} \sigma dB,
+\end{equation*}
+where $c_z$ is $\approx$ the marginal propensity out of income shocks
+
+\item The term $ \frac{1+\gamma}{2} \big( \frac{\sigma c_z}{c} \big)^2$ captures a precautionary savings motive due to uncertainty about future income fluctuations (that are not insurable)
+
+\item As always: Euler equation doesn't hold at the borrowing constraint
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
