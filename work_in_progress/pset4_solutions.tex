@@ -139,7 +139,7 @@ The rate of investment is given by $\iota_t$. Investment adjustment costs are ca
 
 \begin{enumerate}[(a)]
  \item Interpret all terms of the two budget constraints
-
+\textbf{Solution:} 
 
 \item I will rewrite the household problem in terms of liquid net worth, defined by the equations 
 \begin{align*}
@@ -153,12 +153,19 @@ so that total liquid net worth is $n = Qk + b$.
 \begin{equation*}
 	dn = rn +  \theta n \bigg[ \frac{D - \iota }{Q} +  \frac{dQ}{Q} + \Phi(\iota) - \delta - r \bigg]  + w z - c .
 \end{equation*}
- 
+\textbf{Solution:} 
 
+ First derivating, $dn = k dQ + Q dk + (dk)(dQ) + db$. Because there is no risk therefore $(dk)(dQ) = 0$. Plugging in and simplifying, 
+\begin{equation*}
+	dn = rn +  \theta n \bigg[ \frac{D - \iota }{Q} +  \frac{dQ}{Q} + \Phi(\iota) - \delta - r \bigg]  + w z - c .
+\end{equation*}
 
 \item Argue why the choice of $\iota$ is entirely static in this setting, write the FOC
 
-
+\textbf{Solution:}
+\begin{equation*}
+	\Phi'(\iota) = \frac{1}{Q},
+\end{equation*}
 
 \item So that optimal household investment is only a function of the price of capital, $\iota = \iota(Q)$. Second, households take as given aggregate ``prices'' $(r, w, D, Q)$. 
 
@@ -177,6 +184,9 @@ can be written as
 \begin{equation*}
 	dn = rn + \theta n (\mu_R - r) + wz - c + \theta n \sigma_R dB. 
 \end{equation*}
+
+\textbf{Solution:}
+ $dn = rn + \theta n (dR - r) + wz - c$ and then substitute using the definitons of $\mu_R$ and $\sigma_R$
 
 
 
@@ -204,15 +214,20 @@ The household problem can therefore be written in terms of the household state v
 \end{align*}
 where I assume that $\mathbb{E}(dW dB) = 0$ so that households' earnings risk is, for now, uncorrelated with the aggregate productivity risk factor.
 
-
+\textbf{Solution:}
 
 \item Derive the first-order conditions for consumption and portfolio choice
 
+\textbf{Solution}
+\begin{align*}
+	u_c &= V_n \\
+	\theta  &= - \bigg( \frac{V_n}{n V_{nn} } \frac{\mu_R - r}{\sigma_R^2 } + \frac{V_{n \Gamma} }{n V_{nn} } \frac{ \bm \sigma_\Gamma }{\sigma_R} \bigg).
+\end{align*}
 
 
 The household HJB and the corresponding optimality condition hold everywhere in the interior of the household state space. 
 
-\item (hard) Prove the following lemma (use envelope condition and apply Ito's lemma to $V_n(h,y,\Gamma)$)
+\item Proof the following lemma (WRITE STEPS)
 
 \begin{lem}\label{lem:MUEuler}
 	
@@ -223,8 +238,51 @@ The household HJB and the corresponding optimality condition hold everywhere in 
 	
 \end{lem}
 
+\textbf{Solution:}
 
-\item  (hard)  Proof the following lemma 
+\vspace{2mm}
+\noindent
+\begin{proof}
+	
+	The HJB envelope condition is given by
+	\begin{align*}
+		(\rho - r) V_n = & V_{nn} s + V_n  \theta (\mu_R - r) + \frac{1}{2} V_{nnn} (\theta n \sigma_R )^2 +  V_{nn} n (\theta \sigma_R )^2  + V_{ny} \mu_y + \frac{\sigma_y^2}{2} V_{yny} \\
+		& + V_{nn \Gamma} \theta n \sigma_R  \bm \sigma_\Gamma + V_{n \Gamma} \theta \sigma_R  \bm \sigma_\Gamma  + V_{n\Gamma} \bm \mu_\Gamma  + \frac{1}{2} \bm \sigma_\Gamma^T V_{ n \Gamma \Gamma} \bm \sigma_\Gamma.
+	\end{align*}
+	Applying Ito's lemma to $V_n(n, y, \Gamma)$, we have 
+	\begin{align*}
+		dV_n &= V_{nn} dn + \frac{1}{2} V_{nnn} (dn)^2 + V_{ny} dy + \frac{1}{2} V_{nyy} (dy)^2 + V_{n \Gamma} d\Gamma + \frac{1}{2} V_{n\Gamma \Gamma} (d\Gamma)^2  + V_{nn \Gamma} (dn) ( d \Gamma) \\
+		&= V_{nn} (s + \theta n \sigma_R dB) + \frac{1}{2} V_{nnn} (\theta n \sigma_R)^2 + V_{ny} (\mu_y + \sigma_y dW) + \frac{1}{2} V_{nyy} \sigma_y^2 \\
+		& \;\;\;\;\; + V_{n \Gamma} (\bm \mu_\Gamma + \bm \sigma_\Gamma dB ) + \frac{1}{2} \bm{\sigma}_\Gamma^T V_{n\Gamma \Gamma} \bm \sigma_\Gamma  + V_{nn \Gamma} (\theta n \sigma_R) ( \bm{\sigma}_\Gamma).
+	\end{align*}
+	Putting this together with 
+	\begin{align*}
+		(\rho - r) V_n - V_n  \theta (\mu_R - r) -  V_{nn} n (\theta \sigma_R )^2 - V_{n \Gamma} \theta \sigma_R  \bm \sigma_\Gamma  = & V_{nn} s + \frac{1}{2} V_{nnn} (\theta n \sigma_R )^2  + V_{ny} \mu_y + \frac{\sigma_y^2}{2} V_{yny} \\
+		& + V_{nn \Gamma} \theta n \sigma_R  \bm \sigma_\Gamma + V_{n\Gamma} \bm \mu_\Gamma  + \frac{1}{2} \bm \sigma_\Gamma^T V_{ n \Gamma \Gamma} \bm \sigma_\Gamma,
+	\end{align*}
+	we have 
+	\begin{align*}
+		dV_n = &V_{nn} \theta n \sigma_R dB + V_{ny} \sigma_y dW + V_{n \Gamma}  \bm \sigma_\Gamma dB  \\
+		&  + (\rho - r) V_n - V_n  \theta (\mu_R - r) -  V_{nn} n (\theta \sigma_R )^2 - V_{n \Gamma} \theta \sigma_R  \bm \sigma_\Gamma. 
+	\end{align*}
+	Using 
+	\begin{equation*}
+		\theta n V_{nn} = - \bigg( V_n \frac{\mu_R - r}{\sigma_R^2 } + V_{n \Gamma} \frac{ \bm \sigma_\Gamma }{\sigma_R} \bigg),
+	\end{equation*}
+	we have 
+	\begin{align*}
+		dV_n = & - \bigg( V_n \frac{\mu_R - r}{\sigma_R^2 } + V_{n \Gamma} \frac{ \bm \sigma_\Gamma }{\sigma_R} \bigg) \sigma_R dB + V_{ny} \sigma_y dW + V_{n \Gamma}  \bm \sigma_\Gamma dB  \\
+		&  + (\rho - r) V_n - V_n  \theta (\mu_R - r) + \bigg( V_n \frac{\mu_R - r}{\sigma_R^2 } + V_{n \Gamma} \frac{ \bm \sigma_\Gamma }{\sigma_R} \bigg) \theta  \sigma_R^2 - V_{n \Gamma} \theta \sigma_R  \bm \sigma_\Gamma. 
+	\end{align*}
+	Simplifying, 
+	\begin{align*}
+		dV_n = & -  V_n \frac{\mu_R - r}{\sigma_R} dB  - V_{n \Gamma}  \bm \sigma_\Gamma  dB + V_{ny} \sigma_y dW + V_{n \Gamma}  \bm \sigma_\Gamma dB  \\
+		&  + (\rho - r) V_n - V_n  \theta (\mu_R - r) +  V_n (\mu_R - r)\theta + V_{n \Gamma}  \bm \sigma_\Gamma \theta  \sigma_R - V_{n \Gamma} \theta \sigma_R  \bm \sigma_\Gamma. 
+	\end{align*}
+	Combining terms yield the result. 
+\end{proof}
+
+\item Proof the following lemma (WRITE STEPS)
 
 \begin{lem}
 	
@@ -234,6 +292,80 @@ The household HJB and the corresponding optimality condition hold everywhere in 
 	\end{align*}	
 \end{lem}
 
+\textbf{Solution:}
+
+\vspace{2mm}
+\noindent
+\begin{proof}
+	
+	The consumption policy function is given by $c = c(n, y, \Gamma)$. Thus, 
+	\begin{equation*}
+		dc = c_n dn + c_y dy + c_\Gamma d \Gamma  + \frac{1}{2} c_{nn} (dn)^2 + \frac{1}{2} c_{yy} \sigma_y^2 + \frac{1}{2} \bm \sigma_\Gamma^T c_{\Gamma \Gamma} \bm \sigma_\Gamma + c_{n \Gamma} \theta n \sigma_R \bm \sigma_\Gamma,
+	\end{equation*}
+	and so 
+	\begin{align*}
+		(dc)^2 &= \bigg( c_n \theta n \sigma_R dB + c_y \sigma_y dW + c_\Gamma \bm \sigma_\Gamma dB \bigg)^2 \\
+		&= \bigg( c_n \theta n \sigma_R dB + c_\Gamma \bm \sigma_\Gamma dB \bigg)^2 \bigg( c_y \sigma_y dW \bigg)^2 \\
+		&= \bigg[ (c_n \theta n \sigma_R)^2 + 2 c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma + (c_\Gamma \bm \sigma_\Gamma)^2 + (c_y \sigma_y)^2 \bigg] dt.
+	\end{align*}
+	
+	
+	
+	
+	
+	Let's simplify this expression a bit. Notice that we have
+	\begin{align*}
+		(c_n n \sigma_R)^2 \theta \theta + 2c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma &= - (c_n n \sigma_R)^2 \theta \bigg( \frac{u_c}{n u_{cc} c_n } \frac{\mu_R - r}{\sigma_R^2 } + \frac{ u_{cc} c_\Gamma }{n u_{cc} c_n } \frac{ \bm \sigma_\Gamma }{\sigma_R} \bigg) + 2 c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma \\
+		&= - (c_n n \sigma_R)^2 \theta \frac{1}{n c_n } \bigg( - c \frac{\mu_R - r}{\gamma \sigma_R^2 } +   c_\Gamma \frac{ \bm \sigma_\Gamma }{\sigma_R} \bigg) + 2c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma \\
+		&= (c_n n \sigma_R)^2 \theta \frac{1}{n c_n } c \frac{\mu_R - r}{\gamma \sigma_R^2 } - (c_n n \sigma_R) \theta  c_\Gamma \bm \sigma_\Gamma  + 2c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma \\
+		&= \bigg( \frac{\mu_R - r}{\gamma \sigma_R^2 } - \frac{c_\Gamma}{c} \frac{ \bm \sigma_\Gamma }{\sigma_R} \bigg) c^2 \frac{\mu_R - r}{\gamma } + c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma \\
+		&=  c^2 \bigg( \frac{\mu_R - r}{\gamma \sigma_R} \bigg)^2  - c_\Gamma  \bm \sigma_\Gamma  c \frac{\mu_R - r}{\gamma \sigma_R} + c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma.
+	\end{align*}
+	Therefore, we have
+	\begin{equation*}
+		(dc)^2 = \bigg[ c^2 \bigg( \frac{\mu_R - r}{\gamma \sigma_R} \bigg)^2  - c_\Gamma  \bm \sigma_\Gamma  c \frac{\mu_R - r}{\gamma \sigma_R} + c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma + (c_\Gamma \bm \sigma_\Gamma)^2 + (c_y \sigma_y)^2 \bigg] dt
+	\end{equation*}
+	We can take one last step here, noting that 
+	\begin{align*}
+		(dc)^2 &= \bigg[ c^2 \bigg( \frac{\mu_R - r}{\gamma \sigma_R} \bigg)^2  - c_\Gamma  \bm \sigma_\Gamma  c \frac{\mu_R - r}{\gamma \sigma_R} +  c_\Gamma  \bm \sigma_\Gamma c \frac{\mu_R - r}{\gamma \sigma_R } - (c_\Gamma  \bm \sigma_\Gamma)^2 + (c_\Gamma \bm \sigma_\Gamma)^2 + (c_y \sigma_y)^2 \bigg] dt \\
+		&= \bigg[ c^2 \bigg( \frac{\mu_R - r}{\gamma \sigma_R} \bigg)^2  + (c_y \sigma_y)^2 \bigg] dt.
+	\end{align*}
+	I haven't used this yet in the rest of the proof, but it's the same thing... 
+	
+	
+	Using Ito's lemma for $u_c(c)$, we have 
+	\begin{equation*}
+		du_c = u_{cc} dc + \frac{1}{2} u_{ccc} (dc)^2. 
+	\end{equation*}
+	Plugging in and using CRRA, we have 
+	\begin{gather*}
+		(\rho - r) dt -  \frac{\mu_R - r}{\sigma_R} dB  - \gamma \frac{c_y}{c} \sigma_y dW \\
+		= \frac{u_{cc}}{u_c} dc + \frac{1}{2} \frac{u_{ccc}}{u_c} \bigg[ c^2 \bigg( \frac{\mu_R - r}{\gamma \sigma_R} \bigg)^2  - c_\Gamma  \bm \sigma_\Gamma  c \frac{\mu_R - r}{\gamma \sigma_R} + c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma + (c_\Gamma \bm \sigma_\Gamma)^2 + (c_y \sigma_y)^2 \bigg] dt.
+	\end{gather*}
+	Plugging in for CRRA, 
+	\begin{gather*}
+		\frac{r - \rho}{\gamma} dt +  \frac{\mu_R - r}{\gamma \sigma_R} dB  + \frac{c_y}{c} \sigma_y dW \\
+		= \frac{dc}{c} - \frac{1}{2} \frac{1+\gamma}{c^2} \bigg[ c^2 \bigg( \frac{\mu_R - r}{\gamma \sigma_R} \bigg)^2  - c_\Gamma  \bm \sigma_\Gamma  c \frac{\mu_R - r}{\gamma \sigma_R} + c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma + (c_\Gamma \bm \sigma_\Gamma)^2 + (c_y \sigma_y)^2 \bigg] dt.
+	\end{gather*}	
+	Therefore, we have 
+	\begin{align*}
+		\frac{dc}{c} = & \frac{r - \rho}{\gamma} dt +  \frac{\mu_R - r}{\gamma \sigma_R} dB  + \frac{c_y}{c} \sigma_y dW \\
+		&+ \frac{1}{2} (1+\gamma) \bigg[ \bigg( \frac{\mu_R - r}{\gamma \sigma_R} \bigg)^2  - \frac{c_\Gamma }{c} \bm \sigma_\Gamma \frac{\mu_R - r}{\gamma \sigma_R} + \frac{1}{c^2} c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma + \bigg( \frac{c_\Gamma}{c} \bm \sigma_\Gamma \bigg)^2 + \bigg( \frac{c_y}{c} \sigma_y \bigg)^2 \bigg] dt.
+	\end{align*}
+	Lastly, I can substitute in for $\theta$ again, so that this term becomes 
+	\begin{align*}
+		\frac{1}{c^2} c_n c_\Gamma \theta n \sigma_R \bm \sigma_\Gamma &= \frac{1}{c^2} c_n c_\Gamma n \sigma_R \bm \sigma_\Gamma \frac{c}{n c_n} \bigg( \frac{\mu_R - r}{\gamma \sigma_R^2 } - \frac{c_\Gamma}{c} \frac{ \bm \sigma_\Gamma }{\sigma_R} \bigg) \\
+		&= \frac{1}{c} c_\Gamma \sigma_R \bm \sigma_\Gamma \bigg( \frac{\mu_R - r}{\gamma \sigma_R^2 } - \frac{c_\Gamma}{c} \frac{ \bm \sigma_\Gamma }{\sigma_R} \bigg) \\
+		&= \frac{c_\Gamma }{c}  \bm \sigma_\Gamma \frac{\mu_R - r}{\gamma \sigma_R } -\bigg( \frac{c_\Gamma}{c}  \bm \sigma_\Gamma  \bigg)^2.
+	\end{align*}
+	Therefore, 
+	\begin{align*}
+		\frac{dc}{c} = & \frac{r - \rho}{\gamma} dt +  \frac{\mu_R - r}{\gamma \sigma_R} dB  + \frac{c_y}{c} \sigma_y dW \\
+		&+ \frac{1}{2} (1+\gamma) \bigg[ \bigg( \frac{\mu_R - r}{\gamma \sigma_R} \bigg)^2  - \frac{c_\Gamma }{c} \bm \sigma_\Gamma \frac{\mu_R - r}{\gamma \sigma_R} + \frac{c_\Gamma }{c}  \bm \sigma_\Gamma \frac{\mu_R - r}{\gamma \sigma_R } -\bigg( \frac{c_\Gamma}{c}  \bm \sigma_\Gamma  \bigg)^2 + \bigg( \frac{c_\Gamma}{c} \bm \sigma_\Gamma \bigg)^2 + \bigg( \frac{c_y}{c} \sigma_y \bigg)^2 \bigg] dt.
+	\end{align*}
+	Simplifying yields the result. 
+	
+\end{proof}
 
 
 
@@ -281,9 +413,11 @@ where $\sigma>0$.
 \begin{enumerate}[(a)]
 \item Prove that  $\lim _{\sigma \rightarrow 1} u(c)=\ln (c)$. (Hint: use l'hopital's rule) 
 
+\textbf{Solution:} As $\sigma \rightarrow 1$, we can see that $\frac{c^{1-1 / \sigma}-1}{1-1 / \sigma} \rightarrow \frac{0}{0}$, which doesn't tell us much. To solve this, recall that L'Hopital's Rule says that $\lim \frac{f(x)}{g(x)}=\lim \frac{f^{\prime}(x)}{g^{\prime}(x)}$. Therefore, as $\sigma \rightarrow 1$, this utility function approaches $\frac{\ln (c) \cdot \frac{1}{\sigma^2}}{\frac{1}{\sigma^2}}=\ln (c)$.
 
-\item The coefficient of relative prudence is $$-\frac{u'''(c)c}{u''(c)}$$ derive it. What is it related to?
+\item The coefficient of relative prudence is $$-\frac{u'''(c)c}{u''(c)}$$, derive it. What is it related to?
 
+\textbf{Solution:}
 
 \end{enumerate}
 
@@ -295,14 +429,17 @@ Euler equation with uncertainty. Consider an agent who lives for two periods, $t
 
 \item Derive the Euler Equation
 
+\textbf{Solution:} 
 
+$$\beta(1+r) E\left[c_1^{-\frac{1}{\sigma}}\right]=c_0^{-\frac{1}{\sigma}}$$
 
 \item Suppose $\sigma \rightarrow \infty$. What conditions are placed on $\beta(1+r)$ if the agent has positive consumption in period 0? Interpret your answer in light of question 1. Recall that we call $\sigma$ the intertemporal elasticity of substitution.
 
+\textbf{Solution:} When $\sigma \rightarrow \infty$, the Euler Equation requires $\beta(1+r)=1$. In this situation, utility has no curvature and so the agent is perfectly willing to substitute consumption across time (though he still discounts). So, if we had $\beta(1+r)>1$, the agent would save all his income every period - a "corner solution," where consumption is not positive. If $\beta(1+r)<1$, he would consume his entire lifetime income in period 0 . In order for an interior solution to exist then, we must have $\beta(1+r)=1$ - so the market benefits from saving are exactly offset by the agent's impatience, and he is indifferent as to when he consumes.
 
 \item Assume $y_1 \in\left\{y_L, y_H\right\}$, with $y_H>y_L$. Argue that this implies $c_1 \in\left\{c_L, c_H\right\}$, with $c_H>c_L$, for some unknown values $c_L$ and $c_H$. Let $b_0$ denote period 0 savings. Then $c_1=(1+r) b_0+y_1$
 
-
+\textbf{Solution:}  Based on his decision in period 0 , the agent will bring some amount of savings into period $1,(1+r)\left(y_0-c_0\right)$. Since period 1 is the terminal period, he will consume whatever is left at the end of the period: $(1+r)\left(y_0-c_0\right)+y_H$ in the high state, and $(1+r)\left(y_0-c_0\right)+y_L$ in the low state. Those are the values of $c_L$ and $c_H$.
 
 \end{enumerate}
 
@@ -317,20 +454,50 @@ $$
 
 \item Differentiate $c_0$ with respect to $1+r$.
 
-
+\textbf{Solution:} Have:
+$$
+c_0=y_0\left[1+\beta^\sigma(1+r)^{\sigma-1}\right]^{-1} .
+$$
+Chain Rule:
+$$
+\begin{array}{r}
+\frac{\partial c_0}{\partial(1+r)}=-(\sigma-1) \beta^\sigma(1+r)^{\sigma-2}\left[1+\beta^\sigma(1+r)^{\sigma-1}\right]^{-2} y_0 \\
+=\frac{(1-\sigma) \beta^\sigma(1+r)^{\sigma-2} y_0}{\left(1+\beta^\sigma(1+r)^{\sigma-1}\right)^2}
+\end{array}
+$$
 
 \item Explain why your answer to (a) proves the claim in lecture that for this consumption function, period 0 consumption responds positively to a decrease in the real interest rate if and only if $\sigma>1$. 
+
+\textbf{Solution:} All the terms are positive with the possible exception of $(1-\sigma)$. If $\sigma>1$, we will have a negative derivative, meaning that a decrease in $(1+r)$ leads to an increase in $c_0$, as was asserted in class.
 
 \item  Show that:
 $$
 c_1=\left[\frac{\beta^\sigma(1+r)^\sigma}{1+\beta^\sigma(1+r)^{\sigma-1}}\right] y_0 .
 $$
 
-
+\textbf{Solution:} Because $y_1=0$, we know $c_0+\frac{c_1}{1+r}=y_0$, meaning $c_1=(1+r)\left(y_0-c_0\right)$. So:
+$$
+\begin{aligned}
+c_1 &=(1+r)\left[1-\frac{1}{1+\beta^\sigma(1+r)^{\sigma-1}}\right] y_0 \\
+&=(1+r)\left[\frac{\beta^\sigma(1+r)^{\sigma-1}}{1+\beta^\sigma(1+r)^{\sigma-1}}\right] y_0 \\
+&=\left[\frac{\beta^\sigma(1+r)^\sigma}{1+\beta^\sigma(1+r)^{\sigma-1}}\right] y_0
+\end{aligned}
+$$
 
 \item Show that if $\sigma>0$, then $\frac{\partial c_1}{\partial(1+r)}>0$.
 
+\textbf{Solution:} This is just quotient rule and Chain Rule: 
+
+$$\frac{\partial c_1}{\partial(1+r)}=y_0\left[\sigma \beta^\sigma(1+r)^{\sigma-1}\left(1+\beta^\sigma(1+r)^{\sigma-1}\right)-\beta^\sigma(1+r)^\sigma\left((\sigma-1) \beta^\sigma(1+r)^{\sigma-2}\right)\right]$$
+$$=y_0 \beta^\sigma(1+r)^{\sigma-1}\left[\sigma\left(1+\beta^\sigma(1+r)^{\sigma-1}\right)-(\sigma-1) \beta^\sigma(1+r)^{\sigma-1}\right]$$
+$$=y_0 \beta^\sigma(1+r)^{\sigma-1}\left[\sigma\left(1+\beta^\sigma(1+r)^{\sigma-1}-\beta^\sigma(1+r)^{\sigma-1}\right)+\beta^\sigma(1+r)^{\sigma-1}\right]$$
+$$=y_0 \beta^\sigma(1+r)^{\sigma-1}\left[\sigma+\beta^\sigma(1+r)^{\sigma-1}\right]>0$$
+
 \item  Why does the response of $c_0$ to $(1+r)$ depend on the value of $\sigma$, but the response of $c_1$ does not? (Hint: your answer should reference the direction of income and substitution effects for consumption in each period.)
+
+\textbf{Solution:} Because this person earns no income in period 1, we know he is a net saver. Therefore, when $r$ increases, he becomes richer, so the income effect says he should consume more in both period 0 and period 1.
+The substitution effect says he should consume more in period 1 and less in period 0 , because $r$ is like an increase in the relative price of consumption today.
+So, for $c_0$, the income and substitution effects go in opposite directions, and when $\sigma>1$, the substitution effect dominates. However when we are thinking about $c_1$, the two effects go in the same direction (they both say consume more $c_1$ ), so we will consume more regardless of how strong the substitution effect (i.e. how large $\sigma$ ) is.
 
 \end{enumerate}
 
@@ -382,9 +549,24 @@ We now assume that households are not subject to a borrowing constraint.
 	\rho v(a_t) = \max_{c_t} u(c_t) + v'(a_t) [ra_t - c_t] + \frac{1}{2} v''(a_t) \sigma^2.
 \end{equation}
 
+\textbf{Solution:}
 
 The HJB in our simple setting is given by an ordinary instead of a partial differential equation because we only have one state variable. 
 \item Show we have the following HJB envelop condition (take FOC, differentiate FOC wrt a and use envelope condition)
+\begin{equation*}
+	(\rho - r) v'(a_t) = v''(a_t) [ra_t - c(a_t)] + \frac{1}{2} v'''(a_t) \sigma^2.
+\end{equation*}
+
+\textbf{Solution:}
+The implied first-order condition for consumption is given by
+\begin{equation}
+	u'(c_t) = v'(a_t),
+\end{equation}
+where $c_t$ now denotes the optimal consumption policy function. Differentiating the FOC again with respect to wealth, we have $u''(c_t) c'(a_t) = v''(a_t)$. Similarly, differentiating the HJB with respect to wealth yields 
+\begin{equation*}
+	\rho v'(a_t) = u'(c_t)c'(a_t) + v''(a_t) [ra_t - c(a_t)] + [r - c'(a_t)] v'(a_t) + \frac{1}{2} v'''(a_t) \sigma^2,
+\end{equation*}
+where we could drop the $\max$ operator since $c(a_t)$ denotes the policy function. Simplifying and using the first-order conditions, we have the following HJB envelope condition
 \begin{equation*}
 	(\rho - r) v'(a_t) = v''(a_t) [ra_t - c(a_t)] + \frac{1}{2} v'''(a_t) \sigma^2.
 \end{equation*}
@@ -393,13 +575,38 @@ The HJB in our simple setting is given by an ordinary instead of a partial diffe
 \begin{equation*}
 	\rho \kappa + \frac{\rho}{c'(a_t)} \ln[c(a_t)] = \ln[c(a_t)] + \frac{r a_t}{c(a_t)} - 1 - \frac{\sigma^2}{2} \frac{c'(a_t)}{c(a_t)^2}.
 \end{equation*}
+\textbf{Solution:}
+The first-order condition for consumption then implies that 
+\begin{equation}
+	v'(a_t) = \frac{1}{c(a_t)}.
+\end{equation}
+Integrating both sides with respect to $a_t$ yields
+\begin{equation}\label{eq:vfansatz}
+	v(a_t) = \frac{1}{c'(a_t)} \ln[c(a_t)] + \kappa.
+\end{equation}
+The HJB must therefore satisfy 
+\begin{equation*}
+	\rho \kappa + \frac{\rho}{c'(a_t)} \ln[c(a_t)] = \ln[c(a_t)] + \frac{r a_t}{c(a_t)} - 1 - \frac{\sigma^2}{2} \frac{c'(a_t)}{c(a_t)^2}.
+\end{equation*}
 
 \item  We can see immediately that the $c(a_t)^2$ term in the denominator on the RHS is going to make solving for a policy function $c$ very difficult. It also implies a simple fix, however: Consider an alternative wealth evolution equation given by $da_t = (r a_t - c_t)dt + \sigma a_t dB_t$.  Show the HJB becomes $\rho v(a_t) = u(c_t) + v'(a_t)[ra_t -c_t] + \frac{\sigma^2}{2} a_t^2 v''(a_t)$. 
 
+\textbf{Solution:}
 
 \item Using the Ansatz that the policy function for consumption is linear in wealth, in particular $c(a_t) = \rho a_t$, show \begin{align}
 	v(a_t) &= \frac{1}{\rho} \ln(\rho a_t) + \frac{r - \rho}{\rho^2} - \frac{\sigma^2}{2\rho^2}.
 \end{align} 
+
+\textbf{Solution:}
+\begin{equation*}
+	\rho \kappa + \ln(\rho a_t) = \ln(\rho a_t) + \frac{r-\rho}{\rho} - \frac{\sigma^2a_t^2}{2 \rho a_t^2}.
+\end{equation*}
+The postulated value function (\ref{eq:vfansatz}) therefore satisfies the HJB for $\kappa = \frac{r - \rho}{\rho^2} - \frac{\sigma^2}{2\rho^2}$. The closed-form solution of the buffer stock model with log utility is then given by 
+\begin{align}
+	c(a_t) &= \rho a_t \\
+	v(a_t) &= \frac{1}{\rho} \ln(\rho a_t) + \frac{r - \rho}{\rho^2} - \frac{\sigma^2}{2\rho^2}.
+\end{align} 
+
 
 \end{enumerate}
 
@@ -521,6 +728,26 @@ It will be a useful exercise to characterize the response of initial lifetime we
 
 \textbf{Exercise}: work out each of these derivatives and interpret 
 
+\textbf{Solution:}
+
+
+
+Example: Let $R_{0,t} = e^{\int_0^t r_s ds }$ for ease of exposition. The only difficult term is $W_{\bm r}$. We have 
+\begin{align*}
+	W_{r_\tau} &= \frac{\partial }{\partial r_{\tau}} \bigg[ \int_0^\infty e^{- \int_0^t r_s ds }   w_t dt \bigg] \\
+	&= \int_0^\infty \frac{\partial }{\partial r_{\tau}} \bigg[e^{- \int_0^t r_s ds } \bigg] w_t dt  \\
+	&= \int_\tau^\infty \frac{\partial }{\partial r_{\tau}} \bigg[e^{- \int_0^t r_s ds } \bigg] w_t dt  \\
+	&= - \int_\tau^\infty e^{- \int_0^t r_s ds } \bigg[ \frac{\partial }{\partial r_{\tau}} \int_0^t r_s ds \bigg] w_t dt  \\
+	&= - \int_\tau^\infty e^{- \int_0^t r_s ds } w_t dt  \\
+	&= - \int_\tau^\infty e^{- (\int_0^t r_s ds + \int_0^\tau r_s ds - \int_0^\tau r_s ds)} w_t dt  \\
+	&= - e^{- \int_0^\tau r_s ds } \int_\tau^\infty e^{- \int_\tau^t r_s ds} w_t dt .
+\end{align*}
+Rewriting, this yields 
+\begin{equation*}
+	W_{r_\tau} = - \frac{1}{R_{0, \tau}} \int_\tau^\infty \frac{w_t}{R_{\tau, t}} dt.
+\end{equation*}
+Interpret: This is the effect on lifetime wealth of a change in interest rates at time $\tau$.
+
 \vspace{5mm}
 \noindent
 \textbf{Step \#2: Euler equation}
@@ -532,6 +759,26 @@ It will be a useful exercise to characterize the response of initial lifetime we
 	\frac{dV_a}{V_a} = \frac{du_c}{u_c} =  (\rho - r_t) dt. 
 \end{equation*}
 
+\textbf{Solution:}
+
+\vspace{3mm}
+\noindent
+To derive the continuous-time Euler equation for the household problem, I start by writing down the HJB. It is 
+\begin{equation*}
+	\rho V(t,a) = V_t + u(c) + V_a \Big[ r_t a + w_t - c \Big]. 
+\end{equation*}
+The envelope condition is 
+\begin{equation*}
+	(\rho - r_t) V_a = V_{at} +  V_{aa} \Big[ r_t a + w_t - c \Big] .
+\end{equation*}
+Next, note that since $c = c(t,a)$ we also have $u_c = u_c(t,a)$. Using Ito's lemma, 
+\begin{equation*}
+	dV_a = V_{at} dt + V_{aa} \Big[ r_t a + w_t - c \Big] dt. 
+\end{equation*}
+And so directly I obtain 
+\begin{equation*}
+	\frac{dV_a}{V_a} = \frac{du_c}{u_c} =  (\rho - r_t) dt. 
+\end{equation*}
 
 \item In this setting, where $dr_t$ and $dw_t$ are entirely deterministic, the Euler equation is of course also a deterministic equation. Prove the following Lemma (where $R_{s,t}=e^{-\int_s^t r_s ds}$)
 \begin{lem} 
@@ -541,6 +788,19 @@ It will be a useful exercise to characterize the response of initial lifetime we
 		u_c(c_0) = e^{- \rho (t-s)} R_{s,t} u_c(c_t). 
 	\end{equation*}
 \end{lem}
+
+
+\textbf{Solution}
+Using separation of variables, I can integrate and obtain 
+\begin{align*}
+	\int_0^t \frac{1}{u_c} du_c &=  \int_0^t (\rho - r_s) ds \\
+	\ln(u_c(t)) - \ln(u_c(0)) &=  \int_0^t (\rho - r_s) ds,
+\end{align*}
+or simply 
+\begin{equation*}
+	u_c(t) = u_c(0) e^{\int_0^t (\rho - r_s) ds} = u_c(0) e^{\int_0^t \rho ds} e^{- \int_0^t r_s ds} = u_c(0) \frac{1 }{e^{-\rho t}R_{0,t}}.
+\end{equation*}
+Thus, we have integrated back up to the discrete-time Euler equation. 
 
 \item Show that with CRRA utility we can write consumption as 
 \begin{equation*}
@@ -586,6 +846,17 @@ This definition of course captures the intuition that the household experiences 
 	W &= c_0 \int_0^\infty e^{- \frac{\rho}{\gamma} t} R_{0,t}^\frac{1-\gamma}{\gamma} dt \\
 \end{align*}
 
+\textbf{Solution:}
+I have
+\begin{equation*}
+	\int_0^\infty e^{- \int_0^t r(s) ds }   c(t) dt = \int_0^\infty \frac{c_t}{R_{0,t}} dt = W.
+\end{equation*}
+Substituting in for $c_t$, I obtain
+\begin{align*}
+	W &= \int_0^\infty \frac{c_0 \big[ e^{- \rho t} R_{0,t} \big]^\frac{1}{\gamma} }{R_{0,t}} dt \\
+	&= c_0 \int_0^\infty e^{- \frac{\rho}{\gamma} t} R_{0,t}^\frac{1-\gamma}{\gamma} dt \\
+\end{align*}
+
 \item To get started with a simple case, assume that $r_t = r$ is constant. Then 
 \begin{equation*}
 	R_{0,t} = e^{\int_0^t r ds } = e^{ r t}.
@@ -601,6 +872,22 @@ Let $\kappa =- \frac{1}{\gamma} \big[ \rho - (1-\gamma) r \big] $, prove the fol
 	\end{equation*}
 	confirming that I get the same result as I did before. 
 \end{lem}
+
+\textbf{Solution:}
+
+Differentiating with respect to $W$, 
+\begin{equation*}
+	1 = \frac{\partial c_0}{\partial W} \int_0^\infty e^{- \frac{1}{\gamma} \big[ \rho - (1-\gamma) r \big] t }  dt.
+\end{equation*}
+Solving this out,\footnote{
+	Mathematically, for any $c \neq 0$, we have 
+	\begin{equation*}
+		\int e^{c x} dx = \frac{1}{c} e^{cx} + C. 
+	\end{equation*}
+} assuming for now that $\kappa > 0$, 
+\begin{equation*}
+	\text{MPC} = \bigg[\int_0^\infty e^{- \kappa t }  dt\bigg]^{-1}  = \bigg[ - \frac{1}{\kappa} e^{- \kappa x}  \bigg|_0^\infty  \bigg]^{-1}  = - \kappa \bigg[e^{- \kappa \infty }  - e^{- \kappa 0}  \bigg]^{-1} = - \kappa \bigg[0 - 1  \bigg]^{-1} = \kappa. 
+\end{equation*}
 
 \end{enumerate}
 
@@ -626,6 +913,15 @@ for the potentially stochastic return $R_{t+1}^j$ of any asset $j$, and where $\
 \end{equation*}
 
 
+
+\textbf{Solution:}
+\begin{equation*}
+	1 = e^{-\rho} E\bigg[R_{t+1}^j \frac{C_{t+1}^{-\gamma}}{C_t^{-\gamma}} \bigg] = E\bigg[e^{-\rho}  R_{t+1}^j e^{-\gamma \ln(C_{t+1} / C_t)} \bigg] = E\bigg[ R_{t+1}^j e^{- \rho -\gamma  \Delta \ln  C_{t+1}} \bigg].
+\end{equation*}
+Finally, denote by $r_{t+1}^j = \ln R_{t+1}^j$ the log return of the asset, then we arrive at 
+\begin{equation*}
+	1 = E\bigg[ e^{r_{t+1}^j - \rho -\gamma \Delta \ln  C_{t+1}} \bigg].
+\end{equation*}
 
 
 \vspace{5mm}
@@ -663,16 +959,59 @@ where
 	X_t = -\rho + r_{t+1}^j + \sigma^j \epsilon_{t+1}^j - \frac{1}{2} (\sigma^j)^2 - \gamma \Delta \ln C_{t+1} \sim -\rho + \mathcal{N}\bigg(r_{t+1}^j - \frac{1}{2} (\sigma^j)^2 - \gamma \mu_{C,t} \;\;, \;\; (\sigma^j)^2 + \gamma^2 \sigma_{C,t}^2 - 2 \rho_{j,C} \gamma \sigma^j \sigma_{C,t} \bigg).
 \end{equation*}
 
-
+\textbf{Solution:}
 
 \item Taking expecations and logs show:
 \begin{equation}
 	0 =  - \rho + r_{t+1}^j - \frac{1}{2} (\sigma^j)^2 - \gamma E_t(\Delta \ln C_{t+1}) + \frac{1}{2} \text{Var}_t( \sigma^j \epsilon_{t+1}^j - \gamma \Delta \ln C_{t+1})
 \end{equation}
 
+\textbf{Solution}
+Since $\exp(X_t)$ is log-normal, we have 
+\begin{equation*}
+	1 = \exp \bigg\{ - \rho + r_{t+1}^j - \frac{1}{2} (\sigma^j)^2 - \gamma \mu_{C,t} + \frac{1}{2} (\sigma^j)^2 + \frac{1}{2} \gamma^2 \sigma_{C,t}^2 - \gamma \rho_{j,C} \sigma^j \sigma_{C,t} \bigg\}.
+\end{equation*}
+Taking the log from both sides, we finally arrive at
+\begin{equation}
+	0  = - \rho + r_{t+1}^j - \gamma \mu_{C,t} + \frac{\gamma^2}{2} \sigma_{C,t}^2 - \gamma \rho_{r,C} \sigma^j \sigma_{C,t}.
+\end{equation}
+More generall, we can leave this as 
+\begin{equation}
+	0 =  - \rho + r_{t+1}^j - \frac{1}{2} (\sigma^j)^2 - \gamma E_t(\Delta \ln C_{t+1}) + \frac{1}{2} \text{Var}_t( \sigma^j \epsilon_{t+1}^j - \gamma \Delta \ln C_{t+1})
+\end{equation}
+
+
 
 \item Use this last formula to derive the risk-free rate and the equity premium
 
+\textbf{Solution:}
+\vspace{5mm}
+\noindent
+\textbf{Risk-free rate.} For the risk-free rate, simply plug in $\sigma^f = 0$. Then we have 
+\begin{equation}
+	0 =  - \rho + r_{t+1}^f - \gamma E_t(\Delta \ln C_{t+1}) + \frac{\gamma^2}{2} \text{Var}_t( \Delta \ln C_{t+1}).
+\end{equation}
+
+
+\vspace{5mm}
+\noindent
+\textbf{Equity premium.} For the asset class of equities, which we denote by the return $R_{t+1}^E$, we have 
+\begin{equation*}
+	\pi_{t+1}^E \equiv r_{t+1}^E - r_{t+1}^f = \frac{1}{2} (\sigma^E)^2 - \frac{1}{2} \text{Var}_t( \sigma^E \epsilon_{t+1} - \gamma \Delta \ln C_{t+1}) + \frac{\gamma^2}{2} \text{Var}_t( \Delta \ln C_{t+1}).
+\end{equation*}
+Now use the formula 
+\begin{equation*}
+	\text{Var}(aX-bY) = a^2 \text{Var}(X) + b^2 \text{Var}(Y) - 2ab \text{Cov}(X,Y).
+\end{equation*}
+Thus, 
+\begin{equation*}
+	\pi_{t+1}^E = \frac{1}{2} (\sigma^E)^2 - \frac{1}{2} \bigg(\text{Var}_t( \sigma^E \epsilon_{t+1}) + \text{Var}_t(\gamma \Delta \ln C_{t+1}) - 2 \sigma^E \gamma \text{Cov}_t(\epsilon_{t+1}, \Delta \ln C_{t+1}) \bigg) + \frac{\gamma^2}{2} \text{Var}_t( \Delta \ln C_{t+1}).
+\end{equation*}
+Rewriting, we arrive at 
+\begin{equation}
+	\pi_{t+1}^E = \gamma \sigma_{C,E}
+\end{equation}
+where $\sigma_{C,E}$ is the covariance between equity returns and log consumption growth. 
 
 \end{enumerate}
 
