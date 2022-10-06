@@ -340,7 +340,7 @@ where we will call $V_t$ the \textbf{value function} of the household at time $t
 \begin{enumerate}
 	\item [(i)] The Bellman equation of this problem is given by
 	\begin{equation*}
-		\rho V_t(a) = \partial_t V_t(a) \max_c \bigg\{ u(c) + \Big[ ra + y_t - c \Big] \partial_a V_t(a) \bigg\}
+		\rho V_t(a) = \partial_t V_t(a) + \max_c \bigg\{ u(c) + \Big[ ra + y_t - c \Big] \partial_a V_t(a) \bigg\}
 	\end{equation*}
 	where $\partial_x$ denotes the partial derivative with respect to $x$. (i.1) Write down the FOC for consumption and interpret every term. (i.2) Why is there a $\partial_t V_t(a)$ term? Discuss whether this Bellman equation is stationary or not. (i.3) Plug the consumption policy function $c_t(a)$, which is now characterized by the FOC, back into the HJB. (i.4) Take the envelope condition by differentiating the Bellman with respect to $a$. (i.5) Use this to plug back into the FOC for $\partial_a V_t(a)$ and arrive at the consumption Euler equation.
 \end{enumerate}
