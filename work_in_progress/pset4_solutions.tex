@@ -141,7 +141,7 @@ The rate of investment is given by $\iota_t$. Investment adjustment costs are ca
  \item Interpret all terms of the two budget constraints
 \textbf{Solution:} 
 
-\item I will rewrite the household problem in terms of liquid net worth, defined by the equations 
+\item It is convenient to rewrite the household problem in terms of liquid net worth, defined by the equations 
 \begin{align*}
 	\theta n &= Q k \\
 	(1-\theta) n &= b,
@@ -207,7 +207,7 @@ This now allows us to write the household problem recursively.
 \noindent
 \textbf{Recursive representation.} Assume on top that dividends and prices (MISSING)
 The household problem can therefore be written in terms of the household state variables $(n,z)$ as well as the aggregate state space $\Gamma$. 
-\item Show that the household problem satisfies the followign HJB
+\item Show that the household problem satisfies the following HJB
 \begin{align*}
 	\rho V(n,z,\Gamma) = \max_{c,\theta} \bigg\{  & u(c) + V_n \Big[ rn + \theta n (\mu_R - r) + wz - c \Big] + \frac{1}{2} V_{nn} (\theta n \sigma_R)^2 +  V_z \mu_z + \frac{1}{2} V_{zz} \sigma_z^2  \\
 	& + V_{n \Gamma} \theta n \sigma_R \sigma_\Gamma + V_\Gamma \mu_\Gamma + \frac{1}{2} \sigma_\Gamma^T V_{\Gamma \Gamma} \sigma_\Gamma \bigg\},
@@ -717,6 +717,15 @@ Aggregate prices follow a deterministic process, $\bm{r} = \{r_t\}$ and $\bm{w} 
 
 
 \textbf{Exercise}: Use this result to characterize the initial lifetime wealth $W$ of the household. We have $W = W(a_0, \bm{r}, \bm{w})$. 
+
+\textbf{Solution:} Using this formula for the household budget constraint, we have
+	\begin{equation*}
+		\lim_{T \to \infty} a(T)  = a(0) \lim_{T \to \infty} e^{\int_0^T r(s) ds} -  \lim_{T \to \infty} \int_0^T e^{\int_t^T r(s) ds } \Big[ c(t) - w_t \Big] dt.
+	\end{equation*}
+	Under the no-Ponzi assumption of $\lim_{T \to \infty} a(T) = 0$, this further simplifies to 
+	\begin{equation*}
+		\int_0^\infty e^{- \int_0^t r(s) ds }   c(t) dt = a(0) + \int_0^\infty e^{- \int_0^t r(s) ds }   w(t) dt \equiv W.
+	\end{equation*}
 
 
 \vspace{5mm}
