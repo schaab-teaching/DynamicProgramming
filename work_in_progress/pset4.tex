@@ -141,14 +141,14 @@ The rate of investment is given by $\iota_t$. Investment adjustment costs are ca
  \item Interpret all terms of the two budget constraints
 
 
-\item I will rewrite the household problem in terms of liquid net worth, defined by the equations 
+ It is convenient to rewrite the household problem in terms of liquid net worth, defined by the equations 
 \begin{align*}
 	\theta n &= Q k \\
 	(1-\theta) n &= b,
 \end{align*}
 so that total liquid net worth is $n = Qk + b$.
 
- How would you refer to $\theta$? Assume households' capital accumulation is non-stochastic. That is, there is no capital quality risk. Show that the liquid net worth evolves according to 
+\item How would you refer to $\theta$? Assume households' capital accumulation is non-stochastic. That is, there is no capital quality risk. Show that the liquid net worth evolves according to 
 
 \begin{equation*}
 	dn = rn +  \theta n \bigg[ \frac{D - \iota }{Q} +  \frac{dQ}{Q} + \Phi(\iota) - \delta - r \bigg]  + w z - c .
@@ -156,24 +156,23 @@ so that total liquid net worth is $n = Qk + b$.
  
 
 
-\item Argue why the choice of $\iota$ is entirely static in this setting, write the FOC
+\item Argue why the choice of $\iota$ is entirely static in this setting and show it is only a function of capital $\iota = \iota(Q)$ 
 
 
 
-\item So that optimal household investment is only a function of the price of capital, $\iota = \iota(Q)$. Second, households take as given aggregate ``prices'' $(r, w, D, Q)$. 
-
-
-These two features of the household problem allow me to work with the following, simplified representation. Define 
+  Recall also that households take as given aggregate ``prices'' $(r, w, D, Q)$.  This will allow us to work with a simplified representation. Define 
 \begin{equation*}
 	dR = \underbrace{\frac{D - \iota (Q) }{Q}}_\text{Dividend yield} dt + \underbrace{\Big[\Phi(\iota(Q)) - \delta \Big] dt +  \frac{dQ}{Q}}_\text{Capital gains} \equiv \mu_R dt + \sigma_R dB
 \end{equation*}
-to be the effective rate of return on households' capital investments. I use 
+to be the effective rate of return on households' capital investments. And where
 \begin{align*}
 	\mu_R &= \frac{D - \iota (Q) }{Q}  + \Phi(\iota(Q)) - \delta + \mu_Q \\
 	\sigma_R &= \sigma_Q. 
 \end{align*}
-After internalizing the optimal internal rate of capital investment, $\iota = \iota(Q)$, this return is exogenous from the perspective of the household: it depends on macro conditions and prices, but not on the particular portfolio composition of the household. Show that  the law of motion of the household's liquid net worth 
-can be written as 
+After solving for $\iota = \iota(Q)$, this return is exogenous from the perspective of the household: it depends on macro conditions and prices, but not on the particular portfolio composition of the household.
+
+\item Show that the law of motion of the household's liquid net worth satisfies the following equation. Why do you think using liquid net worth is useful? And why do we want this law of motion?
+
 \begin{equation*}
 	dn = rn + \theta n (\mu_R - r) + wz - c + \theta n \sigma_R dB. 
 \end{equation*}
@@ -182,35 +181,32 @@ can be written as
 
 \vspace{5mm}
 \noindent
-\textbf{State space.} We denote the agent's individual states by $(n, z)$. There is a variable $\Gamma_t$ that evolves according to the diffusion process 
+\textbf{State space.} We denote the agent's individual states by $(n, z)$. We assume there is a variable $\Gamma_t$ that evolves according to the diffusion process 
 \begin{equation*}
 	d \Gamma = \mu_\Gamma dt + \sigma_\Gamma dB.
 \end{equation*}
-We call $\Gamma$ the \textit{aggregate state of the economy}. And we assume that all capital prices are functions of it, that is, 
+We call $\Gamma$ the \textit{aggregate state of the economy}. We can write all capital prices as functions of this aggregate state, that is, 
 \begin{equation*}
 	r_t = r(\Gamma_t), \hspace{5mm}	D_t = D(\Gamma_t), \hspace{5mm}	Q_t = Q(\Gamma_t).
 \end{equation*}
-This now allows us to write the household problem recursively.
+This now allows us to write the household problem recursively with $\Gamma$ as an extra state variable. Note that otherwise, we would need to keep track of three different aggregate state variables. 
 
 
 \vspace{5mm}
 \noindent
-\textbf{Recursive representation.} Assume on top that dividends and prices (MISSING)
+\textbf{Recursive representation.} 
 The household problem can therefore be written in terms of the household state variables $(n,z)$ as well as the aggregate state space $\Gamma$. 
-\item Show that the household problem satisfies the followign HJB
+\item Show that the household problem satisfies the following HJB
 \begin{align*}
 	\rho V(n,z,\Gamma) = \max_{c,\theta} \bigg\{  & u(c) + V_n \Big[ rn + \theta n (\mu_R - r) + wz - c \Big] + \frac{1}{2} V_{nn} (\theta n \sigma_R)^2 +  V_z \mu_z + \frac{1}{2} V_{zz} \sigma_z^2  \\
 	& + V_{n \Gamma} \theta n \sigma_R \sigma_\Gamma + V_\Gamma \mu_\Gamma + \frac{1}{2} \sigma_\Gamma^T V_{\Gamma \Gamma} \sigma_\Gamma \bigg\},
 \end{align*}
-where I assume that $\mathbb{E}(dW dB) = 0$ so that households' earnings risk is, for now, uncorrelated with the aggregate productivity risk factor.
+where you can assume that $\mathbb{E}(dW dB) = 0$. This means that households' earnings risk is uncorrelated with the aggregate state $\Gamma$.
 
 
 
 \item Derive the first-order conditions for consumption and portfolio choice
 
-
-
-The household HJB and the corresponding optimality condition hold everywhere in the interior of the household state space. 
 
 \item (hard) Prove the following lemma (use envelope condition and apply Ito's lemma to $V_n(h,y,\Gamma)$)
 
@@ -319,7 +315,7 @@ $$
 
 
 
-\item Explain why your answer to (a) proves the claim in lecture that for this consumption function, period 0 consumption responds positively to a decrease in the real interest rate if and only if $\sigma>1$. 
+\item Explain why your answer to (a) shows that period 0 consumption responds positively to a decrease in the real interest rate if and only if $\sigma>1$. 
 
 \item  Show that:
 $$
@@ -389,12 +385,14 @@ The HJB in our simple setting is given by an ordinary instead of a partial diffe
 	(\rho - r) v'(a_t) = v''(a_t) [ra_t - c(a_t)] + \frac{1}{2} v'''(a_t) \sigma^2.
 \end{equation*}
 
-\item To obtain a closed-form solution to the buffer-stock model, let utility be log so that $u(c_t) = \ln(c_t)$. We will write the consumption policy function as $c(a_t)$. Show the HJB satisfies
+To obtain a closed-form solution to the buffer-stock model, let utility be log so that $u(c_t) = \ln(c_t)$. We will write the consumption policy function as $c(a_t)$. 
+\item Show the HJB satisfies
 \begin{equation*}
 	\rho \kappa + \frac{\rho}{c'(a_t)} \ln[c(a_t)] = \ln[c(a_t)] + \frac{r a_t}{c(a_t)} - 1 - \frac{\sigma^2}{2} \frac{c'(a_t)}{c(a_t)^2}.
 \end{equation*}
 
-\item  We can see immediately that the $c(a_t)^2$ term in the denominator on the RHS is going to make solving for a policy function $c$ very difficult. It also implies a simple fix, however: Consider an alternative wealth evolution equation given by $da_t = (r a_t - c_t)dt + \sigma a_t dB_t$.  Show the HJB becomes $\rho v(a_t) = u(c_t) + v'(a_t)[ra_t -c_t] + \frac{\sigma^2}{2} a_t^2 v''(a_t)$. 
+ We can see immediately that the $c(a_t)^2$ term in the denominator on the RHS is going to make solving for a policy function $c$ very difficult. It also implies a simple fix, however: Consider an alternative wealth evolution equation given by $da_t = (r a_t - c_t)dt + \sigma a_t dB_t$. 
+\item Show the HJB becomes $$\rho v(a_t) = u(c_t) + v'(a_t)[ra_t -c_t] + \frac{\sigma^2}{2} a_t^2 v''(a_t)$$ 
 
 
 \item Using the Ansatz that the policy function for consumption is linear in wealth, in particular $c(a_t) = \rho a_t$, show \begin{align}
@@ -453,17 +451,8 @@ Aggregate prices follow a deterministic process, $\bm{r} = \{r_t\}$ and $\bm{w} 
 	\begin{equation*}
 		y(T)  = y(0) e^{\int_0^T r(s) ds} +  \int_0^T e^{\int_t^T r(s) ds }  x(t) dt.
 	\end{equation*}
-	Using this formula for the household budget constraint, I arrive at the lifetime budget constraint 
-	\begin{equation*}
-		\lim_{T \to \infty} a(T)  = a(0) \lim_{T \to \infty} e^{\int_0^T r(s) ds} -  \lim_{T \to \infty} \int_0^T e^{\int_t^T r(s) ds } \Big[ c(t) - w_t \Big] dt.
-	\end{equation*}
-	Under the no-Ponzi assumption of $\lim_{T \to \infty} a(T) = 0$, this further simplifies to 
-	\begin{equation*}
-		\int_0^\infty e^{- \int_0^t r(s) ds }   c(t) dt = a(0) + \int_0^\infty e^{- \int_0^t r(s) ds }   w(t) dt \equiv W.
-	\end{equation*}
+	
 \end{lem}
-
-
 \vspace{8mm}
 \begin{proof}
 	Consider any ODE
@@ -504,12 +493,11 @@ Aggregate prices follow a deterministic process, $\bm{r} = \{r_t\}$ and $\bm{w} 
 	\begin{equation*}
 		y(T)  = y(0) e^{\int_0^T r(s) ds} +  \int_0^T e^{\int_t^T r(s) ds }  x(t) dt.
 	\end{equation*}
-	
 \end{proof}
+\begin{enumerate}[(a)]
 
 
-
-\textbf{Exercise}: Use this result to characterize the initial lifetime wealth $W$ of the household. We have $W = W(a_0, \bm{r}, \bm{w})$. 
+\item Use this result to characterize the initial lifetime wealth $W$ of the household. We have $W = W(a_0, \bm{r}, \bm{w})$. 
 
 
 \vspace{5mm}
@@ -519,13 +507,13 @@ It will be a useful exercise to characterize the response of initial lifetime we
 	dW = W_{a_0} da_0 + W_{\bm r} d \bm{r} + W_{ \bm w} d \bm w. 
 \end{equation*}
 
-\textbf{Exercise}: work out each of these derivatives and interpret 
+\item  Work out each of these derivatives ($ W_{a_0}$, $W_{\bm r}$ and $W_{ \bm w}$) and interpret 
 
 \vspace{5mm}
 \noindent
 \textbf{Step \#2: Euler equation}
 
-\begin{enumerate}[(a)]
+
 
 \item Use the HJB to derive the euler equation
 \begin{equation*}
@@ -562,7 +550,7 @@ It will be a useful exercise to characterize the response of initial lifetime we
 	%c_t = c_0 \bigg[ e^{- \rho t} R_{0,t} \bigg]^\frac{1}{\gamma} .
 %\end{equation*}
 
-\end{enumerate}
+
 
 \vspace{5mm}
 \noindent
@@ -578,14 +566,12 @@ All that is left for me to do is put together the lifetime budget constraint wit
 \end{equation*}
 This definition of course captures the intuition that the household experiences a marginal change in assets (or wealth or unearned income) in period $0$, and then changes his path of consumption expenditures $\{ c_t\}$ accordingly. 
 
-\begin{enumerate}[(a)]
+
 
 \item Using the lifetime budget and the consumption policy function show
-
 \begin{align*}
 	W &= c_0 \int_0^\infty e^{- \frac{\rho}{\gamma} t} R_{0,t}^\frac{1-\gamma}{\gamma} dt \\
 \end{align*}
-
 \item To get started with a simple case, assume that $r_t = r$ is constant. Then 
 \begin{equation*}
 	R_{0,t} = e^{\int_0^t r ds } = e^{ r t}.
@@ -597,9 +583,9 @@ Let $\kappa =- \frac{1}{\gamma} \big[ \rho - (1-\gamma) r \big] $, prove the fol
 \begin{lem}
 	The MPC in this setting is constant and given by
 	\begin{equation*}
-		\text{MPC} = \kappa,
+		\text{MPC} = \kappa
 	\end{equation*}
-	confirming that I get the same result as I did before. 
+	
 \end{lem}
 
 \end{enumerate}
@@ -660,10 +646,12 @@ Assume also that $\Delta \ln  C_{t+1}$ is conditionally normal, with mean $\mu_{
 \end{equation*}
 where 
 \begin{equation*}
-	X_t = -\rho + r_{t+1}^j + \sigma^j \epsilon_{t+1}^j - \frac{1}{2} (\sigma^j)^2 - \gamma \Delta \ln C_{t+1} \sim -\rho + \mathcal{N}\bigg(r_{t+1}^j - \frac{1}{2} (\sigma^j)^2 - \gamma \mu_{C,t} \;\;, \;\; (\sigma^j)^2 + \gamma^2 \sigma_{C,t}^2 - 2 \rho_{j,C} \gamma \sigma^j \sigma_{C,t} \bigg).
+	X_t = -\rho + r_{t+1}^j + \sigma^j \epsilon_{t+1}^j - \frac{1}{2} (\sigma^j)^2 - \gamma \Delta \ln C_{t+1} 
 \end{equation*}
-
-
+so
+\begin{equation*}
+X_t \sim -\rho + \mathcal{N}\bigg(r_{t+1}^j - \frac{1}{2} (\sigma^j)^2 - \gamma \mu_{C,t}, (\sigma^j)^2 + \gamma^2 \sigma_{C,t}^2 - 2 \rho_{j,C} \gamma \sigma^j \sigma_{C,t} \bigg).
+\end{equation*}
 
 \item Taking expecations and logs show:
 \begin{equation}
@@ -671,8 +659,11 @@ where
 \end{equation}
 
 
-\item Use this last formula to derive the risk-free rate and the equity premium
+\item Use this last formula to derive the risk-free rate $r^f$ (Hint: for $j=f$ set $\sigma^f=0$)
 
+
+\item Consider a class of equities with risk $\sigma^E$, we define the equity premium as $$\pi_{t+1}^E \equiv r_{t+1}^E - r_{t+1}^f $$
+Show $$\pi_{t+1}^E = \gamma \sigma_{C,E}$$ where $\sigma_{C,E}$ is the covariance between equity returns and log consumption growth. 
 
 \end{enumerate}
 
