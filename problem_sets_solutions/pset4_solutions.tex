@@ -571,7 +571,7 @@ $$\rho v(a_t) = \max_{c_t} u(c_t) + \mathcal A v$$
 
 
 The HJB in our simple setting is given by an ordinary instead of a partial differential equation because we only have one state variable. 
-\item Show we have the following HJB envelop condition (take FOC, differentiate FOC wrt a and use envelope condition)
+\item Show we have the following HJB envelop condition 
 \begin{equation*}
 	(\rho - r) v'(a_t) = v''(a_t) [ra_t - c(a_t)] + \frac{1}{2} v'''(a_t) \sigma^2.
 \end{equation*}
@@ -593,7 +593,7 @@ where we could drop the $\max$ operator since $c(a_t)$ denotes the policy functi
 
 
 To obtain a closed-form solution to the buffer-stock model, let utility be log so that $u(c_t) = \ln(c_t)$. We will write the consumption policy function as $c(a_t)$. 
-\item Show the HJB satisfies
+\item Show the HJB satisfies (take FOC, differentiate FOC wrt a and integrate FOC)
 \begin{equation*}
 	\rho \kappa + \frac{\rho}{c'(a_t)} \ln[c(a_t)] = \ln[c(a_t)] + \frac{r a_t}{c(a_t)} - 1 - \frac{\sigma^2}{2} \frac{c'(a_t)}{c(a_t)^2}.
 \end{equation*}
@@ -807,7 +807,7 @@ And so directly I obtain
 	
 	The continuous-time Euler equation in this simple setting without uncertainty between two dates $t > s$ is given by
 	\begin{equation*}
-		u_c(c_0) = e^{- \rho (t-s)} R_{s,t} u_c(c_t). 
+		u_c(c_s) = e^{- \rho (t-s)} R_{s,t} u_c(c_t). 
 	\end{equation*}
 \end{lem}
 
