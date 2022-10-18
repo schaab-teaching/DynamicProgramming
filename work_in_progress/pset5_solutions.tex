@@ -1,0 +1,382 @@
+\documentclass[11pt]{extarticle}
+\usepackage{fullpage,amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm}
+\usepackage[left=1in, bottom=1in, top=1in, right = 1in]{geometry}
+\usepackage{textcomp}
+\usepackage{mathpazo}
+\usepackage{mathrsfs}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+
+\usepackage{microtype}
+
+\usepackage{bm}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage{ragged2e}
+
+\setlength{\parindent}{24pt}
+\setlength{\jot}{8pt}
+
+
+\usepackage[shortlabels]{enumitem}
+
+
+%% FOOTNOTES
+\usepackage[bottom]{footmisc}
+\usepackage{footnotebackref}
+
+
+%% FIGURE ENVIRONMENT
+%\graphicspath{{}}
+\usepackage[margin=15pt, font=small, labelfont={bf}, labelsep=period]{caption}
+\usepackage{subcaption}
+\captionsetup[figure]{name={Figure}, position=above}
+\usepackage{float}
+\usepackage{epstopdf}
+
+
+%% NEW COMMANDS
+\renewcommand{\baselinestretch}{1.25} 
+\renewcommand{\qedsymbol}{$\blacksquare$}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\indep}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\renewcommand{\b}{\begin}
+\newcommand{\e}{\end}
+
+%% NEWTHEOREM
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{cor}[thm]{Corollary}
+
+%% LINKS and COLORS
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\definecolor{myred}{RGB}{163, 32, 45}
+\hypersetup{
+	%backref=true,
+	%pagebackref=true,
+	colorlinks=true,
+	urlcolor=myred,
+	citecolor=myred, 
+	linktoc=all,     
+	linkcolor=myred,
+}
+
+%% TABLE OF CONTENTS
+\addto\captionsenglish{
+	\renewcommand{\contentsname}
+	{}% This removes the heading over the table of contents.
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%            END PREAMBLE           %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Dynamic Optimization: Problem Set \#5}
+
+\author{Andreas Schaab}
+
+\date{Fall, 2022}
+
+
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\setcounter{page}{0}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 1}
+
+\textbf{Credit:} David Laibson (\url{https://projects.iq.harvard.edu/econ2010c/problem-sets-david-laibson})
+
+Please solve Problem 1 (``a simple consumption problem'') of David's problem set (PSET) \#3.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 2}
+
+\textbf{Credit:} David Laibson (\url{https://projects.iq.harvard.edu/econ2010c/problem-sets-david-laibson})
+
+Please solve Problem 2 (``true / false / uncertain'') of David's problem set (PSET) \#3.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 3}
+
+\textbf{Credit:} David Laibson (\url{https://projects.iq.harvard.edu/econ2010c/problem-sets-david-laibson})
+
+Please solve Problem 3 (``three period hyperbolic discounting model'') of David's problem set (PSET) \#3.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 4}
+
+\textbf{Credit:} David Laibson (\url{https://projects.iq.harvard.edu/econ2010c/problem-sets-david-laibson})
+
+Please solve Problem 4 (``a procrastination problem'') of David's problem set (PSET) \#3.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{10mm}
+\section*{Problem 5}
+
+\textbf{Credit:} Pablo Kurlat
+
+%\textbf{Gerard:} add Pablo's fiscal multiplier problem here
+
+
+Consider the following model.
+\begin{itemize}
+\item The world lasts for two periods
+\item There are two ty pes of households.
+-$\gamma$ type $A$ households. Preferences:
+$$
+u\left(c_1, c_2\right)=\log \left(c_1\right)+\beta \log \left(c_2\right)
+$$
+$-1-\gamma$ type $B$ households. Consumption rule:
+$$
+c_1=a+b\left(Y_1+s T\right)
+$$
+- All households get the same income
+\item $Y_1$ is period-1 GDP
+\item $s T$ is a lump-sum transfer from the government in period $1 . s$ is a constant
+\item Period 2 GDP $Y_2$ is exogenously given
+- e.g. flexible prices and inelastic labor supply
+\item Period 1 GDP $Y_1$ is demand-determined
+\item The real interest $r$ is fixed at zero
+- e.g. due to rigid prices and the zero lower bound
+\item The government spends $G$ in period 1
+\item The government charges a lump-sum tax $\tau=s T+G$ on everyone in period 2
+\item Notation:
+- Aggregate consumption:
+$$
+C_1 \equiv \gamma c_1^A+(1-\gamma) c_1^B
+$$
+- Direct effect of transfers on consumption
+\end{itemize}
+
+
+
+\begin{enumerate}[(a)]
+\item Solve for consumption of A and B households and for total consumption. Use the following
+notation
+
+\begin{itemize}
+\item $c_1^i\left(T, \tau, Y_1\right)$ for $i=A, B$ denotes the consumption choice given transfers, taxes and period-1 GDP.
+
+\textbf{Solution:}
+$$
+c_1^A=\frac{Y_1+s T+Y_2-\tau}{1+\beta}
+$$
+and
+$$
+c_2^B=a+b\left(Y_1+s T\right)
+$$
+\item $c_1^i\left(T, G, Y_1\right)$ for $i=A, B$ denotes the consumption choice given transfers, government spending and period-1 GDP, once we have taken into account the government budget constraint, which implies a certain level of $\tau$ for given levels of $T$ and $G$.
+
+\textbf{Solution:}
+$$
+c_1^A=\frac{Y_1-G+Y_2}{1+\beta}
+$$
+and
+$$
+c_2^B=a+b\left(Y_1+s T\right)
+$$
+
+\item $C_1\left(T, \tau, Y_1\right) \equiv \gamma c_1^A\left(T, \tau, Y_1\right)+(1-\gamma) c_1^B\left(T, \tau, Y_1\right)$
+
+\textbf{Solution:}
+$$
+C_1\left(T, \tau, Y_1\right)=\gamma \frac{Y_1+s T+Y_2-\tau}{1+\beta}+(1-\gamma)\left[a+b\left(Y_1+s T\right)\right]
+$$
+\item $C_1\left(T, G, Y_1\right) \equiv \gamma c_1^A\left(T, G, Y_1\right)+(1-\gamma) c_1^B\left(T, G, Y_1\right)$
+
+\textbf{Solution:}
+$$
+C_1\left(T, G, Y_1\right)=\gamma \frac{Y_1-G+Y_2}{1+\beta}+(1-\gamma)\left[a+b\left(Y_1+s T\right)\right]
+$$
+
+\end{itemize}
+
+\item Compute the following quantities
+
+(a) $\frac{d Y_1}{d G}$
+
+\textbf{Solution:}
+$$
+\frac{d Y_1}{d G}=\frac{1-\frac{\gamma}{1+\beta}}{1-\frac{\gamma}{1+\beta}-(1-\gamma) b}
+$$
+
+(b) $\frac{\partial C_1\left(T, \tau, Y_1\right)}{\partial T}$
+
+\textbf{Solution:}
+$$
+\frac{\partial C_1\left(T, \tau, Y_1\right)}{\partial T}=\left[\frac{\gamma}{1+\beta}+(1-\gamma) b\right] s
+$$
+(c) $\frac{\partial C_1\left(T, G, Y_1\right)}{\partial T}$
+
+\textbf{Solution:}
+$$
+\frac{\partial C_1\left(T, G, Y_1\right)}{\partial T}=(1-\gamma) b s
+$$
+(d) $\frac{\partial C_1\left(T, G, Y_1\right)}{\partial G}$
+
+\textbf{Solution:}
+$$
+\frac{\partial C_1\left(T, G, Y_1\right)}{\partial G}=-\frac{\gamma}{1+\beta}
+$$
+(e) $\frac{d Y_1}{d T}$
+
+\textbf{Solution:}
+$$
+\frac{d Y_1}{d T}=\frac{(1-\gamma) b s}{1-\frac{\gamma}{1+\beta}-(1-\gamma) b}
+$$
+
+
+\item Consider the following empirical experiments:
+
+(a) A period-1 transfer $T_i$ is assigned to household $i$ in period 1. $T_i$ varies randomly across the population. The government budget is balanced with a lump-sum tax paid equally by everybody in period 2 .
+
+(b) A lump-sum transfer $T$ is assigned equally to everyone. A random sample of the population gets in in period 1 and the rest get it in period 2. The government budget is balanced with a lump-sum tax paid equally by everybody in period 2 .
+In both cases a researcher estimates a regression:
+$$
+c_{i 1}=\alpha+\delta T_{i 1}
+$$
+What quantity is the researcher estimating in each case? What quantity are Parker et. al. (2013) estimating?
+
+\textbf{Solution:} In experiment (a) we measure $\frac{\partial C_1\left(T, \tau, Y_1\right)}{\partial T}$ because taxes for this individual household are held constant as we vary the household's transfer. In experiment (b) we measure $\frac{\partial C_1\left(T, G, Y_1\right)}{\partial T}$ because at the margin when we give an individual household more in period 1 we tax them more in period 2. The various specifications in Parker et. al. measure different things. The one where they only exploit variation in timing is closest to measuring $\frac{\partial C_1\left(T, G, Y_1\right)}{\partial T}$ because the household's NPV of taxes does not vary with $T$.
+
+\item Consider a government-spending-multiplier design where we use exogenous variation in (nationallevel) military spending to measure the contemporaneous government spending multiplier. What quantity are we measuring?
+
+\textbf{Solution:} We are measuring $\frac{d Y_1}{d G}$
+
+\item  Consider the case where $\gamma=0$.
+
+(e.1) Solve for the equilibrium level of $Y_1$ as a function of $T$ and $G$.
+
+\textbf{Solution:} in general
+$$
+C_1\left(T, G, Y_1\right)+G=Y_1
+$$
+Solving:
+$$
+Y_1=\frac{G\left(1-\frac{\gamma}{1+\beta}\right)+\frac{\gamma}{1+\beta} Y_2+(1-\gamma)[a+b s T]}{1-\frac{\gamma}{1+\beta}-(1-\gamma) b}
+$$
+Setting $\gamma=0$ :
+$$
+Y_1=\frac{G+a+b s T}{1-b}
+$$
+
+(e.2) Show that:
+$$
+\frac{d Y_1}{d T}=\frac{d Y_1}{d G} \frac{\partial C_1\left(T, \tau, Y_1\right)}{\partial T}
+$$
+and also:
+$$
+\frac{d Y_1}{d T}=\frac{d Y_1}{d G} \frac{\frac{\partial C_1\left(T, G, Y_1\right)}{\partial T}}{1+\frac{\partial C_1\left(T, G, Y_1\right)}{\partial G}}
+$$
+\textbf{Solution:} (2) holds because:
+$$
+\begin{aligned}
+\frac{d Y_1}{d T} &=\frac{d Y_1}{d G} \frac{\partial C_1\left(T, \tau, Y_1\right)}{\partial T} \\
+\frac{b s}{1-b} &=\frac{1}{1-b} \times b s
+\end{aligned}
+$$
+and (3) holds because:
+$$
+\begin{aligned}
+\frac{d Y_1}{d T} &=\frac{d Y_1}{d G} \frac{\frac{\partial C_1\left(T, G, Y_1\right)}{\partial T}}{1+\frac{\partial C_1\left(T, G, Y_1\right)}{\partial G}} \\
+\frac{b s}{1-b} &=\frac{1}{1-b} \times \frac{b s}{1+0}
+\end{aligned}
+$$
+
+\item Now consider the case where $\gamma>0$
+
+(a) Solve for the equilibrium level of $Y_1$ as a function of $T$ and $G$.
+
+\textbf{Solution:} given by (1)
+
+(b) Show that (2) does not hold but (3) does hold.
+
+\textbf{Solution:} (2) does not hold because:
+$$
+\begin{aligned}
+\frac{d Y_1}{d T} & \neq \frac{d Y_1}{d G} \frac{\partial C_1\left(T, \tau, Y_1\right)}{\partial T} \\
+\frac{(1-\gamma) b s}{1-\frac{\gamma}{1+\beta}-(1-\gamma) b} \neq \frac{1-\frac{\gamma}{1+\beta}}{1-\frac{\gamma}{1+\beta}-(1-\gamma) b} \times\left[\frac{\gamma}{1+\beta}+(1-\gamma) b\right] s
+\end{aligned}
+$$
+- Instead, (3) does hold because:
+$$
+\begin{aligned}
+\frac{d Y_1}{d T} &=\frac{d Y_1}{d G} \frac{\frac{\partial C_1\left(T, G, Y_1\right)}{\partial T}}{1+\frac{\partial C_1\left(T, G, Y_1\right)}{\partial G}} \\
+\frac{(1-\gamma) b s}{1-\frac{\gamma}{1+\beta}-(1-\gamma) b} &=\frac{1-\frac{\gamma}{1+\beta}}{1-\frac{\gamma}{1+\beta}-(1-\gamma) b} \times \frac{(1-\gamma) b s}{1-\frac{\gamma}{1+\beta}}
+\end{aligned}
+$$
+
+There are two differences between (2) and (3):
+
+i. $\frac{\partial C_1\left(T, G, Y_1\right)}{\partial T}$ vs. $\frac{\partial C_1\left(T, \tau, Y_1\right)}{\partial T}$. For the equivalence to hold, we need to measure the reponse of consumption to transfers holding $G$ constant, because that's the way to hold the NPV of taxes constant.
+
+ii. The term $\frac{\partial C_1\left(T, G, Y_1\right)}{\partial G}$ is missing from (2). For the equivalence result to hold, we need to take into account that there is a direct "partial equilibrium" effect of $G$ on $C_1$ via taxes.
+
+
+\item Suppose that we want to measure $\frac{d Y_1}{d T}$ by combining the estimates of Parker et. al. (2013) and estimates of the government spending multiplier. Will we get the right answer?
+
+\textbf{Solution:}
+
+- The Parker et. al. estimates that exploit differential timing will in principle get the right estimate for $\frac{\partial C_1\left(T, G, Y_1\right)}{\partial T}$. One caveat is that this is a two-period model. In a many-period model, we would need to assume that the taxes that pay for $G$ happen a few months later, because that's the range of timing variation in Parker's data. If we wanted to establish an equivalence with a government spending multiplier where the taxes that pay for $G$ come several years in the future, as is typical, we would need an experiment like Parker et. al. where some people get the tax rebate now and others several years into the future.
+
+- Typical estimates of the government spending multiplier measure $\frac{d Y_1}{d G}$. As long as we believe the identification, that's what we need.
+
+- However, we still need an estimate of $\frac{\partial C_1\left(T, G, Y_1\right)}{\partial G}$. Unless we have that, we'll get the wrong answer. In particular, this is incorrect:
+$$
+\frac{d Y_1}{d T}=\underbrace{\frac{d Y_1}{d G}}_{\text {multiplier }} \times \underbrace{\frac{\partial C_1\left(T, G, Y_1\right)}{\partial T}}_{\text {from Parker et. al. }}
+$$
+
+\end{enumerate}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
