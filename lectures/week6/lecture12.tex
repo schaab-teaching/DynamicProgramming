@@ -1,0 +1,446 @@
+\documentclass[10pt]{beamer}
+\usepackage{amsmath,amsfonts,microtype,nicefrac,amssymb, amsthm,centernot}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+
+\usepackage{palatino}
+\usepackage{mathpazo} % or: {newpxtext,newpxmath}
+\renewcommand\familydefault{\rmdefault}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{bm}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows,shapes}
+\usepackage{caption, subcaption}
+
+%% BEAMER BUTTON
+%\setbeamertemplate{button}{\tikz
+%\node[
+%	inner xsep = 2pt, 
+%	draw = structure!0, 
+%	fill = myblue, 
+%	rounded corners = 4pt]{\color{white} \tiny\insertbuttontext};
+%}
+
+
+%% ALGORITHM 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{multimedia}
+
+%% THEME
+\usetheme[frametitleformat=regular,titleformat=regular]{Madrid}
+\setbeamerfont{frametitle}{shape=\normalfont}
+\setbeamerfont{title}{shape=\normalfont}
+
+%% PATHS
+\graphicspath{{./results/}}
+\makeatletter
+\def\input@path{{../draft/tables/latexData/}}
+\makeatother
+
+%% FIGURE ENVIRONMENT 
+\usepackage{booktabs,siunitx}
+
+\usepackage{pgfplots} 
+%\usepackage[outdir=./figures]{epstopdf}
+\usepackage{epstopdf}
+\usepackage{float}
+\usepackage{graphicx}
+
+\usepackage[absolute,overlay]{textpos}
+
+%% COLORS
+%% LINKS
+\definecolor{myred}{RGB}{163,32,45}
+\definecolor{navyblue}{rgb}{0.05,0.2,0.70}
+\definecolor{myblue}{RGB}{0,51,150}
+\definecolor{myorange}{RGB}{255,140,0}
+\definecolor{myref}{RGB}{160,160,160}
+\definecolor{shock}{RGB}{0, 125, 34}%{50, 168, 82}
+
+%% TRANSPARENCY
+
+\usepackage{transparent}
+
+%% BEAMER TEMPLATE
+\usetheme{Boadilla}
+
+\makeatother
+\setbeamertemplate{itemize items}{\large\raisebox{-0.25ex}{\textbullet}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raisebox{0.15ex}{--}}
+\setbeamertemplate{itemize subsubitem}{\Tiny\raisebox{0.7ex}{$\blacktriangleright$}}
+%\setbeamertemplate{itemize subsubitem}{\color{yellow}$\blacksquare$}
+
+\setbeamertemplate{enumerate item}[default]
+\setbeamertemplate{enumerate subitem}{\textbullet}
+\setbeamertemplate{footline}{}
+\makeatletter
+\setbeamertemplate{navigation symbols}{}
+
+
+%% FORMATTING AUTHORS
+%\usepackage{authblk}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{array}
+
+%% FRAME ITEMIZE SPACING
+\usepackage{xpatch}
+
+\xpatchcmd{\itemize}
+{\def\makelabel}
+{\setlength{\itemsep}{2.5ex}\def\makelabel}
+{}
+{}
+
+\xpatchcmd{\enumerate}
+{\def\makelabel}
+{\setlength{\itemsep}{10ex}\def\makelabel}
+{}
+{}
+
+%% APPENDIX 
+\usepackage{appendixnumberbeamer}
+
+
+%% TITLE AND OPENING
+\title{\large M2: Lecture 12}
+\subtitle{Portfolio Choice and Asset Pricing}
+\author{Andreas Schaab}
+\date{}
+
+
+\begin{document}
+\tikzstyle{every picture}+=[remember picture]
+%\everymath{\displaystyle}
+\thispagestyle{empty}
+\maketitle 
+\newpage
+
+\addtocounter{framenumber}{-1}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Outline of today's lecture}
+\addtocounter{framenumber}{-1}
+
+\begin{enumerate}
+\item Equity premium
+
+\item Merton model: portfolio choice in continuous time
+\end{enumerate}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{1. Equity premium}
+\begin{itemize}
+\item Consider $i \in \mathcal I$ assets with stochastic return processes $\{ R_{i, t+1} \}$, with 
+\begin{equation*}
+	R_{i, t+1} = e^{ r_{i, t+1} + \sigma_i \epsilon_{i, t+1} - \frac{1}{2} \sigma_i^2}
+\end{equation*}
+where $\epsilon_{i, t} \sim \mathcal N(0, 1)$
+
+\item For any asset $i$ the household can freely trade, an Euler equation must hold: 
+\begin{equation*}
+	u'(c_t) = \beta \mathbb{E}_t \Big( R_{i, t+1} u'(c_{t+1}) \Big)
+\end{equation*}
+
+\item Using CRRA with $u(c) = \frac{1}{1-\gamma} c^{1-\gamma}$, we get
+\begin{equation*}
+	1 = \mathbb E_t \bigg[ e^{- \rho + r_{i, t+1} + \sigma_i \epsilon_{i, t+1} - \frac{1}{2} \sigma_i^2} \bigg( \frac{ c_{t+1}}{c_t} \bigg) ^{-\gamma} \bigg]
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Note that
+\begin{equation*}
+	\bigg( \frac{ c_{t+1}}{c_t} \bigg) ^{-\gamma} = \exp \bigg\{ - \gamma \log \frac{c_{t+1}}{c_t} \bigg\} = e^{- \gamma \Delta \log(c_{t+1}) }
+\end{equation*}
+
+\item Also, for $X \sim \mathcal N(\mu, \sigma)$, we have $\mathbb{E} [ e^{b x} ] = e^{ b \mu + \frac{1}{2} b^2 \sigma^2}$
+
+\item Assuming log-normal consumption growth, we have
+\begin{equation*}
+	\mathbb{E}_t \bigg[ e^{ \sigma_i \epsilon_{i, t+1} - \gamma \Delta \ln(c_{t+1}) } \bigg] = e^{- \gamma \mathbb{E}_t \Delta \ln(c_{t+1}) + \frac{1}{2} \mathbb Var ( \sigma_i \epsilon_{i, t+1} - \gamma \Delta \ln(c_{t+1}) )}
+\end{equation*}
+
+\item Putting it all together:
+\begin{align*}
+	1 &= e^{- \rho + r_{i, t+1} - \frac{1}{2} \sigma_i^2} \mathbb E_t \bigg[ e^{\sigma_i \epsilon_{i, t+1} - \gamma \Delta \log(c_{t+1}) } \bigg] \\
+	&= e^{- \rho + r_{i, t+1} - \frac{1}{2} \sigma_i^2 - \gamma \mathbb{E}_t \Delta \ln(c_{t+1}) + \frac{1}{2} \mathbb Var ( \sigma_i \epsilon_{i, t+1} - \gamma \Delta \ln(c_{t+1}) )}
+\end{align*}
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Read about variance and covariance
+
+\item We have 
+\begin{equation*}
+	\mathbb Var (A + B) = \mathbb Var (A) +  \mathbb Var (B) + 2 \mathbb Cov (A, B)
+\end{equation*}
+
+\item So
+\begin{align*}
+	1 &= e^{- \rho + r_{i, t+1} - \frac{1}{2} \sigma_i^2 - \gamma \mathbb{E}_t \Delta \ln(c_{t+1}) + \frac{1}{2} \sigma_i^2 + \frac{\gamma^2}{2} \mathbb Var(\Delta \ln(c_{t+1}) ) - \gamma \mathbb Cov(\sigma_i \epsilon_{i, t+1}, \, \Delta \ln(c_{t+1})) }
+\end{align*}
+and finally:
+\begin{align*}
+	r_{i, t+1} &= \rho + \gamma \mathbb{E}_t \Delta \ln(c_{t+1}) - \frac{\gamma^2}{2} \mathbb Var(\Delta \ln(c_{t+1}) ) + \gamma \mathbb Cov(\sigma_i \epsilon_{i, t+1}, \, \Delta \ln(c_{t+1}))
+\end{align*}
+
+\item Riskfree bond is therefore priced according to:
+\begin{equation*}
+	r_{t+1}^f = \rho + \gamma \mathbb{E}_t \Delta \ln(c_{t+1}) - \frac{\gamma^2}{2} \mathbb Var(\Delta \ln(c_{t+1}) )
+\end{equation*}
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Let asset $i$ denote the stock market
+
+\item Equity premium is then given by
+\begin{equation*}
+	r_{i, t+1} - r_{t+1}^f = \gamma \mathbb Cov(\sigma_i \epsilon_{i, t+1}, \, \Delta \ln(c_{t+1}))
+\end{equation*}
+
+\item The equity premium is equal to the coefficient of relative risk aversion ($\gamma$) times the covariance of stock returns with consumption growth. 
+
+\item Key insight: risk is about \textit{covariance}, and in particular covariance with consumption growth demands compensation. ($\gamma$ is like the price of risk and the covariance is like the quantity of risk.)
+
+\item Mehra-Prescott (1986): Rearrange and use post-war data 
+\begin{equation*}
+	\gamma = \frac{r_{equity} - r^f}{\sigma_{equity, \Delta c}} \approx \frac{0.06}{0.0003} = 200.
+\end{equation*}
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Mankiw-Zeldes (1991): What value of $X$ makes you indifferent between the following two gambles: 
+\begin{equation*}
+	\text{gamble 1} = \begin{cases}
+		\$ 50,000 & \text{ with probability } 0.5 \\
+		\$ 100,000 & \text{ with probability } 0.5
+	\end{cases}
+\end{equation*}
+\begin{equation*}
+	\text{gamble 2} = \$ X \quad \text{with probability} 1
+\end{equation*}
+
+\item Implied risk aversion coefficient: 
+\begin{align*}
+	\gamma &= 1 \quad \implies \quad X = \$70,711 \\ 
+	\gamma &= 3 \quad \implies \quad X = \$63,246 \\ 
+	\gamma &= 20 \quad \implies \quad X = \$51,858 \\ 
+	\gamma &= 200 \quad \implies \quad X = \$50,174 \\ 
+\end{align*}
+
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2. Portfolio choice in continuous time}
+\begin{itemize}
+\item Economy has two assets, populated by a representative household
+
+\item \textbf{Lucas tree}:
+\begin{itemize}
+\vspace{1mm}
+\item Tree is in fixed unit supply
+
+\vspace{-2mm}
+\item Pays dividend $D_t$ that evolves as $\frac{dD}{D} = \mu_D dt + \sigma_D dB$
+
+\vspace{-2mm}
+\item Trades at price $Q_t$, which follows $\frac{dQ}{Q} = \mu_Q dt + \sigma dB$ (conjecture)
+\end{itemize}
+
+\item We guess and verify that holding return evolves according to 
+\begin{equation*}
+	dR = \frac{D dt + dQ}{Q} = \frac{D}{Q} dt + \mu_Q dt + \sigma dB,
+\end{equation*}
+where $\rho_D = D/Q$ is the \textit{constant} dividend-price ratio and $\mu = D/Q + \mu_Q$
+
+\item \textbf{Riskfree bond}: pays no dividend but price evolves as $\frac{dP}{P} = r dt$
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item Household's lifetime value given by
+\begin{equation*}
+	\max_{ \{c_t\}_{t \geq 0} } \mathbb E_0 \int_0^\infty e^{- \rho t} u(c_t) dt
+\end{equation*}
+
+\item Denote by $b_t$ and $k_t$ household's bond and stock holdings
+
+\item Budget constraint:
+\begin{equation*}
+	Q dk + P db + c dt = D k dt
+\end{equation*}
+
+\item Define \textit{liquid net worth} $n$ and the \textit{risky portfolio share} $\theta$ implicity via 
+\begin{align*}
+	\theta n &= Q k \\
+	(1-\theta) n &= Pb
+\end{align*}
+
+\item Can rearrange budget constraint now to obtain 
+\begin{equation*}
+	dn = \bigg[ r n + \theta n \Big( \mu - r \Big) - c \bigg] dt + \theta n \sigma dB
+\end{equation*}
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+Recursive representation yields HJB equation:
+\begin{equation*}
+	\rho V(n) = \max_{c, \theta} \Big\{ u(c) + \Big[ r n + \theta n \Big( \mu - r \Big) - c \Big] V'(n) + \frac{1}{2} (\sigma \theta n)^2 V''(n) \Big\}
+\end{equation*}
+with first-order conditions
+\begin{align*}
+	u'(c) &= V'(n) \\
+	\theta &= - \frac{V'(n)}{n V''(n)} \cdot \frac{\mu - r}{\sigma^2}
+\end{align*}
+
+\vspace{5mm}
+\textbf{Lemma.} The Euler equation for marginal utility is given by
+\begin{equation*}
+	\frac{du_c}{u_c} = (\rho - r) dt - \frac{\mu - r}{\sigma} dB.
+\end{equation*}
+
+
+\vspace{5mm}
+\textbf{Lemma.} With CRRA utility, the Euler equation for consumption is
+\begin{equation*}
+	\frac{dc}{c} = \frac{r - \rho}{\gamma} dt + \frac{1+\gamma}{2} \bigg( \frac{\mu - r}{\gamma \sigma} \bigg)^2 dt + \frac{\mu - r}{\gamma \sigma} dB.
+\end{equation*}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item The representative household must consume the dividend (fruit) of the tree, so 
+\begin{equation*}
+	c_t = D_t
+\end{equation*}
+
+\item Recall:
+\begin{align*}
+	\frac{dD}{D} &= \mu_D dt + \sigma_D dB \\
+	\frac{dc}{c} &= \frac{r - \rho}{\gamma} dt + \frac{1+\gamma}{2} \bigg( \frac{\mu - r}{\gamma \sigma} \bigg)^2 dt + \frac{\mu - r}{\gamma \sigma} dB
+\end{align*}
+
+\item So matching coefficients: 
+\begin{align*}
+	\mu_D &= \frac{r - \rho}{\gamma} + \frac{1+\gamma}{2} \bigg( \frac{\mu - r}{\gamma \sigma} \bigg)^2 \\
+	\sigma_D &= \frac{\mu - r}{\gamma \sigma}
+\end{align*}
+
+\item Riskfree rate: $r = \rho + \gamma \mu_D - \frac{\gamma(1+\gamma)}{2} \sigma_D^2$.
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item We can do even better!
+
+\item Guess and verify that 
+\begin{equation*}
+	V(n) = \frac{1}{1-\gamma} \kappa^{-\gamma} n^{1-\gamma}
+\end{equation*}
+where $\kappa = \frac{1}{\gamma} \Big[ \rho - (1-\gamma)r - \frac{1-\gamma}{2\gamma} \Big( \frac{\mu-r}{\sigma} \Big)^2 \Big]$
+
+\item Solution of the model is then given by:
+\begin{align*}
+	c &= \kappa n \\
+	\theta &= \frac{\mu - r}{\gamma \sigma^2} \\
+	r &= \rho + \gamma \mu_D - \frac{\gamma(1+\gamma)}{2} \sigma_D^2 \\
+	\mu - r &= \gamma \sigma \sigma_D = \gamma \mathbb Cov \Big( \frac{dc}{c} , dR \Big)
+\end{align*}
+
+
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%  SLIDE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+\begin{itemize}
+\item What does this model tell us? Interesting special case: $\gamma = 1$
+
+\item Consumption collapses to $c = \rho n$ $\implies$ consume constant fraction $\rho$ of lifetime net worth
+
+\item How much should we invest in the stock market? 
+\begin{equation*}
+	\theta = \frac{\mu - r}{\gamma \sigma^2} \approx \frac{0.06}{1 \cdot (0.16)^2} = 2.34
+\end{equation*}
+
+\item In the absence of frictions and with $\gamma = 1$, this model tells us to invest $2.34$ times our total net worth (including human capital) in the stock market 
+
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
